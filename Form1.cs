@@ -10,8 +10,7 @@ namespace Affine3D
         Graphics graphics;
         Polyhedron currentPolyhedron;
         int currentProectionMode = 4;
-
-        // need field for projection
+        Proector proector = new Proector();
 
         public Form1()
         {
@@ -24,8 +23,10 @@ namespace Affine3D
         private void drawFigure()
         {
             graphics.Clear(Color.White);
-
-            // need projection type for drawing figures
+            List<Line> lines = proector.Display(currentPolyhedron, currentProectionMode);
+            foreach (var line in lines)
+                graphics.DrawLine(new Pen(Color.Black), line.From.ToPoint(), line.To.ToPoint());
+            pictureBox1.Invalidate();
         }
 
         private void createTetrahedron_Click(object sender, EventArgs e)
