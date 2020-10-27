@@ -1,4 +1,4 @@
-﻿namespace Affine3D.InputBox
+﻿namespace Affine3D
 {
     partial class InputBoxWithRadioButt
     {

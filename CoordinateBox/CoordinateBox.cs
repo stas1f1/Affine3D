@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Affine3D.CoordinateBox
+namespace Affine3D
 {
     public partial class CoordinateBox : Form
     {

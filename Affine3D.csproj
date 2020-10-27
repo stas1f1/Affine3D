@@ -70,8 +70,11 @@
     <Compile Include="InputBox\InputBoxWithRadioButt.Designer.cs">
       <DependentUpon>InputBoxWithRadioButt.cs</DependentUpon>
     </Compile>
+    <Compile Include="Matrix.cs" />
+    <Compile Include="Objects.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transformations.cs" />
     <EmbeddedResource Include="CoordinateBox\CoordinateBox.resx">
       <DependentUpon>CoordinateBox.cs</DependentUpon>
     </EmbeddedResource>

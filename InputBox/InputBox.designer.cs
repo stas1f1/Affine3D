@@ -1,4 +1,4 @@
-﻿namespace Affine3D.InputBox
+﻿namespace Affine3D
 {
     partial class InputBox
     {
@@ -77,15 +77,20 @@
             // 
             // InputBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(399, 133);
+            this.ClientSize = new System.Drawing.Size(463, 119);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.textBox);
             this.Controls.Add(this.label);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "InputBox";
-            this.Text = "InputBox";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputBox_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

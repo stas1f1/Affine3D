@@ -1,4 +1,4 @@
-﻿namespace Affine3D.CoordinateBox
+﻿namespace Affine3D
 {
     partial class CoordinateBox
     {

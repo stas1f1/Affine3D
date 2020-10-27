@@ -47,7 +47,7 @@
             this.ortographRadioButton = new System.Windows.Forms.RadioButton();
             this.perspectiveRadioButton = new System.Windows.Forms.RadioButton();
             this.izometrRadioButton = new System.Windows.Forms.RadioButton();
-            this.button1 = new System.Windows.Forms.Button();
+            this.clearButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -165,6 +165,7 @@
             this.turnAroundLineRadioButton.TabStop = true;
             this.turnAroundLineRadioButton.Text = "Поворот вокруг прямой";
             this.turnAroundLineRadioButton.UseVisualStyleBackColor = true;
+            this.turnAroundLineRadioButton.Click += new System.EventHandler(this.transformationRadioButton_Click);
             // 
             // rotateAroundLineRadioButton
             // 
@@ -177,6 +178,7 @@
             this.rotateAroundLineRadioButton.TabStop = true;
             this.rotateAroundLineRadioButton.Text = "Вращение вокруг прямой";
             this.rotateAroundLineRadioButton.UseVisualStyleBackColor = true;
+            this.rotateAroundLineRadioButton.Click += new System.EventHandler(this.transformationRadioButton_Click);
             // 
             // scaleAroundCenterRadioButton
             // 
@@ -189,6 +191,7 @@
             this.scaleAroundCenterRadioButton.TabStop = true;
             this.scaleAroundCenterRadioButton.Text = "Масштаб относ. центра";
             this.scaleAroundCenterRadioButton.UseVisualStyleBackColor = true;
+            this.scaleAroundCenterRadioButton.Click += new System.EventHandler(this.transformationRadioButton_Click);
             // 
             // reflectionRadioButton
             // 
@@ -201,6 +204,7 @@
             this.reflectionRadioButton.TabStop = true;
             this.reflectionRadioButton.Text = "Отражение относ. к плоск.";
             this.reflectionRadioButton.UseVisualStyleBackColor = true;
+            this.reflectionRadioButton.Click += new System.EventHandler(this.transformationRadioButton_Click);
             // 
             // scaleRadioButton
             // 
@@ -213,6 +217,7 @@
             this.scaleRadioButton.TabStop = true;
             this.scaleRadioButton.Text = "Масштаб";
             this.scaleRadioButton.UseVisualStyleBackColor = true;
+            this.scaleRadioButton.Click += new System.EventHandler(this.transformationRadioButton_Click);
             // 
             // turnRadioButton
             // 
@@ -225,6 +230,7 @@
             this.turnRadioButton.TabStop = true;
             this.turnRadioButton.Text = "Поворот";
             this.turnRadioButton.UseVisualStyleBackColor = true;
+            this.turnRadioButton.Click += new System.EventHandler(this.transformationRadioButton_Click);
             // 
             // moveRadioButton
             // 
@@ -237,6 +243,7 @@
             this.moveRadioButton.TabStop = true;
             this.moveRadioButton.Text = "Смещение";
             this.moveRadioButton.UseVisualStyleBackColor = true;
+            this.moveRadioButton.Click += new System.EventHandler(this.transformationRadioButton_Click);
             // 
             // groupBox3
             // 
@@ -288,25 +295,26 @@
             this.izometrRadioButton.Text = "Изометрическая";
             this.izometrRadioButton.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // clearButton
             // 
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(11, 607);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(283, 122);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Очистить";
-            this.button1.UseVisualStyleBackColor = false;
+            this.clearButton.BackColor = System.Drawing.Color.Transparent;
+            this.clearButton.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.clearButton.ForeColor = System.Drawing.Color.Black;
+            this.clearButton.Location = new System.Drawing.Point(11, 607);
+            this.clearButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.clearButton.Name = "clearButton";
+            this.clearButton.Size = new System.Drawing.Size(283, 122);
+            this.clearButton.TabIndex = 5;
+            this.clearButton.Text = "Очистить";
+            this.clearButton.UseVisualStyleBackColor = false;
+            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1275, 741);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.clearButton);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.pictureBox1);
@@ -344,7 +352,7 @@
         private System.Windows.Forms.RadioButton ortographRadioButton;
         private System.Windows.Forms.RadioButton perspectiveRadioButton;
         private System.Windows.Forms.RadioButton izometrRadioButton;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button clearButton;
     }
 }
 
