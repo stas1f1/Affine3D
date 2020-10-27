@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Affine3D
 {
@@ -260,5 +256,25 @@ namespace Affine3D
 
             drawFigure();
         }
+        
+        private void proectionRadioButton_Click(object sender, EventArgs e)
+        {
+            if (izometrRadioButton.Checked)
+            {
+                currentProectionMode = 0;
+            }
+            else if (perspectiveRadioButton.Checked)
+            {
+                currentProectionMode = 4;
+            }
+            else if (ortographRadioButton.Checked)
+            {
+                var dialog = new InputBoxWithRadioBut();
+                if (dialog.ShowDialog() == DialogResult.OK)
+                    currentProectionMode = dialog.ResultText;
+            }
+            drawFigure();
+        }
+        
     }
 }

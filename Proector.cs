@@ -8,27 +8,27 @@ namespace Affine3D
 {
     class Proector
     {
-        private Matrix isometric_projection = new Matrix(new double[4] { Math.Sqrt(0.5), 0, -Math.Sqrt(0.5), 0 },
-                                                         new double[4] { 1 / Math.Sqrt(6), 2 / Math.Sqrt(6), 1 / Math.Sqrt(6), 0 },
-                                                         new double[4] { 1 / Math.Sqrt(3), -1 / Math.Sqrt(3), 1 / Math.Sqrt(3), 0 },
-                                                         new double[4] { 0, 0, 0, 1 }
+        private Matrix isometric_projection = new Matrix(new double[] { Math.Sqrt(0.5), 0, -Math.Sqrt(0.5), 0 },
+                                                         new double[] { 1 / Math.Sqrt(6), 2 / Math.Sqrt(6), 1 / Math.Sqrt(6), 0 },
+                                                         new double[] { 1 / Math.Sqrt(3), -1 / Math.Sqrt(3), 1 / Math.Sqrt(3), 0 },
+                                                         new double[] { 0, 0, 0, 1 }
                                                     );
-        private Matrix orthographic_projection_X = new Matrix(new double[4] { 0, 0, 0, 0 },
-                                                              new double[4] { 0, 1, 0, 0 },
-                                                              new double[4] { 0, 0, 1, 0 },
-                                                              new double[4] { 0, 0, 0, 1 });
-        private Matrix orthographic_projection_Y = new Matrix(new double[4] { 1, 0, 0, 0 },
-                                                              new double[4] { 0, 0, 0, 0 },
-                                                              new double[4] { 0, 0, 1, 0 },
-                                                              new double[4] { 0, 0, 0, 1 });
-        private Matrix orthographic_projection_Z = new Matrix(new double[4] { 1, 0, 0, 0 },
-                                                              new double[4] { 0, 1, 0, 0 },
-                                                              new double[4] { 0, 0, 0, 0 },
-                                                              new double[4] { 0, 0, 0, 1 });
-        private Matrix perspective_projection = new Matrix(new double[4] { 1, 0, 0, 0 },
-                                                           new double[4] { 0, 1, 0, 0 },
-                                                           new double[4] { 0, 0, 0, -0.00157 },
-                                                           new double[4] { 0, 0, 0, 1 });
+        private Matrix orthographic_projection_X = new Matrix(new double[] { 0, 0, 0, 0 },
+                                                              new double[] { 0, 1, 0, 0 },
+                                                              new double[] { 0, 0, 1, 0 },
+                                                              new double[] { 0, 0, 0, 1 });
+        private Matrix orthographic_projection_Y = new Matrix(new double[] { 1, 0, 0, 0 },
+                                                              new double[] { 0, 0, 0, 0 },
+                                                              new double[] { 0, 0, 1, 0 },
+                                                              new double[] { 0, 0, 0, 1 });
+        private Matrix orthographic_projection_Z = new Matrix(new double[] { 1, 0, 0, 0 },
+                                                              new double[] { 0, 1, 0, 0 },
+                                                              new double[] { 0, 0, 0, 0 },
+                                                              new double[] { 0, 0, 0, 1 });
+        private Matrix perspective_projection = new Matrix(new double[] { 1, 0, 0, 0 },
+                                                           new double[] { 0, 1, 0, 0 },
+                                                           new double[] { 0, 0, 0, -0.00157 },
+                                                           new double[] { 0, 0, 0, 1 });
 
         public List<Line> Display(Polyhedron polyhedron, int proc)
         {
