@@ -33,6 +33,7 @@ namespace Affine3D
             pictureBox1.Invalidate();
         }
 
+        // создание тетраэдра по вершине и ребру
         private void createTetrahedron_Click(object sender, EventArgs e)
         {
             double x = 200, y = 150, z = 0;
@@ -76,21 +77,21 @@ namespace Affine3D
                 new Point3D(0, 50, r)
             };
 
-            Polyhedron icohedrone = new Polyhedron(points);
+            Polyhedron icohedron = new Polyhedron(points);
 
-            icohedrone.AddEdges(points[0], new List<Point3D> { points[1], points[3], points[4], points[5], points[6] });
-            icohedrone.AddEdges(points[1], new List<Point3D> { points[2], points[3], points[6], points[7] });
-            icohedrone.AddEdges(points[2], new List<Point3D> { points[3], points[7], points[8], points[11] });
-            icohedrone.AddEdges(points[3], new List<Point3D> { points[4], points[8] });
-            icohedrone.AddEdges(points[4], new List<Point3D> { points[5], points[8], points[10] });
-            icohedrone.AddEdges(points[5], new List<Point3D> { points[6], points[9], points[10] });
-            icohedrone.AddEdges(points[6], new List<Point3D> { points[7], points[9] });
-            icohedrone.AddEdges(points[7], new List<Point3D> { points[9], points[11] });
-            icohedrone.AddEdges(points[8], new List<Point3D> { points[10], points[11] });
-            icohedrone.AddEdges(points[9], new List<Point3D> { points[10], points[11] });
-            icohedrone.AddEdges(points[10], new List<Point3D> { points[11] });
+            icohedron.AddEdges(points[0], new List<Point3D> { points[1], points[3], points[4], points[5], points[6] });
+            icohedron.AddEdges(points[1], new List<Point3D> { points[2], points[3], points[6], points[7] });
+            icohedron.AddEdges(points[2], new List<Point3D> { points[3], points[7], points[8], points[11] });
+            icohedron.AddEdges(points[3], new List<Point3D> { points[4], points[8] });
+            icohedron.AddEdges(points[4], new List<Point3D> { points[5], points[8], points[10] });
+            icohedron.AddEdges(points[5], new List<Point3D> { points[6], points[9], points[10] });
+            icohedron.AddEdges(points[6], new List<Point3D> { points[7], points[9] });
+            icohedron.AddEdges(points[7], new List<Point3D> { points[9], points[11] });
+            icohedron.AddEdges(points[8], new List<Point3D> { points[10], points[11] });
+            icohedron.AddEdges(points[9], new List<Point3D> { points[10], points[11] });
+            icohedron.AddEdges(points[10], new List<Point3D> { points[11] });
 
-            currentPolyhedron = AffineTransform.getMoved(icohedrone, 200, 200, 0);
+            currentPolyhedron = AffineTransform.getMoved(icohedron, 200, 200, 0);
 
             foreach (var control in groupBox2.Controls)
                 (control as RadioButton).Checked = false;
