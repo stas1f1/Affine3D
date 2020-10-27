@@ -49,6 +49,7 @@
             this.buttonCancel.TabIndex = 26;
             this.buttonCancel.Text = "Отмена";
             this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // buttonOK
             // 
@@ -60,6 +61,7 @@
             this.buttonOK.TabIndex = 25;
             this.buttonOK.Text = "ОК";
             this.buttonOK.UseVisualStyleBackColor = true;
+            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
             // label4
             // 
@@ -80,6 +82,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(75, 32);
             this.textBox3.TabIndex = 23;
+            this.textBox3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.coordinateBox_KeyDown);
             // 
             // label3
             // 
@@ -100,6 +103,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(75, 32);
             this.textBox2.TabIndex = 21;
+            this.textBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.coordinateBox_KeyDown);
             // 
             // label2
             // 
@@ -120,6 +124,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(75, 32);
             this.textBox1.TabIndex = 19;
+            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.coordinateBox_KeyDown);
             // 
             // label1
             // 
