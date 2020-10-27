@@ -117,7 +117,7 @@ namespace Affine3D
     public class Polyhedron
     {
         // список вершин
-        public List<Point3D> Vertexes { get; set; } = new List<Point3D>();
+        public List<Point3D> Vertices { get; set; } = new List<Point3D>();
         // список ребер
         public List<Line3> Edges { get; } = new List<Line3>();
         // матрица смежности
@@ -127,9 +127,9 @@ namespace Affine3D
         {
             get
             {
-                double x = Vertexes.Select(point => point.X).Average();
-                double y = Vertexes.Select(point => point.Y).Average();
-                double z = Vertexes.Select(point => point.Z).Average();
+                double x = Vertices.Select(point => point.X).Average();
+                double y = Vertices.Select(point => point.Y).Average();
+                double z = Vertices.Select(point => point.Z).Average();
                 return new Point3D(x, y, z);
             }
         }
@@ -137,13 +137,13 @@ namespace Affine3D
         public Polyhedron() { }
         public Polyhedron(List<Point3D> points)
         {
-            Vertexes = points;
+            Vertices = points;
             foreach (var point in points) AdjacencyMatrix.Add(point, new List<Point3D>());
         }
 
         public void AddVertex(Point3D point)
         {
-            Vertexes.Add(point);
+            Vertices.Add(point);
             AdjacencyMatrix.Add(point, new List<Point3D>());
         }
 
@@ -154,8 +154,8 @@ namespace Affine3D
         public void AddEdge(Point3D p1, Point3D p2)
         {
             Edges.Add(new Line3(p1, p2));
-            Point3D point1 = Vertexes.Find(p => p == p1);
-            Point3D point2 = Vertexes.Find(p => p == p2);
+            Point3D point1 = Vertices.Find(p => p == p1);
+            Point3D point2 = Vertices.Find(p => p == p2);
             if (!AdjacencyMatrix.ContainsKey(point1)) AdjacencyMatrix.Add(point1, new List<Point3D> { p2 });
             else AdjacencyMatrix[point1].Add(p2);
             if (!AdjacencyMatrix.ContainsKey(point2)) AdjacencyMatrix.Add(point2, new List<Point3D> { p1 });
