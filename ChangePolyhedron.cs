@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace lab06
+namespace Affine3D
 {
     public partial class Form1 : Form
     {
@@ -18,17 +18,17 @@ namespace lab06
             Point3D center = currentPolyhedron.Center;
             double newScale = scaleInProcents / 100.0;
 
-            for (int i = 0; i < currentPolyhedron.Vertexes.Count; i++)
+            for (int i = 0; i < currentPolyhedron.Vertices.Count; i++)
             {
-                Point3D old = currentPolyhedron.Vertexes[i];
+                Point3D old = currentPolyhedron.Vertices[i];
                 Point3D scaled = new Point3D();
                 scaled.X = center.X + (old.X - center.X) * newScale;
                 scaled.Y = center.Y + (old.Y - center.Y) * newScale;
                 scaled.Z = center.Z + (old.Z - center.Z) * newScale;
 
-                currentPolyhedron.Vertexes[i].X = scaled.X;
-                currentPolyhedron.Vertexes[i].Y = scaled.Y;
-                currentPolyhedron.Vertexes[i].Z = scaled.Z;
+                currentPolyhedron.Vertices[i].X = scaled.X;
+                currentPolyhedron.Vertices[i].Y = scaled.Y;
+                currentPolyhedron.Vertices[i].Z = scaled.Z;
             }
         }
 
@@ -46,9 +46,9 @@ namespace lab06
             else if (surface == "yz")
                 x = -1;
 
-            for (int i = 0;i < currentPolyhedron.Vertexes.Count; i++)
+            for (int i = 0;i < currentPolyhedron.Vertices.Count; i++)
             {
-                Point3D temp = currentPolyhedron.Vertexes[i];
+                Point3D temp = currentPolyhedron.Vertices[i];
                 temp.X *= x;
                 temp.Y *= y;
                 temp.Z *= z;
@@ -66,9 +66,9 @@ namespace lab06
             var sin = Math.Sin(angle * 0.017);
             Point3D center = currentPolyhedron.Center;
 
-            for (int i = 0; i < currentPolyhedron.Vertexes.Count; i++)
+            for (int i = 0; i < currentPolyhedron.Vertices.Count; i++)
             {
-                Point3D old = currentPolyhedron.Vertexes[i] - center;
+                Point3D old = currentPolyhedron.Vertices[i] - center;
                 Point3D changed = new Point3D();
 
                 if (surface == "x")
@@ -91,9 +91,9 @@ namespace lab06
                 }
 
                 changed = changed + center;
-                currentPolyhedron.Vertexes[i].X = changed.X;
-                currentPolyhedron.Vertexes[i].Y = changed.Y;
-                currentPolyhedron.Vertexes[i].Z = changed.Z;
+                currentPolyhedron.Vertices[i].X = changed.X;
+                currentPolyhedron.Vertices[i].Y = changed.Y;
+                currentPolyhedron.Vertices[i].Z = changed.Z;
             }
         }
 
@@ -109,9 +109,9 @@ namespace lab06
                     forY = l * mcos - n * sin + m * m + cos * (1 - m * m) + mcos * n + sin * l,
                     forZ = n * l * (1 - cos) + m * sin + mcos * n - sin * l + n * n + cos * (1 - n * n);
 
-            for (int i = 0; i < currentPolyhedron.Vertexes.Count; i++)
+            for (int i = 0; i < currentPolyhedron.Vertices.Count; i++)
             {
-                Point3D old = currentPolyhedron.Vertexes[i];
+                Point3D old = currentPolyhedron.Vertices[i];
 
                 old.X *= forX;
                 old.Y *= forY;

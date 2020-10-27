@@ -25,14 +25,14 @@ namespace Affine3D
             textBox.Text = defaultValue;
         }
 
-        private void ButtonOK_Click(object sender, EventArgs e)
+        private void buttonOK_Click(object sender, EventArgs e)
         {
             ResultText = textBox.Text;
             DialogResult = DialogResult.OK;
             Close();
         }
 
-        private void ButtonCancel_Click(object sender, EventArgs e)
+        private void buttonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
@@ -42,7 +42,8 @@ namespace Affine3D
 
         private void InputBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter) ButtonOK_Click(null, null);
+            if (e.KeyCode == Keys.Enter) 
+                buttonOK_Click(null, null);
         }
     }
 }

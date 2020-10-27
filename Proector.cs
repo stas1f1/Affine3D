@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lab06
+namespace Affine3D
 {
     class Proector
     {

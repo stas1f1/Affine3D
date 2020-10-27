@@ -37,39 +37,42 @@
             // buttonCancel
             // 
             this.buttonCancel.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.buttonCancel.Location = new System.Drawing.Point(11, 72);
+            this.buttonCancel.Location = new System.Drawing.Point(11, 91);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(2);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(185, 47);
+            this.buttonCancel.Size = new System.Drawing.Size(139, 38);
             this.buttonCancel.TabIndex = 7;
             this.buttonCancel.Text = "Отмена";
             this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // buttonOK
             // 
             this.buttonOK.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.buttonOK.Location = new System.Drawing.Point(200, 72);
+            this.buttonOK.Location = new System.Drawing.Point(154, 91);
             this.buttonOK.Margin = new System.Windows.Forms.Padding(2);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(185, 47);
+            this.buttonOK.Size = new System.Drawing.Size(139, 38);
             this.buttonOK.TabIndex = 6;
             this.buttonOK.Text = "ОК";
             this.buttonOK.UseVisualStyleBackColor = true;
+            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
             // textBox
             // 
             this.textBox.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.textBox.Location = new System.Drawing.Point(11, 36);
+            this.textBox.Location = new System.Drawing.Point(11, 45);
             this.textBox.Margin = new System.Windows.Forms.Padding(2);
             this.textBox.Name = "textBox";
-            this.textBox.Size = new System.Drawing.Size(374, 32);
+            this.textBox.Size = new System.Drawing.Size(282, 32);
             this.textBox.TabIndex = 5;
+            this.textBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.InputBox_KeyDown);
             // 
             // label
             // 
             this.label.AutoSize = true;
             this.label.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.label.Location = new System.Drawing.Point(11, 9);
+            this.label.Location = new System.Drawing.Point(8, 7);
             this.label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label.Name = "label";
             this.label.Size = new System.Drawing.Size(0, 25);
@@ -77,14 +80,15 @@
             // 
             // InputBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(463, 119);
+            this.ClientSize = new System.Drawing.Size(327, 140);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.textBox);
             this.Controls.Add(this.label);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "InputBox";

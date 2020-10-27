@@ -11,12 +11,12 @@ namespace Affine3D
         // применяет к многограннику матричное преобразование
         static public Polyhedron ChangePolyhedronByMatrix(Polyhedron polyhedron, Matrix matrix)
         {
-            List<Point3D> newPoints = polyhedron.Vertexes.Select(point => (Matrix.getMatrixFromPoint(point) * matrix).ToPoint()).ToList();
+            List<Point3D> newPoints = polyhedron.Vertices.Select(point => (Matrix.getMatrixFromPoint(point) * matrix).ToPoint()).ToList();
             Polyhedron res = new Polyhedron(newPoints);
             foreach (var edge in polyhedron.Edges)
             {
-                int p1Index = polyhedron.Vertexes.FindIndex(point => point == edge.From);
-                int p2Index = polyhedron.Vertexes.FindIndex(point => point == edge.To);
+                int p1Index = polyhedron.Vertices.FindIndex(point => point == edge.From);
+                int p2Index = polyhedron.Vertices.FindIndex(point => point == edge.To);
                 res.AddEdge(newPoints[p1Index], newPoints[p2Index]);
             }
             return res;

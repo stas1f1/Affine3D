@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Affine3D
 {
@@ -204,7 +208,7 @@ namespace Affine3D
 
         private void clearButton_Click(object sender, EventArgs e)
         {
-            graphics.Clear(Color.White);
+            
         }
 
         private void transformationRadioButton_Click(object sender, EventArgs e)
@@ -248,6 +252,12 @@ namespace Affine3D
                         double.Parse(dialogZ.ResultText.Replace('.', ','))
                     );
             }
+
+            // 
+            // scaleAroundCenter etc.
+            //
+
+            drawFigure();
         }
     }
 }
