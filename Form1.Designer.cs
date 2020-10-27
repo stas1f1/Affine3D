@@ -80,6 +80,7 @@
             this.createDodehedron.TabIndex = 4;
             this.createDodehedron.Text = "Додекаэдр";
             this.createDodehedron.UseVisualStyleBackColor = true;
+            this.createDodehedron.Click += new System.EventHandler(this.createDodehedron_Click);
             // 
             // createIcohedron
             // 
@@ -90,6 +91,7 @@
             this.createIcohedron.TabIndex = 3;
             this.createIcohedron.Text = "Икосаэдр";
             this.createIcohedron.UseVisualStyleBackColor = true;
+            this.createIcohedron.Click += new System.EventHandler(this.createIcohedron_Click);
             // 
             // createTetrahedron
             // 
@@ -100,6 +102,7 @@
             this.createTetrahedron.TabIndex = 0;
             this.createTetrahedron.Text = "Тетраэдр";
             this.createTetrahedron.UseVisualStyleBackColor = true;
+            this.createTetrahedron.Click += new System.EventHandler(this.createTetrahedron_Click);
             // 
             // createOctahedron
             // 
@@ -110,6 +113,7 @@
             this.createOctahedron.TabIndex = 2;
             this.createOctahedron.Text = "Октаэдр";
             this.createOctahedron.UseVisualStyleBackColor = true;
+            this.createOctahedron.Click += new System.EventHandler(this.createOctahedron_Click);
             // 
             // createHexahedron
             // 
@@ -120,6 +124,7 @@
             this.createHexahedron.TabIndex = 1;
             this.createHexahedron.Text = "Гексаэдр";
             this.createHexahedron.UseVisualStyleBackColor = true;
+            this.createHexahedron.Click += new System.EventHandler(this.createHexahedron_Click);
             // 
             // pictureBox1
             // 
