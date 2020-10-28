@@ -100,8 +100,9 @@ namespace Affine3D
         /// <summary>
         /// Вращение вокруг прямой, заданной двумя точками на заданный угол
         /// </summary>
-        void RotateAroundLine(Point3D first, int angle)
+        void RotateAroundLine(Line3D line, int angle)
         {
+            //TODO: Поворот вокруг заданной прямой
             double l = 1.0, m = 1.0, n = 1.0;
             double cos = Math.Cos(angle * 0.017), sin = Math.Sin(angle * 0.017), mcos = m * (1 - cos);
 

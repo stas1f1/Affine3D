@@ -270,6 +270,7 @@
             this.ortographRadioButton.TabIndex = 10;
             this.ortographRadioButton.Text = "Ортографическая";
             this.ortographRadioButton.UseVisualStyleBackColor = true;
+            this.ortographRadioButton.Click += new System.EventHandler(this.proectionRadioButton_Click);
             // 
             // perspectiveRadioButton
             // 
@@ -283,6 +284,7 @@
             this.perspectiveRadioButton.TabStop = true;
             this.perspectiveRadioButton.Text = "Перспективная";
             this.perspectiveRadioButton.UseVisualStyleBackColor = true;
+            this.perspectiveRadioButton.Click += new System.EventHandler(this.proectionRadioButton_Click);
             // 
             // izometrRadioButton
             // 
@@ -294,6 +296,7 @@
             this.izometrRadioButton.TabIndex = 9;
             this.izometrRadioButton.Text = "Изометрическая";
             this.izometrRadioButton.UseVisualStyleBackColor = true;
+            this.izometrRadioButton.Click += new System.EventHandler(this.proectionRadioButton_Click);
             // 
             // clearButton
             // 

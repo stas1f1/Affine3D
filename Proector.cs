@@ -30,6 +30,29 @@ namespace Affine3D
                                                            new double[4] { 0, 0, 0, -0.00157 },
                                                            new double[4] { 0, 0, 0, 1 });
 
+        public void Setup()
+        {
+            float k = 1000;
+            //if (Math.Abs(Z - k) < 1e-10)
+              //  k += 1;
+
+            perspective_projection = new Matrix(new double[4] { 1, 0, 0, 0 },
+                                                     new double[4] { 0, 1, 0, 0 },
+                                                     new double[4] { 0, 0, 0, -1 / k },
+                                                     new double[4] { 0, 0, 0, 1 });
+
+            double r_phi = Math.Asin(Math.Tan(Math.PI * 30 / 180));
+            double r_psi = Math.PI * 45 / 180;
+            float cos_phi = (float)Math.Cos(r_phi);
+            float sin_phi = (float)Math.Sin(r_phi);
+            float cos_psi = (float)Math.Cos(r_psi);
+            float sin_psi = (float)Math.Sin(r_psi);
+
+            isometric_projection = new Matrix(new double[4] {  cos_psi,  sin_phi * sin_psi,   0,  0 },
+                                                     new double[4] {0,          cos_phi,        0,  0, },
+                                                     new double[4] {sin_psi,  -sin_phi * cos_psi,  0,  0 },
+                                                     new double[4] { 0,              0,          0,  1 });
+        }
         public List<Line> Display(Polyhedron polyhedron, int proc)
         {
             Matrix dM = new Matrix(4, 4);
@@ -70,7 +93,7 @@ namespace Affine3D
                 {
                     var t1 = Matrix.getMatrixFromPoint(t) * dM;
                     if (dM == isometric_projection || dM == perspective_projection || dM == orthographic_projection_Z)
-                        vertices2D.Add(new PointD(t1[0, 0] / t1[0,3], t1[0, 1]/t1[0,3]));
+                        vertices2D.Add(new PointD(t1[0, 0] / t1[0, 3], t1[0, 1] / t1[0, 3]));
                     else if (dM == orthographic_projection_X)
                         vertices2D.Add(new PointD(t1[0, 1] / t1[0, 3], t1[0, 2] / t1[0, 3]));
                     else
@@ -80,6 +103,54 @@ namespace Affine3D
             }
 
             return edges;
+        }
+
+        public Line Axis(Point3D p, int proc)
+        {
+            Matrix dM = new Matrix(4, 4);
+
+            switch (proc)
+            {
+                case 0:
+                    dM = isometric_projection;
+                    break;
+                case 1:
+                    dM = orthographic_projection_X;
+                    break;
+                case 2:
+                    dM = orthographic_projection_Y;
+                    break;
+                case 3:
+                    dM = orthographic_projection_Z;
+                    break;
+                case 4:
+                    dM = perspective_projection;
+                    break;
+                default:
+                    break;
+            }
+
+            PointD center;
+            Line axis;
+
+            var temp = Matrix.getMatrixFromPoint(p) * dM;
+            var temp2d = new PointD(temp[0, 0] / temp[0, 3], temp[0, 1] / temp[0, 3]);
+            if (dM == orthographic_projection_X)
+                temp2d = new PointD(temp[0, 1] / temp[0, 3], temp[0, 2] / temp[0, 3]);
+            else if (dM == orthographic_projection_Y)
+                temp2d = new PointD(temp[0, 0] / temp[0, 3], temp[0, 2] / temp[0, 3]);
+
+            var t1 = Matrix.getMatrixFromPoint(new Point3D(0,0,0)) * dM;
+            if (dM == isometric_projection || dM == perspective_projection || dM == orthographic_projection_Z)
+                center = new PointD(t1[0, 0] / t1[0, 3], t1[0, 1] / t1[0, 3]);
+            else if (dM == orthographic_projection_X)
+                center = new PointD(t1[0, 1] / t1[0, 3], t1[0, 2] / t1[0, 3]);
+            else
+                center = new PointD(t1[0, 0] / t1[0, 3], t1[0, 2] / t1[0, 3]);
+
+            axis = new Line(center, temp2d);
+
+            return axis;
         }
     }
 }
