@@ -32,7 +32,7 @@ namespace Affine3D
                 graphics.DrawLine(new Pen(Color.Black), (line.From + offset).ToPoint() , (line.To + offset).ToPoint());
 
             // drawing axis
-            Line axis;
+            /*Line axis;
             //OX
             axis = proector.Axis(new Point3D(500, 0, 0), currentProectionMode);
             graphics.DrawLine(new Pen(Color.Red), (axis.From + offset).ToPoint(), (axis.To + offset).ToPoint());
@@ -44,7 +44,7 @@ namespace Affine3D
             axis = proector.Axis(new Point3D(0, 0, 500), currentProectionMode);
             graphics.DrawLine(new Pen(Color.Blue), (axis.From + offset).ToPoint(), (axis.To + offset).ToPoint());
             
-
+    */
             pictureBox1.Invalidate();
         }
 
