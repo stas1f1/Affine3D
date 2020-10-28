@@ -372,7 +372,7 @@ namespace Affine3D
             }
             else if (ortographRadioButton.Checked)
             {
-                var dialog = new InputBoxWithRadioButt();
+                var dialog = new InputBoxWithRadioBut();
                 if (dialog.ShowDialog() == DialogResult.OK)
                     currentProectionMode = dialog.ResultText;
             }
