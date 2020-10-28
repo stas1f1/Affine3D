@@ -23,16 +23,15 @@ namespace Affine3D
 
         private void drawFigure()
         {
-            int offsetX = pictureBox1.Width / 4;
-            int offsetY = pictureBox1.Height / 4;
-            PointD offset = new PointD(offsetX, offsetY);
-            graphics.Clear(Color.White);
-            List<Line> lines = proector.Display(currentPolyhedron, currentProectionMode);
-            foreach (var line in lines)
-                graphics.DrawLine(new Pen(Color.Black), (line.From + offset).ToPoint() , (line.To + offset).ToPoint());
 
+
+            int offsetX = pictureBox1.Width / 2;
+            int offsetY = pictureBox1.Height / 2;
+            PointD offset = new PointD(offsetX, offsetY);
+
+            graphics.Clear(Color.White);
             // drawing axis
-            /*Line axis;
+            Line axis;
             //OX
             axis = proector.Axis(new Point3D(500, 0, 0), currentProectionMode);
             graphics.DrawLine(new Pen(Color.Red), (axis.From + offset).ToPoint(), (axis.To + offset).ToPoint());
@@ -43,8 +42,13 @@ namespace Affine3D
             //OZ
             axis = proector.Axis(new Point3D(0, 0, 500), currentProectionMode);
             graphics.DrawLine(new Pen(Color.Blue), (axis.From + offset).ToPoint(), (axis.To + offset).ToPoint());
+
+            List<Line> lines = proector.Display(currentPolyhedron, currentProectionMode);
+            foreach (var line in lines)
+                graphics.DrawLine(new Pen(Color.Black), (line.From + offset).ToPoint() , (line.To + offset).ToPoint());
+
             
-    */
+    
             pictureBox1.Invalidate();
         }
 
@@ -243,16 +247,17 @@ namespace Affine3D
             {
                 if (moveRadioButton.Checked)
                 {
-                    var dialogX = new InputBox("Введите смещение по X");
-                    var dialogY = new InputBox("Введите смещение по Y");
-                    var dialogZ = new InputBox("Введите смещение по Z");
-                    if (dialogX.ShowDialog() == DialogResult.OK && dialogY.ShowDialog() == DialogResult.OK && dialogZ.ShowDialog() == DialogResult.OK)
+
+                    var dialogFirst = new CoordinateBox("Введите смещение по координатам:");
+                    if (dialogFirst.ShowDialog() == DialogResult.OK)
+                    {
                         currentPolyhedron = AffineTransform.getMoved(
-                            currentPolyhedron,
-                            int.Parse(dialogX.ResultText),
-                            int.Parse(dialogY.ResultText),
-                            int.Parse(dialogZ.ResultText)
-                        );
+                        currentPolyhedron,
+                        dialogFirst.X,
+                        dialogFirst.Y,
+                        dialogFirst.Z
+                    );
+                    }
                 }
                 else if (turnRadioButton.Checked)
                 {
