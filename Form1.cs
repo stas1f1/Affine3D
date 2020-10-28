@@ -70,7 +70,8 @@ namespace Affine3D
             tetrahedron.AddEdges(points[1], new List<Point3D> { points[2], points[3] });
             tetrahedron.AddEdge(points[2], points[3]);
 
-            currentPolyhedron = tetrahedron;
+
+            currentPolyhedron = AffineTransform.getMoved(tetrahedron, 0, 0, (int)-bz / 2);
             foreach (var control in groupBox2.Controls)
                 (control as RadioButton).Checked = false;
             drawFigure();
@@ -97,7 +98,7 @@ namespace Affine3D
             hexahedrone.AddEdges(points[7], new List<Point3D> { points[3], points[5], points[6] });
             hexahedrone.AddEdges(points[2], new List<Point3D> { points[3], points[6] });
             hexahedrone.AddEdges(points[1], new List<Point3D> { points[3], points[5] });
-            currentPolyhedron = hexahedrone;
+            currentPolyhedron = AffineTransform.getMoved(hexahedrone, 0, 0, -edgeLength/2);
             foreach (var control in groupBox2.Controls)
                 (control as RadioButton).Checked = false;
             drawFigure();
@@ -124,6 +125,8 @@ namespace Affine3D
             octahedrone.AddEdges(points[1], new List<Point3D> { points[2], points[4] });
             octahedrone.AddEdges(points[3], new List<Point3D> { points[2], points[4] });
             currentPolyhedron = octahedrone;
+
+            currentPolyhedron = AffineTransform.getMoved(octahedrone, 0, 0, (int)(r * Math.Sqrt(2)/2));
             foreach (var control in groupBox2.Controls)
                 (control as RadioButton).Checked = false;
             drawFigure();
