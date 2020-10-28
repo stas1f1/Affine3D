@@ -36,9 +36,10 @@
             // 
             // OK_button
             // 
-            this.OK_button.Location = new System.Drawing.Point(86, 104);
+            this.OK_button.Location = new System.Drawing.Point(64, 84);
+            this.OK_button.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.OK_button.Name = "OK_button";
-            this.OK_button.Size = new System.Drawing.Size(75, 23);
+            this.OK_button.Size = new System.Drawing.Size(56, 19);
             this.OK_button.TabIndex = 3;
             this.OK_button.Text = "OK";
             this.OK_button.UseVisualStyleBackColor = true;
@@ -47,9 +48,10 @@
             // radioButtonX
             // 
             this.radioButtonX.AutoSize = true;
-            this.radioButtonX.Location = new System.Drawing.Point(12, 12);
+            this.radioButtonX.Location = new System.Drawing.Point(9, 10);
+            this.radioButtonX.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.radioButtonX.Name = "radioButtonX";
-            this.radioButtonX.Size = new System.Drawing.Size(265, 21);
+            this.radioButtonX.Size = new System.Drawing.Size(206, 17);
             this.radioButtonX.TabIndex = 4;
             this.radioButtonX.TabStop = true;
             this.radioButtonX.Text = "изометрическая проекция по оси X";
@@ -58,9 +60,10 @@
             // radioButtonZ
             // 
             this.radioButtonZ.AutoSize = true;
-            this.radioButtonZ.Location = new System.Drawing.Point(12, 66);
+            this.radioButtonZ.Location = new System.Drawing.Point(9, 54);
+            this.radioButtonZ.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.radioButtonZ.Name = "radioButtonZ";
-            this.radioButtonZ.Size = new System.Drawing.Size(265, 21);
+            this.radioButtonZ.Size = new System.Drawing.Size(206, 17);
             this.radioButtonZ.TabIndex = 5;
             this.radioButtonZ.TabStop = true;
             this.radioButtonZ.Text = "изометрическая проекция по оси Z";
@@ -69,9 +72,10 @@
             // radioButtonY
             // 
             this.radioButtonY.AutoSize = true;
-            this.radioButtonY.Location = new System.Drawing.Point(12, 39);
+            this.radioButtonY.Location = new System.Drawing.Point(9, 32);
+            this.radioButtonY.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.radioButtonY.Name = "radioButtonY";
-            this.radioButtonY.Size = new System.Drawing.Size(265, 21);
+            this.radioButtonY.Size = new System.Drawing.Size(206, 17);
             this.radioButtonY.TabIndex = 6;
             this.radioButtonY.TabStop = true;
             this.radioButtonY.Text = "изометрическая проекция по оси Y";
@@ -79,14 +83,16 @@
             // 
             // InputBoxWithRadioBut
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(283, 139);
+            this.ClientSize = new System.Drawing.Size(212, 113);
             this.Controls.Add(this.radioButtonY);
             this.Controls.Add(this.radioButtonZ);
             this.Controls.Add(this.radioButtonX);
             this.Controls.Add(this.OK_button);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "InputBoxWithRadioBut";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "InputBoxWithRadioBut";
             this.ResumeLayout(false);
             this.PerformLayout();
