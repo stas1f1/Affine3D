@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace lab06
+namespace Affine3D
 {
     public partial class InputBoxWithRadioBut : Form
     {

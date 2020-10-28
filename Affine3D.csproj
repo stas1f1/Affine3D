@@ -61,17 +61,17 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="InputBox\InputBoxWithRadioBut.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputBox\InputBoxWithRadioBut.Designer.cs">
+      <DependentUpon>InputBoxWithRadioBut.cs</DependentUpon>
+    </Compile>
     <Compile Include="InputBox\InputBox.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="InputBox\InputBox.Designer.cs">
       <DependentUpon>InputBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InputBox\InputBoxWithRadioButt.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="InputBox\InputBoxWithRadioButt.Designer.cs">
-      <DependentUpon>InputBoxWithRadioButt.cs</DependentUpon>
     </Compile>
     <Compile Include="Matrix.cs" />
     <Compile Include="Objects.cs" />
@@ -85,11 +85,11 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="InputBox\InputBoxWithRadioBut.resx">
+      <DependentUpon>InputBoxWithRadioBut.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InputBox\InputBox.resx">
       <DependentUpon>InputBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InputBox\InputBoxWithRadioButt.resx">
-      <DependentUpon>InputBoxWithRadioButt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

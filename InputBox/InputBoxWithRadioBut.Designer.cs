@@ -1,4 +1,4 @@
-﻿namespace lab06
+﻿namespace Affine3D
 {
     partial class InputBoxWithRadioBut
     {

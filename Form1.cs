@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Affine3D
 {
@@ -361,8 +357,6 @@ namespace Affine3D
 
             drawFigure();
         }
-
-
         /// <summary>
         /// Смена проекции
         /// </summary>
@@ -394,6 +388,5 @@ namespace Affine3D
 
             return new Line(from, to);
         }
-
     }
 }
