@@ -18,14 +18,33 @@ namespace Affine3D
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             graphics = Graphics.FromImage(pictureBox1.Image);
             graphics.Clear(Color.White);
+            proector.Setup();
         }
 
         private void drawFigure()
         {
+            int offsetX = pictureBox1.Width / 4;
+            int offsetY = pictureBox1.Height / 4;
+            PointD offset = new PointD(offsetX, offsetY);
             graphics.Clear(Color.White);
             List<Line> lines = proector.Display(currentPolyhedron, currentProectionMode);
             foreach (var line in lines)
-                graphics.DrawLine(new Pen(Color.Black), line.From.ToPoint(), line.To.ToPoint());
+                graphics.DrawLine(new Pen(Color.Black), (line.From + offset).ToPoint() , (line.To + offset).ToPoint());
+
+            /* drawing axis
+            Line axis;
+            //OX
+            axis = proector.Axis(new Point3D(500, 0, 0), currentProectionMode);
+            graphics.DrawLine(new Pen(Color.Red), (axis.From + offset).ToPoint(), (axis.To + offset).ToPoint());
+            //OY
+            axis = proector.Axis(new Point3D(0, 500, 0), currentProectionMode);
+            graphics.DrawLine(new Pen(Color.Green), (axis.From + offset).ToPoint(), (axis.To + offset).ToPoint());
+
+            //OZ
+            axis = proector.Axis(new Point3D(0, 0, 500), currentProectionMode);
+            graphics.DrawLine(new Pen(Color.Blue), (axis.From + offset).ToPoint(), (axis.To + offset).ToPoint());
+            */
+
             pictureBox1.Invalidate();
         }
 
@@ -249,14 +268,98 @@ namespace Affine3D
                         double.Parse(dialogZ.ResultText.Replace('.', ','))
                     );
             }
+            else if (scaleAroundCenterRadioButton.Checked)
+            {
+                var dialogScale = new InputBox("Введите целое значение для масштабирования в процентах");
+                if (dialogScale.ShowDialog() == DialogResult.OK)
+                {
+                    int scale;
+                    if (int.TryParse(dialogScale.ResultText, out scale))
+                        ScaleFromCenter(scale);
+                    else
+                        MessageBox.Show("Было введено неверное значение. Пожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            else if (reflectionRadioButton.Checked)
+            {
+                var dialog = new InputBox("Введите плоскость, относительно которой будет происходить отражение. Например, xy или yz");
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var surface = dialog.ResultText.ToLower();
+                    if (surface.Length == 2 && (surface.Contains("x") || surface.Contains("y") || surface.Contains("z")))
+                        if (surface == "xy" || surface == "yx")
+                            surface = "xy";
+                        else if (surface == "xz" || surface == "zx")
+                            surface = "xz";
+                        else if (surface == "yz" || surface == "zy")
+                            surface = "yz";
+                        else
+                            MessageBox.Show("Было введено неверное значение. Пожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            // 
-            // scaleAroundCenter etc.
-            //
+                    ReflectionFromSurface(surface);
+                }
+            }
+            else if (rotateAroundLineRadioButton.Checked)
+            {
+                var dialog = new InputBox("Введите название координатной оси, параллельно которой будет проходит ось вращения. Например, Oy.");
+                string surface;
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    surface = dialog.ResultText.ToLower();
+                    if (surface.Length == 2 && (surface.Contains("x") || surface.Contains("y") || surface.Contains("z")))
+                    {
+                        if (surface == "ox" || surface == "xo")
+                            surface = "x";
+                        else if (surface == "oy" || surface == "yo")
+                            surface = "y";
+                        else if (surface == "oz" || surface == "zo")
+                            surface = "z";
+                        else
+                            MessageBox.Show("Было введено неверное значение. Пожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+
+                    dialog = new InputBox("Введите целое значение угла поворота в градусах");
+                    if (dialog.ShowDialog() == DialogResult.OK)
+                    {
+                        int angle;
+                        if (int.TryParse(dialog.ResultText, out angle))
+                            RotateWithLine(surface, angle);
+                        else
+                            MessageBox.Show("Было введено неверное значение. Пожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            else if (turnAroundLineRadioButton.Checked)
+            {
+                var dialogFirst = new CoordinateBox("Введите координаты первой точки прямой:");
+                if (dialogFirst.ShowDialog() == DialogResult.OK)
+                {
+                    var first = new Point3D(dialogFirst.X, dialogFirst.Y, dialogFirst.Z);
+                    var dialogSecond = new CoordinateBox("Введите координаты второй точки прямой:");
+                    if (dialogSecond.ShowDialog() == DialogResult.OK)
+                    {
+                        var second = new Point3D(dialogSecond.X, dialogSecond.Y, dialogSecond.Z);
+                        var dialogAngle = new InputBox("Введите целое значение угла поворота в градусах:");
+                        if (dialogAngle.ShowDialog() == DialogResult.OK)
+                        {
+                            int angle;
+                            if (int.TryParse(dialogAngle.ResultText, out angle))
+                                RotateAroundLine(new Line3D(first, second), angle);
+                            else
+                                MessageBox.Show("Было введено неверное значение. Пожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
+            }
+
+
+
 
             drawFigure();
         }
-        
+        /// <summary>
+        /// Смена проекции
+        /// </summary>
         private void proectionRadioButton_Click(object sender, EventArgs e)
         {
             if (izometrRadioButton.Checked)
@@ -269,12 +372,21 @@ namespace Affine3D
             }
             else if (ortographRadioButton.Checked)
             {
-                var dialog = new InputBoxWithRadioBut();
+                var dialog = new InputBoxWithRadioButt();
                 if (dialog.ShowDialog() == DialogResult.OK)
                     currentProectionMode = dialog.ResultText;
             }
             drawFigure();
         }
-        
+
+        public Line makeRay(PointD from, PointD to)
+        {
+            PointD vec = to - from;
+            if (to == from) return new Line(from, to);
+            while (to.X > 0 && to.X < pictureBox1.Width && to.Y > 0 && to.Y < pictureBox1.Height)
+                to += vec;
+
+            return new Line(from, to);
+        }
     }
 }

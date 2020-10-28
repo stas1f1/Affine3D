@@ -28,6 +28,16 @@ namespace Affine3D
         {
             return p1.X != p2.X || p1.Y != p2.Y;
         }
+
+        static public PointD operator +(PointD p1, PointD p2)
+        {
+            return new PointD(p1.X + p2.X, p1.Y + p2.Y);
+        }
+
+        static public PointD operator -(PointD p1, PointD p2)
+        {
+            return new PointD(p1.X - p2.X, p1.Y - p2.Y);
+        }
     }
 
     /// <summary>
@@ -81,18 +91,18 @@ namespace Affine3D
     }
 
     // класс трехмерного ребра (линии)
-    public class Line3
+    public class Line3D
     {
         public Point3D From { get; set; }
         public Point3D To { get; set; }
 
-        public Line3() { From = new Point3D(); To = new Point3D(); }
-        public Line3(Point3D p1, Point3D p2) { From = p1; To = p2; }
-        public Line3(double x1, double y1, double z1, double x2, double y2, double z2)
+        public Line3D() { From = new Point3D(); To = new Point3D(); }
+        public Line3D(Point3D p1, Point3D p2) { From = p1; To = p2; }
+        public Line3D(double x1, double y1, double z1, double x2, double y2, double z2)
         {
             From = new Point3D(x1, y1, z1); To = new Point3D(x2, y2, z2);
         }
-        public Line3(int x1, int y1, int z1, int x2, int y2, int z2)
+        public Line3D(int x1, int y1, int z1, int x2, int y2, int z2)
         {
             From = new Point3D(x1, y1, z1); To = new Point3D(x2, y2, z2);
         }
@@ -119,7 +129,7 @@ namespace Affine3D
         // список вершин
         public List<Point3D> Vertices { get; set; } = new List<Point3D>();
         // список ребер
-        public List<Line3> Edges { get; } = new List<Line3>();
+        public List<Line3D> Edges { get; } = new List<Line3D>();
         // матрица смежности
         public Dictionary<Point3D, List<Point3D>> AdjacencyMatrix { get; } = new Dictionary<Point3D, List<Point3D>>();
 
@@ -153,7 +163,7 @@ namespace Affine3D
 
         public void AddEdge(Point3D p1, Point3D p2)
         {
-            Edges.Add(new Line3(p1, p2));
+            Edges.Add(new Line3D(p1, p2));
             Point3D point1 = Vertices.Find(p => p == p1);
             Point3D point2 = Vertices.Find(p => p == p2);
             if (!AdjacencyMatrix.ContainsKey(point1)) AdjacencyMatrix.Add(point1, new List<Point3D> { p2 });
