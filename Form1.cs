@@ -52,7 +52,7 @@ namespace Affine3D
         private void createTetrahedron_Click(object sender, EventArgs e)
         {
             double x = 200, y = 150, z = 0;
-            int r = 100;
+            int r = 150;
             double bz = z - r * Math.Sqrt(6) / 3.0;
             List<Point3D> points = new List<Point3D>
                     {
@@ -67,6 +67,59 @@ namespace Affine3D
             tetrahedron.AddEdge(points[2], points[3]);
 
             currentPolyhedron = tetrahedron;
+            foreach (var control in groupBox2.Controls)
+                (control as RadioButton).Checked = false;
+            drawFigure();
+        }
+
+        private void createHexahedron_Click(object sender, EventArgs e)
+        {
+            Point3D bottomLeftFrontPoint = new Point3D(100, 150, 0);
+            int edgeLength = 100;
+            List<Point3D> points = new List<Point3D>
+                    {
+                        bottomLeftFrontPoint,
+                        bottomLeftFrontPoint + new Point3D(0, edgeLength, 0),
+                        bottomLeftFrontPoint + new Point3D(edgeLength, 0, 0),
+                        bottomLeftFrontPoint + new Point3D(edgeLength, edgeLength, 0),
+                        bottomLeftFrontPoint + new Point3D(0, 0, edgeLength),
+                        bottomLeftFrontPoint + new Point3D(0, edgeLength, edgeLength),
+                        bottomLeftFrontPoint + new Point3D(edgeLength, 0, edgeLength),
+                        bottomLeftFrontPoint + new Point3D(edgeLength, edgeLength, edgeLength),
+                    };
+            Polyhedron hexahedrone = new Polyhedron(points);
+            hexahedrone.AddEdges(points[0], new List<Point3D> { points[1], points[2], points[4] });
+            hexahedrone.AddEdges(points[4], new List<Point3D> { points[5], points[6] });
+            hexahedrone.AddEdges(points[7], new List<Point3D> { points[3], points[5], points[6] });
+            hexahedrone.AddEdges(points[2], new List<Point3D> { points[3], points[6] });
+            hexahedrone.AddEdges(points[1], new List<Point3D> { points[3], points[5] });
+            currentPolyhedron = hexahedrone;
+            foreach (var control in groupBox2.Controls)
+                (control as RadioButton).Checked = false;
+            drawFigure();
+        }
+
+        private void createOctahedron_Click(object sender, EventArgs e)
+        {
+            double x = 200, y = 150, z = 0;
+            int r = 150;
+
+            List<Point3D> points = new List<Point3D>
+                    {
+                        new Point3D(x, y, z),
+                        new Point3D(x, y - r / Math.Sqrt(2), z - r / Math.Sqrt(2)),
+                        new Point3D(x - r / Math.Sqrt(2), y, z - r / Math.Sqrt(2)),
+                        new Point3D(x, y + r / Math.Sqrt(2), z - r / Math.Sqrt(2)),
+                        new Point3D(x + r / Math.Sqrt(2), y, z - r / Math.Sqrt(2)),
+                        new Point3D(x, y, z - r * Math.Sqrt(2))
+                    };
+
+            Polyhedron octahedrone = new Polyhedron(points);
+            octahedrone.AddEdges(points[0], new List<Point3D> { points[1], points[2], points[3], points[4] });
+            octahedrone.AddEdges(points[5], new List<Point3D> { points[1], points[2], points[3], points[4] });
+            octahedrone.AddEdges(points[1], new List<Point3D> { points[2], points[4] });
+            octahedrone.AddEdges(points[3], new List<Point3D> { points[2], points[4] });
+            currentPolyhedron = octahedrone;
             foreach (var control in groupBox2.Controls)
                 (control as RadioButton).Checked = false;
             drawFigure();
@@ -108,33 +161,6 @@ namespace Affine3D
 
             currentPolyhedron = AffineTransform.getMoved(icohedron, 200, 200, 0);
 
-            foreach (var control in groupBox2.Controls)
-                (control as RadioButton).Checked = false;
-            drawFigure();
-        }
-
-        private void createHexahedron_Click(object sender, EventArgs e)
-        {
-            Point3D bottomLeftFrontPoint = new Point3D(100, 150, 0);
-            int edgeLength = 100;
-            List<Point3D> points = new List<Point3D>
-                    {
-                        bottomLeftFrontPoint,
-                        bottomLeftFrontPoint + new Point3D(0, edgeLength, 0),
-                        bottomLeftFrontPoint + new Point3D(edgeLength, 0, 0),
-                        bottomLeftFrontPoint + new Point3D(edgeLength, edgeLength, 0),
-                        bottomLeftFrontPoint + new Point3D(0, 0, edgeLength),
-                        bottomLeftFrontPoint + new Point3D(0, edgeLength, edgeLength),
-                        bottomLeftFrontPoint + new Point3D(edgeLength, 0, edgeLength),
-                        bottomLeftFrontPoint + new Point3D(edgeLength, edgeLength, edgeLength),
-                    };
-            Polyhedron hexahedrone = new Polyhedron(points);
-            hexahedrone.AddEdges(points[0], new List<Point3D> { points[1], points[2], points[4] });
-            hexahedrone.AddEdges(points[4], new List<Point3D> { points[5], points[6] });
-            hexahedrone.AddEdges(points[7], new List<Point3D> { points[3], points[5], points[6] });
-            hexahedrone.AddEdges(points[2], new List<Point3D> { points[3], points[6] });
-            hexahedrone.AddEdges(points[1], new List<Point3D> { points[3], points[5] });
-            currentPolyhedron = hexahedrone;
             foreach (var control in groupBox2.Controls)
                 (control as RadioButton).Checked = false;
             drawFigure();
@@ -196,31 +222,7 @@ namespace Affine3D
             drawFigure();
         }
 
-        private void createOctahedron_Click(object sender, EventArgs e)
-        {
-            double x = 200, y = 150, z = 0;
-            int r = 100;
-
-            List<Point3D> points = new List<Point3D>
-                    {
-                        new Point3D(x, y, z),
-                        new Point3D(x, y - r / Math.Sqrt(2), z - r / Math.Sqrt(2)),
-                        new Point3D(x - r / Math.Sqrt(2), y, z - r / Math.Sqrt(2)),
-                        new Point3D(x, y + r / Math.Sqrt(2), z - r / Math.Sqrt(2)),
-                        new Point3D(x + r / Math.Sqrt(2), y, z - r / Math.Sqrt(2)),
-                        new Point3D(x, y, z - r * Math.Sqrt(2))
-                    };
-
-            Polyhedron octahedrone = new Polyhedron(points);
-            octahedrone.AddEdges(points[0], new List<Point3D> { points[1], points[2], points[3], points[4] });
-            octahedrone.AddEdges(points[5], new List<Point3D> { points[1], points[2], points[3], points[4] });
-            octahedrone.AddEdges(points[1], new List<Point3D> { points[2], points[4] });
-            octahedrone.AddEdges(points[3], new List<Point3D> { points[2], points[4] });
-            currentPolyhedron = octahedrone;
-            foreach (var control in groupBox2.Controls)
-                (control as RadioButton).Checked = false;
-            drawFigure();
-        }
+        
 
         private void clearButton_Click(object sender, EventArgs e)
         {
