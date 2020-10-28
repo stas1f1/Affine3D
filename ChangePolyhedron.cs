@@ -17,19 +17,12 @@ namespace Affine3D
         {
             Point3D center = currentPolyhedron.Center;
             double newScale = scaleInProcents / 100.0;
+            Polyhedron res;
+            res = AffineTransform.getMoved(currentPolyhedron, -(int)center.X, -(int)center.Y, -(int)center.Z);
+            res = AffineTransform.getScaled(res, newScale, newScale, newScale);
+            res = AffineTransform.getMoved(res, (int)center.X, (int)center.Y, (int)center.Z);
 
-            for (int i = 0; i < currentPolyhedron.Vertices.Count; i++)
-            {
-                Point3D old = currentPolyhedron.Vertices[i];
-                Point3D scaled = new Point3D();
-                scaled.X = center.X + (old.X - center.X) * newScale;
-                scaled.Y = center.Y + (old.Y - center.Y) * newScale;
-                scaled.Z = center.Z + (old.Z - center.Z) * newScale;
-
-                currentPolyhedron.Vertices[i].X = scaled.X;
-                currentPolyhedron.Vertices[i].Y = scaled.Y;
-                currentPolyhedron.Vertices[i].Z = scaled.Z;
-            }
+            currentPolyhedron = res;
         }
 
         /// <summary>

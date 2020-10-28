@@ -31,7 +31,7 @@ namespace Affine3D
             foreach (var line in lines)
                 graphics.DrawLine(new Pen(Color.Black), (line.From + offset).ToPoint() , (line.To + offset).ToPoint());
 
-            /* drawing axis
+            // drawing axis
             Line axis;
             //OX
             axis = proector.Axis(new Point3D(500, 0, 0), currentProectionMode);
@@ -43,7 +43,7 @@ namespace Affine3D
             //OZ
             axis = proector.Axis(new Point3D(0, 0, 500), currentProectionMode);
             graphics.DrawLine(new Pen(Color.Blue), (axis.From + offset).ToPoint(), (axis.To + offset).ToPoint());
-            */
+            
 
             pictureBox1.Invalidate();
         }
@@ -256,9 +256,9 @@ namespace Affine3D
                 }
                 else if (turnRadioButton.Checked)
                 {
-                    var dialogX = new InputBox("Введите поворот по оси X (градусы)");
-                    var dialogY = new InputBox("Введите поворот по оси Y (градусы)");
-                    var dialogZ = new InputBox("Введите поворот по оси Z (градусы)");
+                    var dialogX = new InputBox("Введите поворот по оси X \n(градусы)");
+                    var dialogY = new InputBox("Введите поворот по оси Y \n(градусы)");
+                    var dialogZ = new InputBox("Введите поворот по оси Z \n(градусы)");
                     if (dialogX.ShowDialog() == DialogResult.OK && dialogY.ShowDialog() == DialogResult.OK && dialogZ.ShowDialog() == DialogResult.OK)
                         currentPolyhedron = AffineTransform.getRotated(
                             currentPolyhedron,
@@ -282,19 +282,19 @@ namespace Affine3D
                 }
                 else if (scaleAroundCenterRadioButton.Checked)
                 {
-                    var dialogScale = new InputBox("Введите целое значение для масштабирования в процентах");
+                    var dialogScale = new InputBox("Введите целое значение для  \nмасштабирования в процентах");
                     if (dialogScale.ShowDialog() == DialogResult.OK)
                     {
                         int scale;
                         if (int.TryParse(dialogScale.ResultText, out scale))
                             ScaleFromCenter(scale);
                         else
-                            MessageBox.Show("Было введено неверное значение. Пожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Было введено неверное значение. \nПожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 else if (reflectionRadioButton.Checked)
                 {
-                    var dialog = new InputBox("Введите плоскость, относительно которой будет происходить отражение. Например, xy или yz");
+                    var dialog = new InputBox("Введите плоскость, относительно \nкоторой будет происходить \nотражение. Например, xy или yz");
                     if (dialog.ShowDialog() == DialogResult.OK)
                     {
                         var surface = dialog.ResultText.ToLower();
@@ -306,14 +306,14 @@ namespace Affine3D
                             else if (surface == "yz" || surface == "zy")
                                 surface = "yz";
                             else
-                                MessageBox.Show("Было введено неверное значение. Пожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MessageBox.Show("Было введено неверное значение. \nПожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         ReflectionFromSurface(surface);
                     }
                 }
                 else if (rotateAroundLineRadioButton.Checked)
                 {
-                    var dialog = new InputBox("Введите название координатной оси, параллельно которой будет проходит ось вращения. Например, Oy.");
+                    var dialog = new InputBox("Введите название координатной \nоси, параллельно которой \nбудет проходит ось вращения. \nНапример, Oy.");
                     string surface;
                     if (dialog.ShowDialog() == DialogResult.OK)
                     {
@@ -327,17 +327,17 @@ namespace Affine3D
                             else if (surface == "oz" || surface == "zo")
                                 surface = "z";
                             else
-                                MessageBox.Show("Было введено неверное значение. Пожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MessageBox.Show("Было введено неверное значение. \nПожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
 
-                        dialog = new InputBox("Введите целое значение угла поворота в градусах");
+                        dialog = new InputBox("Введите целое значение угла \nповорота в градусах");
                         if (dialog.ShowDialog() == DialogResult.OK)
                         {
                             int angle;
                             if (int.TryParse(dialog.ResultText, out angle))
                                 RotateWithLine(surface, angle);
                             else
-                                MessageBox.Show("Было введено неверное значение. Пожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MessageBox.Show("Было введено неверное значение. \nПожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                 }
@@ -358,7 +358,7 @@ namespace Affine3D
                                 if (int.TryParse(dialogAngle.ResultText, out angle))
                                     RotateAroundLine(new Line3D(first, second), angle);
                                 else
-                                    MessageBox.Show("Было введено неверное значение. Пожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    MessageBox.Show("Было введено неверное значение. \n Пожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                         }
                     }
