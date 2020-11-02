@@ -95,22 +95,8 @@ namespace Affine3D
         /// </summary>
         void RotateAroundLine(Line3D line, int angle)
         {
-            //TODO: Поворот вокруг заданной прямой
-            double l = 1.0, m = 1.0, n = 1.0;
-            double cos = Math.Cos(angle * 0.017), sin = Math.Sin(angle * 0.017), mcos = m * (1 - cos);
-
-            double forX = l * l + cos * (1 - l * l) + l * mcos + n * sin + n * l * (1 - cos) - m * sin,
-                    forY = l * mcos - n * sin + m * m + cos * (1 - m * m) + mcos * n + sin * l,
-                    forZ = n * l * (1 - cos) + m * sin + mcos * n - sin * l + n * n + cos * (1 - n * n);
-
-            for (int i = 0; i < currentPolyhedron.Vertices.Count; i++)
-            {
-                Point3D old = currentPolyhedron.Vertices[i];
-
-                old.X *= forX;
-                old.Y *= forY;
-                old.Z *= forZ;
-            }
+            currentPolyhedron = AffineTransform.getRotatedAroundLine(currentPolyhedron, line, angle);
         }
+        
     }
 }

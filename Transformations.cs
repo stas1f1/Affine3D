@@ -87,5 +87,39 @@ namespace Affine3D
             );
             return TransformHelper.ChangePolyhedronByMatrix(polyhedron, moveMatrix * rotateAMatrix * rotateBMatrix * rotateCMatrix * moveMatrix2);
         }
+
+        static public Polyhedron getRotatedAroundLine(Polyhedron polyhedron, Line3D line, int angle)
+        {
+            double dx = polyhedron.Center.X, dy = polyhedron.Center.Y, dz = polyhedron.Center.Z;
+            Matrix moveMatrix = new Matrix(
+                new double[4] { 1, 0, 0, 0 },
+                new double[4] { 0, 1, 0, 0 },
+                new double[4] { 0, 0, 1, 0 },
+                new double[4] { -dx, -dy, -dz, 1 }
+            );
+            Matrix moveMatrix2 = new Matrix(
+                new double[4] { 1, 0, 0, 0 },
+                new double[4] { 0, 1, 0, 0 },
+                new double[4] { 0, 0, 1, 0 },
+                new double[4] { dx, dy, dz, 1 }
+            );
+
+            float sin = (float)Math.Sin(angle);
+            float cos = (float)Math.Cos(angle);
+            float l = Math.Sign(line.To.X - line.From.X);
+            float m = Math.Sign(line.To.Y - line.From.Y);
+            float n = Math.Sign(line.To.Z - line.From.Z);
+            float length = (float)Math.Sqrt(l * l + m * m + n * n);
+            l /= length; m /= length; n /= length;
+
+            Matrix rotateMatrix =  new Matrix(
+                new double[4] { l * l + cos * (1 - l * l),   l * (1 - cos) * m + n * sin,   l * (1 - cos) * n - m * sin,  0 },
+                new double[4] {l * (1 - cos) * m - n * sin,   m * m + cos * (1 - m * m),    m * (1 - cos) * n + l * sin,  0 },
+                new double[4] {l * (1 - cos) * n + m * sin,  m * (1 - cos) * n - l * sin,    n * n + cos * (1 - n * n),   0 },
+                new double[4] {0, 0, 0, 1 }
+                 );
+
+            return TransformHelper.ChangePolyhedronByMatrix(polyhedron, rotateMatrix);
+        }
     }
 }
