@@ -73,11 +73,35 @@
     <Compile Include="InputBox\InputBox.Designer.cs">
       <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Loader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Loader.Designer.cs">
+      <DependentUpon>Loader.cs</DependentUpon>
+    </Compile>
     <Compile Include="Matrix.cs" />
     <Compile Include="Objects.cs" />
     <Compile Include="Proector.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Task1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Task1.Designer.cs">
+      <DependentUpon>Task1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Task2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Task2.Designer.cs">
+      <DependentUpon>Task2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Task3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Task3.Designer.cs">
+      <DependentUpon>Task3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Transformations.cs" />
     <EmbeddedResource Include="CoordinateBox\CoordinateBox.resx">
       <DependentUpon>CoordinateBox.cs</DependentUpon>
@@ -91,6 +115,9 @@
     <EmbeddedResource Include="InputBox\InputBox.resx">
       <DependentUpon>InputBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Loader.resx">
+      <DependentUpon>Loader.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -100,6 +127,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Task1.resx">
+      <DependentUpon>Task1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Task2.resx">
+      <DependentUpon>Task2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Task3.resx">
+      <DependentUpon>Task3.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
