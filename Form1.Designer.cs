@@ -48,10 +48,24 @@
             this.perspectiveRadioButton = new System.Windows.Forms.RadioButton();
             this.izometrRadioButton = new System.Windows.Forms.RadioButton();
             this.clearButton = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.countTextBox = new System.Windows.Forms.TextBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.moreButton = new System.Windows.Forms.Button();
+            this.pointsTextBox = new System.Windows.Forms.TextBox();
+            this.axisTextBox = new System.Windows.Forms.TextBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.addAxisButton = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
+            this.loadButton = new System.Windows.Forms.Button();
+            this.drawRotationButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize) (this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -131,7 +145,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(307, 12);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(957, 717);
+            this.pictureBox1.Size = new System.Drawing.Size(842, 717);
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
             // 
@@ -306,17 +320,156 @@
             this.clearButton.Location = new System.Drawing.Point(11, 607);
             this.clearButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.clearButton.Name = "clearButton";
-            this.clearButton.Size = new System.Drawing.Size(283, 122);
+            this.clearButton.Size = new System.Drawing.Size(283, 52);
             this.clearButton.TabIndex = 5;
             this.clearButton.Text = "Очистить";
             this.clearButton.UseVisualStyleBackColor = false;
             this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.countTextBox);
+            this.groupBox4.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.groupBox4.Location = new System.Drawing.Point(1163, 274);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox4.Size = new System.Drawing.Size(232, 68);
+            this.groupBox4.TabIndex = 28;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Разбиения:";
+            // 
+            // countTextBox
+            // 
+            this.countTextBox.Location = new System.Drawing.Point(13, 24);
+            this.countTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this.countTextBox.Name = "countTextBox";
+            this.countTextBox.Size = new System.Drawing.Size(209, 32);
+            this.countTextBox.TabIndex = 10;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.moreButton);
+            this.groupBox5.Controls.Add(this.pointsTextBox);
+            this.groupBox5.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.groupBox5.Location = new System.Drawing.Point(1163, 142);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox5.Size = new System.Drawing.Size(232, 130);
+            this.groupBox5.TabIndex = 27;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Вращаемая ломаная:";
+            // 
+            // moreButton
+            // 
+            this.moreButton.Location = new System.Drawing.Point(13, 75);
+            this.moreButton.Margin = new System.Windows.Forms.Padding(2);
+            this.moreButton.Name = "moreButton";
+            this.moreButton.Size = new System.Drawing.Size(209, 45);
+            this.moreButton.TabIndex = 27;
+            this.moreButton.Text = "Добавить еще";
+            this.moreButton.UseVisualStyleBackColor = true;
+            this.moreButton.Click += new System.EventHandler(this.moreButton_Click);
+            // 
+            // pointsTextBox
+            // 
+            this.pointsTextBox.Location = new System.Drawing.Point(13, 29);
+            this.pointsTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this.pointsTextBox.Multiline = true;
+            this.pointsTextBox.Name = "pointsTextBox";
+            this.pointsTextBox.ReadOnly = true;
+            this.pointsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.pointsTextBox.Size = new System.Drawing.Size(209, 39);
+            this.pointsTextBox.TabIndex = 27;
+            this.pointsTextBox.Text = "Добавьте точки";
+            // 
+            // axisTextBox
+            // 
+            this.axisTextBox.Location = new System.Drawing.Point(13, 28);
+            this.axisTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this.axisTextBox.Multiline = true;
+            this.axisTextBox.Name = "axisTextBox";
+            this.axisTextBox.ReadOnly = true;
+            this.axisTextBox.Size = new System.Drawing.Size(209, 34);
+            this.axisTextBox.TabIndex = 27;
+            this.axisTextBox.Text = "{0, 0, 0}";
+            this.axisTextBox.TextChanged += new System.EventHandler(this.axisTextBox_TextChanged);
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.axisTextBox);
+            this.groupBox6.Controls.Add(this.addAxisButton);
+            this.groupBox6.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.groupBox6.Location = new System.Drawing.Point(1163, 12);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox6.Size = new System.Drawing.Size(232, 128);
+            this.groupBox6.TabIndex = 26;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Ось вращения:";
+            // 
+            // addAxisButton
+            // 
+            this.addAxisButton.Location = new System.Drawing.Point(13, 69);
+            this.addAxisButton.Margin = new System.Windows.Forms.Padding(2);
+            this.addAxisButton.Name = "addAxisButton";
+            this.addAxisButton.Size = new System.Drawing.Size(209, 48);
+            this.addAxisButton.TabIndex = 0;
+            this.addAxisButton.Text = "Добавить точку оси вращения";
+            this.addAxisButton.UseVisualStyleBackColor = true;
+            this.addAxisButton.Click += new System.EventHandler(this.addAxisButton_Click);
+            // 
+            // saveButton
+            // 
+            this.saveButton.BackColor = System.Drawing.Color.Transparent;
+            this.saveButton.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.saveButton.ForeColor = System.Drawing.Color.Black;
+            this.saveButton.Location = new System.Drawing.Point(11, 665);
+            this.saveButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(135, 52);
+            this.saveButton.TabIndex = 29;
+            this.saveButton.Text = "Сохранить";
+            this.saveButton.UseVisualStyleBackColor = false;
+            // 
+            // loadButton
+            // 
+            this.loadButton.BackColor = System.Drawing.Color.Transparent;
+            this.loadButton.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.loadButton.ForeColor = System.Drawing.Color.Black;
+            this.loadButton.Location = new System.Drawing.Point(162, 665);
+            this.loadButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.loadButton.Name = "loadButton";
+            this.loadButton.Size = new System.Drawing.Size(132, 52);
+            this.loadButton.TabIndex = 30;
+            this.loadButton.Text = "Загрузить";
+            this.loadButton.UseVisualStyleBackColor = false;
+            // 
+            // drawRotationButton
+            // 
+            this.drawRotationButton.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.drawRotationButton.Location = new System.Drawing.Point(1163, 346);
+            this.drawRotationButton.Margin = new System.Windows.Forms.Padding(2);
+            this.drawRotationButton.Name = "drawRotationButton";
+            this.drawRotationButton.Size = new System.Drawing.Size(232, 45);
+            this.drawRotationButton.TabIndex = 28;
+            this.drawRotationButton.Text = "Отрисовать фигуру";
+            this.drawRotationButton.UseVisualStyleBackColor = true;
+            this.drawRotationButton.Click += new System.EventHandler(this.drawRotationButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1275, 741);
+            this.ClientSize = new System.Drawing.Size(1404, 741);
+            this.Controls.Add(this.drawRotationButton);
+            this.Controls.Add(this.loadButton);
+            this.Controls.Add(this.saveButton);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.clearButton);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -325,12 +478,19 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize) (this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion
@@ -355,6 +515,17 @@
         private System.Windows.Forms.RadioButton perspectiveRadioButton;
         private System.Windows.Forms.RadioButton izometrRadioButton;
         private System.Windows.Forms.Button clearButton;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.TextBox countTextBox;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Button moreButton;
+        private System.Windows.Forms.TextBox pointsTextBox;
+        private System.Windows.Forms.TextBox axisTextBox;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Button addAxisButton;
+        private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.Button loadButton;
+        private System.Windows.Forms.Button drawRotationButton;
     }
 }
 

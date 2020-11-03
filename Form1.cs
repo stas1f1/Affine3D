@@ -1,7 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Affine3D
 {
@@ -11,6 +17,15 @@ namespace Affine3D
         Polyhedron currentPolyhedron;
         int currentProectionMode = 4;
         Proector proector = new Proector();
+        Point3D axisLine;
+        /// <summary>
+        /// Точки для вращения
+        /// </summary>
+        List<Point3D> points;
+        /// <summary>
+        /// Угол 1 поворота
+        /// </summary>
+        int turnSubs = 0;
 
         public Form1()
         {
@@ -18,6 +33,7 @@ namespace Affine3D
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             graphics = Graphics.FromImage(pictureBox1.Image);
             graphics.Clear(Color.White);
+            points = new List<Point3D>();
             proector.Setup();
         }
 
@@ -28,6 +44,8 @@ namespace Affine3D
             int offsetX = pictureBox1.Width / 2;
             int offsetY = pictureBox1.Height / 2;
             PointD offset = new PointD(offsetX, offsetY);
+
+            
 
             graphics.Clear(Color.White);
             // drawing axis
@@ -47,8 +65,13 @@ namespace Affine3D
             foreach (var line in lines)
                 graphics.DrawLine(new Pen(Color.Black), (line.From + offset).ToPoint() , (line.To + offset).ToPoint());
 
-            
-    
+
+
+            pictureBox1.Refresh();
+            points.Clear();
+            pointsTextBox.Text = "{0, 0, 0}";
+            axisTextBox.Text = "Добавьте точку!";
+
             pictureBox1.Invalidate();
         }
         
@@ -114,6 +137,7 @@ namespace Affine3D
         private void clearButton_Click(object sender, EventArgs e)
         {
             currentPolyhedron = null;
+            points = new List<Point3D>();
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             graphics = Graphics.FromImage(pictureBox1.Image);
             graphics.Clear(Color.White);
@@ -285,6 +309,136 @@ namespace Affine3D
                 to += vec;
 
             return new Line(from, to);
+        }
+
+        private void moreButton_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                var dialog = new CoordinateBox("Введите координаты точек для вращения");
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    Point3D p = new Point3D(dialog.X, dialog.Y, dialog.Z);
+                    points.Add(p);
+                    if (points.Count == 1)
+                        pointsTextBox.Text = p.ToString();
+                    else
+                        pointsTextBox.Text += ", " + p.ToString();
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Попробуйте еще раз!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void addAxisButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var dialog = new CoordinateBox("Координаты точки оси вращения");
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    axisLine = new Point3D(dialog.X, dialog.Y, dialog.Z);
+                    axisTextBox.Text = "{0, 0, 0}" + axisLine.ToString();
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Попробуйте еще раз!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+        }
+
+        /// <summary>
+        /// Ввод количества поворотов во вращении
+        /// </summary>
+        private void countTextBox_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(countTextBox.Text, out turnSubs);
+        }
+
+
+        private void axisTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void drawRotationButton_Click(object sender, EventArgs e)
+        {
+            int.TryParse(countTextBox.Text, out turnSubs);
+            currentPolyhedron = RotationFigure.getRotationFigure(points, new Line3D(new Point3D(0, 0, 0), axisLine), turnSubs);
+            drawFigure();
+        }
+
+
+
+        private void loadButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.CheckFileExists = true;
+            dialog.CheckPathExists = true;
+            dialog.Filter = "Текстовый файл|*.txt";
+            dialog.DefaultExt = "txt";
+            dialog.InitialDirectory = Directory.GetCurrentDirectory().Replace("bin\\Debug", "");
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                string fname = dialog.FileName;
+                Polyhedron polyhedron = new Polyhedron();
+                try //обратотка возможных ошибок
+                {
+                    foreach (var line in File.ReadAllLines(fname))
+                    {
+                        if (line.Split(' ').Length == 3) //это точка
+                        {
+                            var coords = line.Split(' ').Select(s => double.Parse(s)).ToArray();
+                            polyhedron.AddVertex(coords[0], coords[1], coords[2]);
+                        }
+                        else //это ребро
+                        {
+                            var vertexNumbers = line.Split(' ').Select(s => int.Parse(s)).ToArray();
+                            polyhedron.AddEdge(polyhedron.Vertices[vertexNumbers[0]], polyhedron.Vertices[vertexNumbers[1]]);
+                        }
+                    }
+                    currentPolyhedron = polyhedron;
+                    drawFigure();
+                    MessageBox.Show("Файл загружен!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch
+                {
+                    MessageBox.Show("Ошибка чтения файла!", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            if (currentPolyhedron == null)
+            {
+                MessageBox.Show("Ничего не нарисовано!", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.CheckPathExists = true;
+            dialog.Filter = "Текстовый файл|*.txt";
+            dialog.DefaultExt = "txt";
+            dialog.InitialDirectory = Directory.GetCurrentDirectory().Replace("bin\\Debug", "");
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                string fname = dialog.FileName;
+                using (var streamWriter = File.CreateText(fname))
+                {
+                    //записываем вершины с координатами
+                    foreach (var vertex in currentPolyhedron.Vertices)
+                        streamWriter.WriteLine($"{vertex.X} {vertex.Y} {vertex.Z}");
+
+                    //записываем список ребер
+                    foreach (var edge in currentPolyhedron.Edges)
+                        streamWriter.WriteLine($"{currentPolyhedron.Vertices.IndexOf(edge.From)} {currentPolyhedron.Vertices.IndexOf(edge.To)}");
+                }
+                MessageBox.Show("Файл сохранен!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

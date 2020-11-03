@@ -72,6 +72,11 @@ namespace Affine3D
         {
             return new Point3D(p1.X - p2.X, p1.Y - p2.Y, p1.Z - p2.Z);
         }
+
+        public override string ToString()
+        {
+            return "{"+ X + ", " + Y + ", " + Z + "}";
+        }
     }
 
     // абстрактный класс фигуры, которая может быть нарисована
