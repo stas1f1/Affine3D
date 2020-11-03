@@ -23,8 +23,6 @@ namespace Affine3D
 
         private void drawFigure()
         {
-
-
             int offsetX = pictureBox1.Width / 2;
             int offsetY = pictureBox1.Height / 2;
             PointD offset = new PointD(offsetX, offsetY);
@@ -46,9 +44,7 @@ namespace Affine3D
             List<Line> lines = proector.Display(currentPolyhedron, currentProectionMode);
             foreach (var line in lines)
                 graphics.DrawLine(new Pen(Color.Black), (line.From + offset).ToPoint() , (line.To + offset).ToPoint());
-
             
-    
             pictureBox1.Invalidate();
         }
         
