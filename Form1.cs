@@ -68,9 +68,6 @@ namespace Affine3D
 
 
             pictureBox1.Refresh();
-            points.Clear();
-            pointsTextBox.Text = "{0, 0, 0}";
-            axisTextBox.Text = "Добавьте точку!";
 
             pictureBox1.Invalidate();
         }
@@ -141,6 +138,9 @@ namespace Affine3D
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             graphics = Graphics.FromImage(pictureBox1.Image);
             graphics.Clear(Color.White);
+            points.Clear();
+            pointsTextBox.Text = "{0, 0, 0}";
+            axisTextBox.Text = "Добавьте точку!";
 
         }
 
@@ -439,6 +439,23 @@ namespace Affine3D
                 }
                 MessageBox.Show("Файл сохранен!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void clearPointsButton_Click(object sender, EventArgs e)
+        {
+            points.Clear();
+            pointsTextBox.Text = "{0, 0, 0}";
+            axisTextBox.Text = "Добавьте точку!";
+        }
+
+        private void drawGraphicButton_Click(object sender, EventArgs e)
+        {
+            Graphic Graph = new Graphic((int)numericUpDown18.Value, (int)numericUpDown20.Value, (int)numericUpDown19.Value,
+                (int)numericUpDown21.Value, (int)numericUpDown1.Value, comboBox6.SelectedIndex);
+
+            currentPolyhedron = Graph.getGraphic();
+
+            drawFigure();
         }
     }
 }

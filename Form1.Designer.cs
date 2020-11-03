@@ -59,6 +59,21 @@
             this.saveButton = new System.Windows.Forms.Button();
             this.loadButton = new System.Windows.Forms.Button();
             this.drawRotationButton = new System.Windows.Forms.Button();
+            this.clearPointsButton = new System.Windows.Forms.Button();
+            this.comboBox6 = new System.Windows.Forms.ComboBox();
+            this.label34 = new System.Windows.Forms.Label();
+            this.numericUpDown21 = new System.Windows.Forms.NumericUpDown();
+            this.label33 = new System.Windows.Forms.Label();
+            this.numericUpDown20 = new System.Windows.Forms.NumericUpDown();
+            this.label32 = new System.Windows.Forms.Label();
+            this.numericUpDown19 = new System.Windows.Forms.NumericUpDown();
+            this.label31 = new System.Windows.Forms.Label();
+            this.numericUpDown18 = new System.Windows.Forms.NumericUpDown();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.drawGraphicButton = new System.Windows.Forms.Button();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -66,6 +81,14 @@
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown21)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown20)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown19)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown18)).BeginInit();
+            this.groupBox7.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -142,7 +165,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(307, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(313, 12);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(842, 717);
@@ -337,7 +360,7 @@
             this.groupBox4.Size = new System.Drawing.Size(232, 68);
             this.groupBox4.TabIndex = 28;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Разбиения:";
+            this.groupBox4.Text = "Разбиения фигуры:";
             // 
             // countTextBox
             // 
@@ -349,6 +372,7 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.clearPointsButton);
             this.groupBox5.Controls.Add(this.moreButton);
             this.groupBox5.Controls.Add(this.pointsTextBox);
             this.groupBox5.Font = new System.Drawing.Font("Segoe UI", 14F);
@@ -366,9 +390,9 @@
             this.moreButton.Location = new System.Drawing.Point(13, 75);
             this.moreButton.Margin = new System.Windows.Forms.Padding(2);
             this.moreButton.Name = "moreButton";
-            this.moreButton.Size = new System.Drawing.Size(209, 45);
+            this.moreButton.Size = new System.Drawing.Size(104, 45);
             this.moreButton.TabIndex = 27;
-            this.moreButton.Text = "Добавить еще";
+            this.moreButton.Text = "Добавить";
             this.moreButton.UseVisualStyleBackColor = true;
             this.moreButton.Click += new System.EventHandler(this.moreButton_Click);
             // 
@@ -433,6 +457,7 @@
             this.saveButton.TabIndex = 29;
             this.saveButton.Text = "Сохранить";
             this.saveButton.UseVisualStyleBackColor = false;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // loadButton
             // 
@@ -446,6 +471,7 @@
             this.loadButton.TabIndex = 30;
             this.loadButton.Text = "Загрузить";
             this.loadButton.UseVisualStyleBackColor = false;
+            this.loadButton.Click += new System.EventHandler(this.loadButton_Click);
             // 
             // drawRotationButton
             // 
@@ -459,11 +485,218 @@
             this.drawRotationButton.UseVisualStyleBackColor = true;
             this.drawRotationButton.Click += new System.EventHandler(this.drawRotationButton_Click);
             // 
+            // clearPointsButton
+            // 
+            this.clearPointsButton.Location = new System.Drawing.Point(121, 75);
+            this.clearPointsButton.Margin = new System.Windows.Forms.Padding(2);
+            this.clearPointsButton.Name = "clearPointsButton";
+            this.clearPointsButton.Size = new System.Drawing.Size(104, 45);
+            this.clearPointsButton.TabIndex = 28;
+            this.clearPointsButton.Text = "Очистить";
+            this.clearPointsButton.UseVisualStyleBackColor = true;
+            this.clearPointsButton.Click += new System.EventHandler(this.clearPointsButton_Click);
+            // 
+            // comboBox6
+            // 
+            this.comboBox6.FormattingEnabled = true;
+            this.comboBox6.Items.AddRange(new object[] {
+            "x + y",
+            "x^2 + y^2",
+            "3Sin(x) * 3Cos(Y)",
+            "5*Sin(x)"});
+            this.comboBox6.Location = new System.Drawing.Point(10, 25);
+            this.comboBox6.Name = "comboBox6";
+            this.comboBox6.Size = new System.Drawing.Size(217, 33);
+            this.comboBox6.TabIndex = 91;
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(120, 68);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(33, 25);
+            this.label34.TabIndex = 86;
+            this.label34.Text = "Y1";
+            // 
+            // numericUpDown21
+            // 
+            this.numericUpDown21.Location = new System.Drawing.Point(153, 66);
+            this.numericUpDown21.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown21.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown21.Name = "numericUpDown21";
+            this.numericUpDown21.Size = new System.Drawing.Size(74, 32);
+            this.numericUpDown21.TabIndex = 85;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(120, 30);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(33, 25);
+            this.label33.TabIndex = 84;
+            this.label33.Text = "X1";
+            // 
+            // numericUpDown20
+            // 
+            this.numericUpDown20.Location = new System.Drawing.Point(153, 27);
+            this.numericUpDown20.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown20.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown20.Name = "numericUpDown20";
+            this.numericUpDown20.Size = new System.Drawing.Size(74, 32);
+            this.numericUpDown20.TabIndex = 83;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(5, 68);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(33, 25);
+            this.label32.TabIndex = 82;
+            this.label32.Text = "Y0";
+            // 
+            // numericUpDown19
+            // 
+            this.numericUpDown19.Location = new System.Drawing.Point(43, 66);
+            this.numericUpDown19.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown19.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown19.Name = "numericUpDown19";
+            this.numericUpDown19.Size = new System.Drawing.Size(74, 32);
+            this.numericUpDown19.TabIndex = 81;
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(5, 29);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(33, 25);
+            this.label31.TabIndex = 80;
+            this.label31.Text = "X0";
+            // 
+            // numericUpDown18
+            // 
+            this.numericUpDown18.Location = new System.Drawing.Point(43, 27);
+            this.numericUpDown18.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown18.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown18.Name = "numericUpDown18";
+            this.numericUpDown18.Size = new System.Drawing.Size(74, 32);
+            this.numericUpDown18.TabIndex = 79;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.label33);
+            this.groupBox7.Controls.Add(this.numericUpDown18);
+            this.groupBox7.Controls.Add(this.label31);
+            this.groupBox7.Controls.Add(this.numericUpDown19);
+            this.groupBox7.Controls.Add(this.label32);
+            this.groupBox7.Controls.Add(this.numericUpDown20);
+            this.groupBox7.Controls.Add(this.label34);
+            this.groupBox7.Controls.Add(this.numericUpDown21);
+            this.groupBox7.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.groupBox7.Location = new System.Drawing.Point(1163, 430);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox7.Size = new System.Drawing.Size(232, 106);
+            this.groupBox7.TabIndex = 29;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Диапазон отсечения:";
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.numericUpDown1);
+            this.groupBox8.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.groupBox8.Location = new System.Drawing.Point(1163, 539);
+            this.groupBox8.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox8.Size = new System.Drawing.Size(232, 68);
+            this.groupBox8.TabIndex = 29;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Разбиения графика:";
+            // 
+            // drawGraphicButton
+            // 
+            this.drawGraphicButton.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.drawGraphicButton.Location = new System.Drawing.Point(1163, 684);
+            this.drawGraphicButton.Margin = new System.Windows.Forms.Padding(2);
+            this.drawGraphicButton.Name = "drawGraphicButton";
+            this.drawGraphicButton.Size = new System.Drawing.Size(232, 45);
+            this.drawGraphicButton.TabIndex = 92;
+            this.drawGraphicButton.Text = "Отрисовать график";
+            this.drawGraphicButton.UseVisualStyleBackColor = true;
+            this.drawGraphicButton.Click += new System.EventHandler(this.drawGraphicButton_Click);
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.comboBox6);
+            this.groupBox9.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.groupBox9.Location = new System.Drawing.Point(1163, 607);
+            this.groupBox9.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox9.Size = new System.Drawing.Size(232, 68);
+            this.groupBox9.TabIndex = 30;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Функция:";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(10, 25);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(217, 32);
+            this.numericUpDown1.TabIndex = 87;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1404, 741);
+            this.Controls.Add(this.groupBox9);
+            this.Controls.Add(this.drawGraphicButton);
+            this.Controls.Add(this.groupBox8);
+            this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.drawRotationButton);
             this.Controls.Add(this.loadButton);
             this.Controls.Add(this.saveButton);
@@ -489,6 +722,15 @@
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown21)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown20)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown19)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown18)).EndInit();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -526,6 +768,21 @@
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button loadButton;
         private System.Windows.Forms.Button drawRotationButton;
+        private System.Windows.Forms.Button clearPointsButton;
+        private System.Windows.Forms.ComboBox comboBox6;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.NumericUpDown numericUpDown21;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.NumericUpDown numericUpDown20;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.NumericUpDown numericUpDown19;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.NumericUpDown numericUpDown18;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Button drawGraphicButton;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }
 
