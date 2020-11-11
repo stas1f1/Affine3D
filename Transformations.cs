@@ -12,12 +12,20 @@ namespace Affine3D
         static public Polyhedron ChangePolyhedronByMatrix(Polyhedron polyhedron, Matrix matrix)
         {
             List<Point3D> newPoints = polyhedron.Vertices.Select(point => (Matrix.getMatrixFromPoint(point) * matrix).ToPoint()).ToList();
-            Polyhedron res = new Polyhedron(newPoints);
-            foreach (var edge in polyhedron.Edges)
+            Polyhedron res;
+            if (polyhedron.Facets.Count > 0)
+                res = new Polyhedron(polyhedron.Facets.Select(
+                    facet => facet.Select(point => (Matrix.getMatrixFromPoint(point) * matrix).ToPoint()).ToList()
+                ).ToList());
+            else
             {
-                int p1Index = polyhedron.Vertices.FindIndex(point => point == edge.From);
-                int p2Index = polyhedron.Vertices.FindIndex(point => point == edge.To);
-                res.AddEdge(newPoints[p1Index], newPoints[p2Index]);
+                res = new Polyhedron(newPoints);
+                foreach (var edge in polyhedron.Edges)
+                {
+                    int p1Index = polyhedron.Vertices.FindIndex(point => point == edge.From);
+                    int p2Index = polyhedron.Vertices.FindIndex(point => point == edge.To);
+                    res.AddEdge(newPoints[p1Index], newPoints[p2Index]);
+                }
             }
             return res;
         }

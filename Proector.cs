@@ -31,6 +31,7 @@ namespace Affine3D
                                                            new double[] { 0, 0, 0, 1 });
 
         public void Setup()
+            //
         {
             float k = 1000;
             //if (Math.Abs(Z - k) < 1e-10)

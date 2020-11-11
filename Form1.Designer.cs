@@ -82,7 +82,7 @@
             this.comboBox6 = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.numericUpDown11 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown10 = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
             this.bufferButton = new System.Windows.Forms.Button();
             this.clippingButton = new System.Windows.Forms.Button();
@@ -110,7 +110,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown18)).BeginInit();
             this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
@@ -274,6 +274,7 @@
             this.drawRotationButton.TabIndex = 28;
             this.drawRotationButton.Text = "Отрисовать фигуру";
             this.drawRotationButton.UseVisualStyleBackColor = true;
+            this.drawRotationButton.Click += new System.EventHandler(this.drawRotationButton_Click);
             // 
             // groupBox2
             // 
@@ -734,7 +735,9 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(263, 216);
             this.textBox1.TabIndex = 93;
-            this.textBox1.Text = "130,250,0\r\n80,200,0\r\n80,160,0\r\n140,140,0\r\n140,100,0\r\n80,60,0";
+
+            this.textBox1.Text = "130,0,250\r\n80,0,200\r\n60,0,160\r\n80,0,80\r\n140,0,40\r\n140,0,0\r\n100,0,-60\r\n50,0,-100";
+
             // 
             // groupBox4
             // 
@@ -742,7 +745,9 @@
             this.groupBox4.Controls.Add(this.label10);
             this.groupBox4.Controls.Add(this.textBox1);
             this.groupBox4.Controls.Add(this.label11);
-            this.groupBox4.Controls.Add(this.numericUpDown11);
+
+            this.groupBox4.Controls.Add(this.numericUpDown10);
+
             this.groupBox4.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.groupBox4.Location = new System.Drawing.Point(1112, 1);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -784,17 +789,23 @@
             this.label11.TabIndex = 12;
             this.label11.Text = "Разбиения";
             // 
-            // numericUpDown11
+            // numericUpDown10
             // 
-            this.numericUpDown11.Location = new System.Drawing.Point(204, 253);
-            this.numericUpDown11.Minimum = new decimal(new int[] {
+            this.numericUpDown10.Location = new System.Drawing.Point(204, 253);
+            this.numericUpDown10.Minimum = new decimal(new int[] {
+
             100,
             0,
             0,
             -2147483648});
-            this.numericUpDown11.Name = "numericUpDown11";
-            this.numericUpDown11.Size = new System.Drawing.Size(71, 32);
-            this.numericUpDown11.TabIndex = 9;
+            this.numericUpDown10.Name = "numericUpDown10";
+            this.numericUpDown10.Size = new System.Drawing.Size(71, 32);
+            this.numericUpDown10.TabIndex = 9;
+            this.numericUpDown10.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
             // 
             // label12
             // 
@@ -966,7 +977,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown18)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown11)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).EndInit();
+
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
@@ -1031,7 +1043,8 @@
         private System.Windows.Forms.ComboBox comboBox6;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.NumericUpDown numericUpDown11;
+        private System.Windows.Forms.NumericUpDown numericUpDown10;
+
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button bufferButton;
         private System.Windows.Forms.Button clippingButton;
