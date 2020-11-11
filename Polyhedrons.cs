@@ -52,6 +52,7 @@ namespace Affine3D
                         bottomLeftFrontPoint + new Point3D(edgeLength, 0, edgeLength),
                         bottomLeftFrontPoint + new Point3D(edgeLength, edgeLength, edgeLength),
                     };
+
             Polyhedron cube = new Polyhedron(points);
 
             cube.AddFacet(new List<Point3D> { points[0], points[1], points[3], points[2] });
@@ -79,6 +80,7 @@ namespace Affine3D
                         new Point3D(x, y, z - r * Math.Sqrt(2))
                     };
 
+
             Polyhedron octahedron = new Polyhedron(points);
             octahedron.AddEdges(points[0], new List<Point3D> { points[1], points[2], points[3], points[4] });
             octahedron.AddEdges(points[5], new List<Point3D> { points[1], points[2], points[3], points[4] });
@@ -95,6 +97,7 @@ namespace Affine3D
             octahedron.AddFacet(new List<Point3D> { points[5], points[1], points[4] });
 
             return octahedron;
+
         }
 
         public static Polyhedron getIcohedron()
@@ -116,6 +119,7 @@ namespace Affine3D
                 new Point3D(0, -50, r),
                 new Point3D(0, 50, r)
             };
+
 
             Polyhedron ico = new Polyhedron(points);
             
@@ -153,6 +157,7 @@ namespace Affine3D
             ico.AddFacet(new List<Point3D> { points[9], points[10], points[11] });
 
             return ico;
+
         }
 
         public static Polyhedron getDodehedron()
@@ -186,7 +191,6 @@ namespace Affine3D
 
             Polyhedron dodehedron = new Polyhedron(points);
 
-            
             dodehedron.AddEdges(points[0], new List<Point3D> { points[1], points[4], points[7] });
             dodehedron.AddEdges(points[1], new List<Point3D> { points[2], points[9] });
             dodehedron.AddEdges(points[2], new List<Point3D> { points[3], points[11] });
@@ -206,6 +210,7 @@ namespace Affine3D
             dodehedron.AddEdges(points[16], new List<Point3D> { points[18] });
             dodehedron.AddEdges(points[17], new List<Point3D> { points[19] });
 
+
             dodehedron.AddFacet(new List<Point3D> { points[0], points[1], points[2], points[3], points[4] });
             dodehedron.AddFacet(new List<Point3D> { points[0], points[1], points[9], points[8], points[7] });
             dodehedron.AddFacet(new List<Point3D> { points[0], points[4], points[5], points[6], points[7] });
@@ -218,6 +223,7 @@ namespace Affine3D
             dodehedron.AddFacet(new List<Point3D> { points[10], points[11], points[17], points[15], points[16] });
             dodehedron.AddFacet(new List<Point3D> { points[12], points[13], points[15], points[16], points[18] });
             dodehedron.AddFacet(new List<Point3D> { points[13], points[14], points[19], points[17], points[15] });
+
 
             return dodehedron;
         }

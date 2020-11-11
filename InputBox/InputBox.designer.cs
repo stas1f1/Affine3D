@@ -37,7 +37,7 @@
             // buttonCancel
             // 
             this.buttonCancel.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.buttonCancel.Location = new System.Drawing.Point(11, 91);
+            this.buttonCancel.Location = new System.Drawing.Point(11, 180);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(2);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(139, 38);
@@ -49,7 +49,7 @@
             // buttonOK
             // 
             this.buttonOK.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.buttonOK.Location = new System.Drawing.Point(154, 91);
+            this.buttonOK.Location = new System.Drawing.Point(154, 180);
             this.buttonOK.Margin = new System.Windows.Forms.Padding(2);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(139, 38);
@@ -61,7 +61,7 @@
             // textBox
             // 
             this.textBox.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.textBox.Location = new System.Drawing.Point(11, 45);
+            this.textBox.Location = new System.Drawing.Point(11, 134);
             this.textBox.Margin = new System.Windows.Forms.Padding(2);
             this.textBox.Name = "textBox";
             this.textBox.Size = new System.Drawing.Size(282, 32);
@@ -82,7 +82,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(327, 140);
+            this.ClientSize = new System.Drawing.Size(306, 234);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.textBox);

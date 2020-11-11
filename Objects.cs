@@ -207,7 +207,6 @@ namespace Affine3D
         {
             foreach (var p2 in to) AddEdge(from, p2);
         }
-
         /// <summary>
         /// Добавить грань
         /// </summary>

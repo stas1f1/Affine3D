@@ -131,23 +131,31 @@ namespace Affine3D
             {
                 //TRANSLATE
                 int offsetX = (int)numericUpDown1.Value, offsetY = (int)numericUpDown2.Value, offsetZ = (int)numericUpDown3.Value;
+
                 currentPolyhedron = AffineTransform.getTransformed(currentPolyhedron, offsetX, offsetY, offsetZ);
+
                 //ROTATE
                 int rotateAngleX = (int)numericUpDown4.Value;
                 int rotateAngleY = (int)numericUpDown5.Value;
                 int rotateAngleZ = (int)numericUpDown6.Value;
+
                 currentPolyhedron = AffineTransform.getRotated(currentPolyhedron, rotateAngleX, rotateAngleY, rotateAngleZ);
+
 
                 //SCALE
                 if (checkBox1.Checked)
                 {
                     float kx = (float)numericUpDown7.Value, ky = (float)numericUpDown8.Value, kz = (float)numericUpDown9.Value;
+
                     currentPolyhedron = AffineTransform.getScaledFromCenter(currentPolyhedron, kx, ky, kz);
+
                 }
                 else
                 {
                     float kx = (float)numericUpDown7.Value, ky = (float)numericUpDown8.Value, kz = (float)numericUpDown9.Value;
+
                     currentPolyhedron = AffineTransform.getScaled(currentPolyhedron, kx, ky, kz);
+
                 }
             }
             
@@ -173,138 +181,7 @@ namespace Affine3D
 
         }
 
-        /*
-        private void transformationRadioButton_Click(object sender, EventArgs e)
-        {
-            if (currentPolyhedron == null)
-            {
-                MessageBox.Show("Задайте фигуру", "Ошибка", MessageBoxButtons.OK);
-            }
-            else
-            {
-                if (moveRadioButton.Checked)
-                {
-
-                    var dialogFirst = new CoordinateBox("Введите смещение по координатам:");
-                    if (dialogFirst.ShowDialog() == DialogResult.OK)
-                    {
-                        currentPolyhedron = AffineTransform.getTransformed(
-                        currentPolyhedron,
-                        dialogFirst.X,
-                        dialogFirst.Y,
-                        dialogFirst.Z
-                    );
-                    }
-                }
-                else if (turnRadioButton.Checked)
-                {
-                    var dialogX = new InputBox("Введите поворот по оси X \n(градусы)");
-                    var dialogY = new InputBox("Введите поворот по оси Y \n(градусы)");
-                    var dialogZ = new InputBox("Введите поворот по оси Z \n(градусы)");
-                    if (dialogX.ShowDialog() == DialogResult.OK && dialogY.ShowDialog() == DialogResult.OK && dialogZ.ShowDialog() == DialogResult.OK)
-                        currentPolyhedron = AffineTransform.getRotated(
-                            currentPolyhedron,
-                            int.Parse(dialogX.ResultText),
-                            int.Parse(dialogY.ResultText),
-                            int.Parse(dialogZ.ResultText)
-                        );
-                }
-                else if (scaleRadioButton.Checked)
-                {
-                    var dialogX = new InputBox("Введите увеличение по X");
-                    var dialogY = new InputBox("Введите увеличение по Y");
-                    var dialogZ = new InputBox("Введите увеличение по Z");
-                    if (dialogX.ShowDialog() == DialogResult.OK && dialogY.ShowDialog() == DialogResult.OK && dialogZ.ShowDialog() == DialogResult.OK)
-                        currentPolyhedron = AffineTransform.getScaled(
-                            currentPolyhedron,
-                            double.Parse(dialogX.ResultText.Replace('.', ',')),
-                            double.Parse(dialogY.ResultText.Replace('.', ',')),
-                            double.Parse(dialogZ.ResultText.Replace('.', ','))
-                        );
-                }
-                else if (scaleAroundCenterRadioButton.Checked)
-                {
-                    var dialogScale = new InputBox("Введите целое значение для  \nмасштабирования в процентах");
-                    if (dialogScale.ShowDialog() == DialogResult.OK)
-                    {
-                        int scale;
-                        if (int.TryParse(dialogScale.ResultText, out scale))
-                            ScaleFromCenter(scale);
-                        else
-                            MessageBox.Show("Было введено неверное значение. \nПожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-                else if (reflectionRadioButton.Checked)
-                {
-                    var dialog = new InputBox("Введите плоскость, относительно \nкоторой будет происходить \nотражение. Например, xy или yz");
-                    if (dialog.ShowDialog() == DialogResult.OK)
-                    {
-                        var surface = dialog.ResultText.ToLower();
-                        if (surface.Length == 2 && (surface.Contains("x") || surface.Contains("y") || surface.Contains("z")))
-                            if (surface == "xy" || surface == "yx")
-                                surface = "xy";
-                            else if (surface == "xz" || surface == "zx")
-                                surface = "xz";
-                            else if (surface == "yz" || surface == "zy")
-                                surface = "yz";
-                            else
-                                MessageBox.Show("Было введено неверное значение. \nПожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                        ReflectionFromSurface(surface);
-                    }
-                }
-                else if (rotateAroundLineRadioButton.Checked)
-                {
-                    var dialog = new InputBox("Введите название координатной \nоси, параллельно которой \nбудет проходит ось вращения. \nНапример, Oy.");
-                    string surface;
-                    if (dialog.ShowDialog() == DialogResult.OK)
-                    {
-                        surface = dialog.ResultText.ToLower();
-                        if (surface.Length == 2 && (surface.Contains("x") || surface.Contains("y") || surface.Contains("z")))
-                        {
-                            if (surface == "ox" || surface == "xo")
-                                surface = "x";
-                            else if (surface == "oy" || surface == "yo")
-                                surface = "y";
-                            else if (surface == "oz" || surface == "zo")
-                                surface = "z";
-                            else
-                                MessageBox.Show("Было введено неверное значение. \nПожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-
-                        dialog = new InputBox("Введите целое значение угла \nповорота в градусах");
-                        if (dialog.ShowDialog() == DialogResult.OK)
-                        {
-                            int angle;
-                            if (int.TryParse(dialog.ResultText, out angle))
-                                RotateWithLine(surface, angle);
-                            else
-                                MessageBox.Show("Было введено неверное значение. \nПожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
-                }
-                else if (turnAroundLineRadioButton.Checked)
-                {
-                    var dialogFirst = new CoordinateBox("Введите координаты первой точки прямой:");
-                    if (dialogFirst.ShowDialog() == DialogResult.OK)
-                    {
-                        var first = new Point3D(dialogFirst.X, dialogFirst.Y, dialogFirst.Z);
-                        var dialogSecond = new CoordinateBox("Введите координаты второй точки прямой:");
-                        if (dialogSecond.ShowDialog() == DialogResult.OK)
-                        {
-                            var second = new Point3D(dialogSecond.X, dialogSecond.Y, dialogSecond.Z);
-                            var dialogAngle = new InputBox("Введите целое значение угла поворота в градусах:");
-                            if (dialogAngle.ShowDialog() == DialogResult.OK)
-                            {
-                                int angle;
-                                if (int.TryParse(dialogAngle.ResultText, out angle))
-                                    RotateAroundLine(new Line3D(first, second), angle);
-                                else
-                                    MessageBox.Show("Было введено неверное значение. \n Пожалуйста, попробуйте еще раз.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            }
-                        }
-                    }
-                }
+        
                 drawFigure();
             }
         }*/
@@ -355,7 +232,6 @@ namespace Affine3D
         {
 
         }
-
         private void drawRotationButton_Click(object sender, EventArgs e)
         {
             List<Point3D> points = new List<Point3D>();
@@ -395,5 +271,6 @@ namespace Affine3D
                 show_z_buff();*/
             drawFigure();
         }
+
     }
 }

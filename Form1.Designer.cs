@@ -735,7 +735,9 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(263, 216);
             this.textBox1.TabIndex = 93;
+
             this.textBox1.Text = "130,0,250\r\n80,0,200\r\n60,0,160\r\n80,0,80\r\n140,0,40\r\n140,0,0\r\n100,0,-60\r\n50,0,-100";
+
             // 
             // groupBox4
             // 
@@ -743,7 +745,9 @@
             this.groupBox4.Controls.Add(this.label10);
             this.groupBox4.Controls.Add(this.textBox1);
             this.groupBox4.Controls.Add(this.label11);
+
             this.groupBox4.Controls.Add(this.numericUpDown10);
+
             this.groupBox4.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.groupBox4.Location = new System.Drawing.Point(1112, 1);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -789,6 +793,7 @@
             // 
             this.numericUpDown10.Location = new System.Drawing.Point(204, 253);
             this.numericUpDown10.Minimum = new decimal(new int[] {
+
             100,
             0,
             0,
@@ -973,6 +978,7 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).EndInit();
+
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
@@ -1038,6 +1044,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.NumericUpDown numericUpDown10;
+
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button bufferButton;
         private System.Windows.Forms.Button clippingButton;
