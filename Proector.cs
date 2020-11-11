@@ -31,6 +31,7 @@ namespace Affine3D
                                                            new double[] { 0, 0, 0, 1 });
 
         public void Setup()
+            //
         {
             float k = 1000;
             //if (Math.Abs(Z - k) < 1e-10)
@@ -82,7 +83,9 @@ namespace Affine3D
 
             foreach (var p in polyhedron.Vertices)
             {
-                var temp = Matrix.getMatrixFromPoint(p) * dM;
+                //var temp = Matrix.getMatrixFromPoint(p) * dM;
+                var temp = Matrix.kostylify(Matrix.getMatrixFromPoint(p)) * dM;
+
                 var temp2d = new PointD(temp[0, 0] / temp[0, 3], temp[0, 1] / temp[0, 3]);
                 if (dM == orthographic_projection_X)
                     temp2d = new PointD(temp[0, 1] / temp[0, 3], temp[0, 2] / temp[0, 3]);
@@ -91,7 +94,10 @@ namespace Affine3D
                 vertices2D.Add(temp2d);
                 foreach (var t in polyhedron.AdjacencyMatrix[p])
                 {
-                    var t1 = Matrix.getMatrixFromPoint(t) * dM;
+                    //var t1 = Matrix.getMatrixFromPoint(t) * dM;
+                    
+                    var t1 = Matrix.kostylify(Matrix.getMatrixFromPoint(t)) * dM;
+
                     if (dM == isometric_projection || dM == perspective_projection || dM == orthographic_projection_Z)
                         vertices2D.Add(new PointD(t1[0, 0] / t1[0, 3], t1[0, 1] / t1[0, 3]));
                     else if (dM == orthographic_projection_X)
@@ -132,15 +138,19 @@ namespace Affine3D
 
             PointD center;
             Line axis;
+            //var temp = Matrix.getMatrixFromPoint(p) * dM;
+            //var t1 = Matrix.getMatrixFromPoint(new Point3D(0, 0, 0)) * dM;
 
-            var temp = Matrix.getMatrixFromPoint(p) * dM;
+
+            var temp = Matrix.kostylify(Matrix.getMatrixFromPoint(p)) * dM;
+            var t1 = Matrix.kostylify(Matrix.getMatrixFromPoint(new Point3D(0, 0, 0))) * dM;
+
             var temp2d = new PointD(temp[0, 0] / temp[0, 3], temp[0, 1] / temp[0, 3]);
             if (dM == orthographic_projection_X)
                 temp2d = new PointD(temp[0, 1] / temp[0, 3], temp[0, 2] / temp[0, 3]);
             else if (dM == orthographic_projection_Y)
                 temp2d = new PointD(temp[0, 0] / temp[0, 3], temp[0, 2] / temp[0, 3]);
 
-            var t1 = Matrix.getMatrixFromPoint(new Point3D(0,0,0)) * dM;
             if (dM == isometric_projection || dM == perspective_projection || dM == orthographic_projection_Z)
                 center = new PointD(t1[0, 0] / t1[0, 3], t1[0, 1] / t1[0, 3]);
             else if (dM == orthographic_projection_X)

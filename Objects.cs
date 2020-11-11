@@ -50,6 +50,7 @@ namespace Affine3D
         public double Z { get; set; }
 
         public Point3D() { X = 0; Y = 0; Z = 0; }
+        public Point3D(Point3D p) { X = p.X; Y = p.Y; Z = p.Z; }
         public Point3D(double x, double y, double z) { X = x; Y = y; Z = z; }
         public Point3D(int x, int y, int z) { X = x; Y = y; Z = z; }
 
@@ -71,6 +72,11 @@ namespace Affine3D
         static public Point3D operator -(Point3D p1, Point3D p2)
         {
             return new Point3D(p1.X - p2.X, p1.Y - p2.Y, p1.Z - p2.Z);
+        }
+
+        public override string ToString()
+        {
+            return "{"+ X + ", " + Y + ", " + Z + "}";
         }
     }
 
@@ -117,6 +123,8 @@ namespace Affine3D
         public Polygon(List<PointD> points) { Points = points; }
         public Polygon(List<Point> points) { Points = points.Select(point => new PointD(point)).ToList(); }
 
+        public List<List<Point3D>> Facets { get; private set; } = new List<List<Point3D>>();
+
         public void AddPoint(PointD point) { Points.Add(point); }
         public void AddPoint(Point point) { Points.Add(new PointD(point)); }
         public void AddPoint(int x, int y) { Points.Add(new PointD(x, y)); }
@@ -130,6 +138,10 @@ namespace Affine3D
         public List<Point3D> Vertices { get; set; } = new List<Point3D>();
         // список ребер
         public List<Line3D> Edges { get; } = new List<Line3D>();
+
+
+        public List<List<Point3D>> Facets { get; private set; } = new List<List<Point3D>>();
+
         // матрица смежности
         public Dictionary<Point3D, List<Point3D>> AdjacencyMatrix { get; } = new Dictionary<Point3D, List<Point3D>>();
 
@@ -151,15 +163,33 @@ namespace Affine3D
             foreach (var point in points) AdjacencyMatrix.Add(point, new List<Point3D>());
         }
 
+        public Polyhedron(List<List<Point3D>> facets)
+        {
+            facets.ForEach(facet => AddFacet(facet));
+        }
+
         public void AddVertex(Point3D point)
         {
             Vertices.Add(point);
-            AdjacencyMatrix.Add(point, new List<Point3D>());
+            if (!AdjacencyMatrix.Keys.Contains(point))
+                AdjacencyMatrix.Add(point, new List<Point3D>());
         }
 
         public void AddVertex(int x, int y, int z) { AddVertex(new Point3D(x, y, z)); }
 
         public void AddVertex(double x, double y, double z) { AddVertex(new Point3D(x, y, z)); }
+
+        private void ChangePolyhedronByMatrix(Matrix matrix)
+        {
+            Edges.Clear();
+            Vertices = Vertices.Select(point => (Matrix.getMatrixFromPoint(point) * matrix).ToPoint()).ToList();
+            foreach (var edge in Edges)
+            {
+                int p1Index = Vertices.FindIndex(point => point == edge.From);
+                int p2Index = Vertices.FindIndex(point => point == edge.To);
+                AddEdge(Vertices[p1Index], Vertices[p2Index]);
+            }
+        }
 
         public void AddEdge(Point3D p1, Point3D p2)
         {
@@ -177,5 +207,104 @@ namespace Affine3D
         {
             foreach (var p2 in to) AddEdge(from, p2);
         }
+
+        /// <summary>
+        /// Добавить грань
+        /// </summary>
+        /// <param name="facet">Грань</param>
+        public void AddFacet(List<Point3D> facet)
+        {
+            Facets.Add(facet);
+            foreach (var p in facet) AddVertex(p);
+            for (int i = 1; i < facet.Count; i++) AddEdge(facet[i - 1], facet[i]);
+            AddEdge(facet[0], facet.Last());
+        }
+
+
+        public void Transform(int dx, int dy, int dz)
+        {
+            Matrix moveMatrix = new Matrix(
+                new double[4] { 1, 0, 0, 0 },
+                new double[4] { 0, 1, 0, 0 },
+                new double[4] { 0, 0, 1, 0 },
+                new double[4] { dx, dy, dz, 1 }
+            );
+            ChangePolyhedronByMatrix(moveMatrix);
+        }
+
+        public void Scale(double dx, double dy, double dz)
+        {
+            Matrix scaleMatrix = new Matrix(
+                new double[4] { dx, 0, 0, 0 },
+                new double[4] { 0, dy, 0, 0 },
+                new double[4] { 0, 0, dz, 0 },
+                new double[4] { 0, 0, 0, 1 }
+            );
+            ChangePolyhedronByMatrix(scaleMatrix);
+        }
+
+        public void ScaleFromCenter(double dx, double dy, double dz)
+        {
+            Matrix moveMatrix = new Matrix(
+                new double[4] { 1, 0, 0, 0 },
+                new double[4] { 0, 1, 0, 0 },
+                new double[4] { 0, 0, 1, 0 },
+                new double[4] { -Center.X, -Center.Y, -Center.Y, 1 }
+            );
+            Matrix moveMatrix2 = new Matrix(
+                new double[4] { 1, 0, 0, 0 },
+                new double[4] { 0, 1, 0, 0 },
+                new double[4] { 0, 0, 1, 0 },
+                new double[4] { Center.X, Center.Y, Center.Z, 1 }
+            );
+            Matrix scaleMatrix = new Matrix(
+                new double[4] { dx, 0, 0, 0 },
+                new double[4] { 0, dy, 0, 0 },
+                new double[4] { 0, 0, dz, 0 },
+                new double[4] { 0, 0, 0, 1 }
+            );
+            ChangePolyhedronByMatrix(moveMatrix * scaleMatrix * moveMatrix2);
+        }
+
+
+        public void Rotate(int ax, int ay, int az)
+        {
+            double mx = Center.X, my = Center.Y, mz = Center.Z;
+            Matrix moveMatrix = new Matrix(
+                new double[4] { 1, 0, 0, 0 },
+                new double[4] { 0, 1, 0, 0 },
+                new double[4] { 0, 0, 1, 0 },
+                new double[4] { -mx, -my, -mz, 1 }
+            );
+            Matrix moveMatrix2 = new Matrix(
+                new double[4] { 1, 0, 0, 0 },
+                new double[4] { 0, 1, 0, 0 },
+                new double[4] { 0, 0, 1, 0 },
+                new double[4] { mx, my, mz, 1 }
+            );
+            double cos = Math.Cos(ax * Math.PI / 180), sin = Math.Sin(ax * Math.PI / 180);
+            Matrix rotateAMatrix = new Matrix(
+                new double[4] { 1, 0, 0, 0 },
+                new double[4] { 0, cos, -sin, 0 },
+                new double[4] { 0, sin, cos, 0 },
+                new double[4] { 0, 0, 0, 1 }
+            );
+            cos = Math.Cos(ay * Math.PI / 180); sin = Math.Sin(ay * Math.PI / 180);
+            Matrix rotateBMatrix = new Matrix(
+                new double[4] { cos, 0, sin, 0 },
+                new double[4] { 0, 1, 0, 0 },
+                new double[4] { -sin, 0, cos, 0 },
+                new double[4] { 0, 0, 0, 1 }
+            );
+            cos = Math.Cos(az * Math.PI / 180); sin = Math.Sin(az * Math.PI / 180);
+            Matrix rotateCMatrix = new Matrix(
+                new double[4] { cos, -sin, 0, 0 },
+                new double[4] { sin, cos, 0, 0 },
+                new double[4] { 0, 0, 1, 0 },
+                new double[4] { 0, 0, 0, 1 }
+            );
+            ChangePolyhedronByMatrix( moveMatrix * rotateAMatrix * rotateBMatrix * rotateCMatrix * moveMatrix2);
+        }
+
     }
 }

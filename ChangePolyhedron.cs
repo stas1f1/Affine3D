@@ -12,24 +12,15 @@ namespace Affine3D
         /// <summary>
         /// Масштабирование многогранника 
         /// </summary>
-        /// <param name="scaleInProcents">Значение нового масштаба в процентах относительно старого</param>
-        void ScaleFromCenter(int scaleInProcents)
+        void ScaleFromCenter(double newScale)
         {
             Point3D center = currentPolyhedron.Center;
-            double newScale = scaleInProcents / 100.0;
+            Polyhedron res;
+            res = AffineTransform.getTransformed(currentPolyhedron, -(int)center.X, -(int)center.Y, -(int)center.Z);
+            res = AffineTransform.getScaled(res, newScale, newScale, newScale);
+            res = AffineTransform.getTransformed(res, (int)center.X, (int)center.Y, (int)center.Z);
 
-            for (int i = 0; i < currentPolyhedron.Vertices.Count; i++)
-            {
-                Point3D old = currentPolyhedron.Vertices[i];
-                Point3D scaled = new Point3D();
-                scaled.X = center.X + (old.X - center.X) * newScale;
-                scaled.Y = center.Y + (old.Y - center.Y) * newScale;
-                scaled.Z = center.Z + (old.Z - center.Z) * newScale;
-
-                currentPolyhedron.Vertices[i].X = scaled.X;
-                currentPolyhedron.Vertices[i].Y = scaled.Y;
-                currentPolyhedron.Vertices[i].Z = scaled.Z;
-            }
+            currentPolyhedron = res;
         }
 
         /// <summary>
@@ -102,22 +93,8 @@ namespace Affine3D
         /// </summary>
         void RotateAroundLine(Line3D line, int angle)
         {
-            //TODO: Поворот вокруг заданной прямой
-            double l = 1.0, m = 1.0, n = 1.0;
-            double cos = Math.Cos(angle * 0.017), sin = Math.Sin(angle * 0.017), mcos = m * (1 - cos);
-
-            double forX = l * l + cos * (1 - l * l) + l * mcos + n * sin + n * l * (1 - cos) - m * sin,
-                    forY = l * mcos - n * sin + m * m + cos * (1 - m * m) + mcos * n + sin * l,
-                    forZ = n * l * (1 - cos) + m * sin + mcos * n - sin * l + n * n + cos * (1 - n * n);
-
-            for (int i = 0; i < currentPolyhedron.Vertices.Count; i++)
-            {
-                Point3D old = currentPolyhedron.Vertices[i];
-
-                old.X *= forX;
-                old.Y *= forY;
-                old.Z *= forZ;
-            }
+            currentPolyhedron = AffineTransform.getRotatedAroundLine(currentPolyhedron, line, angle);
         }
+        
     }
 }

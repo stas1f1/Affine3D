@@ -75,9 +75,11 @@
     </Compile>
     <Compile Include="Matrix.cs" />
     <Compile Include="Objects.cs" />
+    <Compile Include="Polyhedrons.cs" />
     <Compile Include="Proector.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RotationFigure.cs" />
     <Compile Include="Transformations.cs" />
     <EmbeddedResource Include="CoordinateBox\CoordinateBox.resx">
       <DependentUpon>CoordinateBox.cs</DependentUpon>

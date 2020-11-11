@@ -55,5 +55,10 @@ namespace Affine3D
         {
             return new Matrix(new double[4] { point.X, point.Y, point.Z, 1 });
         }
+
+        static public Matrix kostylify(Matrix src)
+        {
+            return new Matrix(new double[4] { src[0, 0], -src[0, 2], -src[0, 1], 1 });
+        }
     }
 }
