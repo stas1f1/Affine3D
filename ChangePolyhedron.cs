@@ -12,15 +12,13 @@ namespace Affine3D
         /// <summary>
         /// Масштабирование многогранника 
         /// </summary>
-        /// <param name="scaleInProcents">Значение нового масштаба в процентах относительно старого</param>
-        void ScaleFromCenter(int scaleInProcents)
+        void ScaleFromCenter(double newScale)
         {
             Point3D center = currentPolyhedron.Center;
-            double newScale = scaleInProcents / 100.0;
             Polyhedron res;
-            res = AffineTransform.getMoved(currentPolyhedron, -(int)center.X, -(int)center.Y, -(int)center.Z);
+            res = AffineTransform.getTransformed(currentPolyhedron, -(int)center.X, -(int)center.Y, -(int)center.Z);
             res = AffineTransform.getScaled(res, newScale, newScale, newScale);
-            res = AffineTransform.getMoved(res, (int)center.X, (int)center.Y, (int)center.Z);
+            res = AffineTransform.getTransformed(res, (int)center.X, (int)center.Y, (int)center.Z);
 
             currentPolyhedron = res;
         }

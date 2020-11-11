@@ -25,8 +25,13 @@ namespace Affine3D
 
     static class AffineTransform
     {
+        static public void Transform(Polyhedron polyhedron, int dx, int dy, int dz)
+        {
+            polyhedron = getTransformed(polyhedron, dx, dy, dz);
+        }
+
         // получить сдвинутый многогранник относительно начала координат
-        static public Polyhedron getMoved(Polyhedron polyhedron, int dx, int dy, int dz)
+        static public Polyhedron getTransformed(Polyhedron polyhedron, int dx, int dy, int dz)
         {
             Matrix moveMatrix = new Matrix(
                 new double[4] { 1, 0, 0, 0 },
@@ -35,6 +40,11 @@ namespace Affine3D
                 new double[4] { dx, dy, dz, 1 }
             );
             return TransformHelper.ChangePolyhedronByMatrix(polyhedron, moveMatrix);
+        }
+
+        static public void Scale(Polyhedron polyhedron, double dx, double dy, double dz)
+        {
+            polyhedron = getScaled(polyhedron, dx, dy, dz);
         }
 
         // получить масштабированный многогранник относительно начала координат
@@ -47,6 +57,44 @@ namespace Affine3D
                 new double[4] { 0, 0, 0, 1 }
             );
             return TransformHelper.ChangePolyhedronByMatrix(polyhedron, scaleMatrix);
+        }
+
+        static public void ScaleFromCenter(Polyhedron polyhedron, double dx, double dy, double dz)
+        {
+            polyhedron = getScaledFromCenter(polyhedron, dx, dy, dz);
+        }
+
+        // получить масштабированный многогранник относительно начала координат
+        static public Polyhedron getScaledFromCenter(Polyhedron polyhedron, double dx, double dy, double dz)
+        {
+
+            Point3D center = polyhedron.Center;
+            Matrix moveMatrix = new Matrix(
+                new double[4] { 1, 0, 0, 0 },
+                new double[4] { 0, 1, 0, 0 },
+                new double[4] { 0, 0, 1, 0 },
+                new double[4] { -center.X, -center.Y, -center.Y, 1 }
+            );
+            Matrix moveMatrix2 = new Matrix(
+                new double[4] { 1, 0, 0, 0 },
+                new double[4] { 0, 1, 0, 0 },
+                new double[4] { 0, 0, 1, 0 },
+                new double[4] { center.X, center.Y, center.Z, 1 }
+            );
+            Matrix scaleMatrix = new Matrix(
+                new double[4] { dx, 0, 0, 0 },
+                new double[4] { 0, dy, 0, 0 },
+                new double[4] { 0, 0, dz, 0 },
+                new double[4] { 0, 0, 0, 1 }
+            );
+            return TransformHelper.ChangePolyhedronByMatrix(polyhedron, moveMatrix * scaleMatrix * moveMatrix2);
+            
+        }
+
+
+        static public void Rotate(Polyhedron polyhedron, int dx, int dy, int dz)
+        {
+            polyhedron = getRotated(polyhedron, dx, dy, dz);
         }
 
         static public Polyhedron getRotated(Polyhedron polyhedron, int ax, int ay, int az)
@@ -86,6 +134,12 @@ namespace Affine3D
                 new double[4] { 0, 0, 0, 1 }
             );
             return TransformHelper.ChangePolyhedronByMatrix(polyhedron, moveMatrix * rotateAMatrix * rotateBMatrix * rotateCMatrix * moveMatrix2);
+        }
+
+
+        static public void RotateAroundLine(Polyhedron polyhedron, Line3D line, int angle)
+        {
+            polyhedron = getRotatedAroundLine(polyhedron, line, angle);
         }
 
         static public Polyhedron getRotatedAroundLine(Polyhedron polyhedron, Line3D line, int angle)

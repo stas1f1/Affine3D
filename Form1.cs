@@ -80,9 +80,7 @@ namespace Affine3D
 
             Polyhedron tetrahedron = Polyhedrons.getTetrahedron();
 
-            currentPolyhedron = AffineTransform.getMoved(tetrahedron, 0, 0, (int)-bz / 2);
-            foreach (var control in groupBox2.Controls)
-                (control as RadioButton).Checked = false;
+            currentPolyhedron = AffineTransform.getTransformed(tetrahedron, 0, 0, (int)-bz / 2);
             drawFigure();
         }
 
@@ -92,9 +90,7 @@ namespace Affine3D
 
             Polyhedron hexahedrone = Polyhedrons.getHexahedron();
 
-            currentPolyhedron = AffineTransform.getMoved(hexahedrone, 0, 0, -edgeLength/2);
-            foreach (var control in groupBox2.Controls)
-                (control as RadioButton).Checked = false;
+            currentPolyhedron = AffineTransform.getTransformed(hexahedrone, 0, 0, -edgeLength/2);
             drawFigure();
         }
 
@@ -102,9 +98,7 @@ namespace Affine3D
         {
             Polyhedron octahedrone = Polyhedrons.getOctahedron();
 
-            currentPolyhedron = AffineTransform.getMoved(octahedrone, 0, 0, (int)(150 * Math.Sqrt(2)/2));
-            foreach (var control in groupBox2.Controls)
-                (control as RadioButton).Checked = false;
+            currentPolyhedron = AffineTransform.getTransformed(octahedrone, 0, 0, (int)(150 * Math.Sqrt(2)/2));
             drawFigure();
         }
 
@@ -112,10 +106,8 @@ namespace Affine3D
         {
             Polyhedron icohedron = Polyhedrons.getIcohedron();
 
-            currentPolyhedron = AffineTransform.getMoved(icohedron, 200, 200, 0);
-
-            foreach (var control in groupBox2.Controls)
-                (control as RadioButton).Checked = false;
+            currentPolyhedron = AffineTransform.getTransformed(icohedron, 200, 200, 0);
+            
             drawFigure();
         }
 
@@ -123,13 +115,50 @@ namespace Affine3D
         {
             Polyhedron dodehedron = Polyhedrons.getDodehedron();
 
-            currentPolyhedron = AffineTransform.getMoved(dodehedron, 200, 200, 0);
-            foreach (var control in groupBox2.Controls)
-                (control as RadioButton).Checked = false;
+            currentPolyhedron = AffineTransform.getTransformed(dodehedron, 200, 200, 0);
+            
             drawFigure();
         }
 
-        
+        //TRANSLATION ROTATION SCALE
+        private void transformButton_Click(object sender, EventArgs e)
+        {
+            if (currentPolyhedron == null)
+            {
+                MessageBox.Show("Неодбходимо выбрать фигуру!", "Ошибка!", MessageBoxButtons.OK);
+            }
+            else
+            {
+                //TRANSLATE
+                int offsetX = (int)numericUpDown1.Value, offsetY = (int)numericUpDown2.Value, offsetZ = (int)numericUpDown3.Value;
+                AffineTransform.Transform(currentPolyhedron, offsetX, offsetY, offsetZ);
+                //ROTATE
+                int rotateAngleX = (int)numericUpDown4.Value;
+                int rotateAngleY = (int)numericUpDown5.Value;
+                int rotateAngleZ = (int)numericUpDown6.Value;
+                AffineTransform.Rotate(currentPolyhedron, rotateAngleX, rotateAngleY, rotateAngleZ);
+
+                //SCALE
+                if (checkBox1.Checked)
+                {
+                    float kx = (float)numericUpDown7.Value, ky = (float)numericUpDown8.Value, kz = (float)numericUpDown9.Value;
+                    AffineTransform.ScaleFromCenter(currentPolyhedron, kx, ky, kz);
+                }
+                else
+                {
+                    float kx = (float)numericUpDown7.Value, ky = (float)numericUpDown8.Value, kz = (float)numericUpDown9.Value;
+                    AffineTransform.Scale(currentPolyhedron, kx, ky, kz);
+                }
+            }
+            
+            //if (clipping == 0)
+            //    figure.Show(g, projection);
+
+            //camera.show(g, projection);
+
+            drawFigure();
+        }
+
 
         private void clearButton_Click(object sender, EventArgs e)
         {
@@ -139,11 +168,12 @@ namespace Affine3D
             graphics = Graphics.FromImage(pictureBox1.Image);
             graphics.Clear(Color.White);
             points.Clear();
-            pointsTextBox.Text = "{0, 0, 0}";
-            axisTextBox.Text = "Добавьте точку!";
+            //pointsTextBox.Text = "{0, 0, 0}";
+            //axisTextBox.Text = "Добавьте точку!";
 
         }
 
+        /*
         private void transformationRadioButton_Click(object sender, EventArgs e)
         {
             if (currentPolyhedron == null)
@@ -158,7 +188,7 @@ namespace Affine3D
                     var dialogFirst = new CoordinateBox("Введите смещение по координатам:");
                     if (dialogFirst.ShowDialog() == DialogResult.OK)
                     {
-                        currentPolyhedron = AffineTransform.getMoved(
+                        currentPolyhedron = AffineTransform.getTransformed(
                         currentPolyhedron,
                         dialogFirst.X,
                         dialogFirst.Y,
@@ -277,7 +307,7 @@ namespace Affine3D
                 }
                 drawFigure();
             }
-        }
+        }*/
 
         /// <summary>
         /// Смена проекции
@@ -311,151 +341,19 @@ namespace Affine3D
             return new Line(from, to);
         }
 
-        private void moreButton_Click(object sender, EventArgs e)
-        {
-
-            try
-            {
-                var dialog = new CoordinateBox("Введите координаты точек для вращения");
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    Point3D p = new Point3D(dialog.X, dialog.Y, dialog.Z);
-                    points.Add(p);
-                    if (points.Count == 1)
-                        pointsTextBox.Text = p.ToString();
-                    else
-                        pointsTextBox.Text += ", " + p.ToString();
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Попробуйте еще раз!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        private void addAxisButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var dialog = new CoordinateBox("Координаты точки оси вращения");
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    axisLine = new Point3D(dialog.X, dialog.Y, dialog.Z);
-                    axisTextBox.Text = "{0, 0, 0}" + axisLine.ToString();
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Попробуйте еще раз!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
-        }
-
-        /// <summary>
-        /// Ввод количества поворотов во вращении
-        /// </summary>
-        private void countTextBox_TextChanged(object sender, EventArgs e)
-        {
-            int.TryParse(countTextBox.Text, out turnSubs);
-        }
-
-
-        private void axisTextBox_TextChanged(object sender, EventArgs e)
+        private void clippingButton_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void drawRotationButton_Click(object sender, EventArgs e)
+        private void bufferButton_Click(object sender, EventArgs e)
         {
-            int.TryParse(countTextBox.Text, out turnSubs);
-            currentPolyhedron = RotationFigure.getRotationFigure(points, new Line3D(new Point3D(0, 0, 0), axisLine), turnSubs);
-            drawFigure();
+
         }
 
-
-
-        private void loadButton_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.CheckFileExists = true;
-            dialog.CheckPathExists = true;
-            dialog.Filter = "Текстовый файл|*.txt";
-            dialog.DefaultExt = "txt";
-            dialog.InitialDirectory = Directory.GetCurrentDirectory().Replace("bin\\Debug", "");
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                string fname = dialog.FileName;
-                Polyhedron polyhedron = new Polyhedron();
-                try //обратотка возможных ошибок
-                {
-                    foreach (var line in File.ReadAllLines(fname))
-                    {
-                        if (line.Split(' ').Length == 3) //это точка
-                        {
-                            var coords = line.Split(' ').Select(s => double.Parse(s)).ToArray();
-                            polyhedron.AddVertex(coords[0], coords[1], coords[2]);
-                        }
-                        else //это ребро
-                        {
-                            var vertexNumbers = line.Split(' ').Select(s => int.Parse(s)).ToArray();
-                            polyhedron.AddEdge(polyhedron.Vertices[vertexNumbers[0]], polyhedron.Vertices[vertexNumbers[1]]);
-                        }
-                    }
-                    currentPolyhedron = polyhedron;
-                    drawFigure();
-                    MessageBox.Show("Файл загружен!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch
-                {
-                    MessageBox.Show("Ошибка чтения файла!", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
 
-        private void saveButton_Click(object sender, EventArgs e)
-        {
-            if (currentPolyhedron == null)
-            {
-                MessageBox.Show("Ничего не нарисовано!", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.CheckPathExists = true;
-            dialog.Filter = "Текстовый файл|*.txt";
-            dialog.DefaultExt = "txt";
-            dialog.InitialDirectory = Directory.GetCurrentDirectory().Replace("bin\\Debug", "");
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                string fname = dialog.FileName;
-                using (var streamWriter = File.CreateText(fname))
-                {
-                    //записываем вершины с координатами
-                    foreach (var vertex in currentPolyhedron.Vertices)
-                        streamWriter.WriteLine($"{vertex.X} {vertex.Y} {vertex.Z}");
-
-                    //записываем список ребер
-                    foreach (var edge in currentPolyhedron.Edges)
-                        streamWriter.WriteLine($"{currentPolyhedron.Vertices.IndexOf(edge.From)} {currentPolyhedron.Vertices.IndexOf(edge.To)}");
-                }
-                MessageBox.Show("Файл сохранен!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        private void clearPointsButton_Click(object sender, EventArgs e)
-        {
-            points.Clear();
-            pointsTextBox.Text = "{0, 0, 0}";
-            axisTextBox.Text = "Добавьте точку!";
-        }
-
-        private void drawGraphicButton_Click(object sender, EventArgs e)
-        {
-            Graphic Graph = new Graphic((int)numericUpDown18.Value, (int)numericUpDown20.Value, (int)numericUpDown19.Value,
-                (int)numericUpDown21.Value, (int)numericUpDown1.Value, comboBox6.SelectedIndex);
-
-            currentPolyhedron = Graph.getGraphic();
-
-            drawFigure();
         }
     }
 }
