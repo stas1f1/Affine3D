@@ -182,9 +182,6 @@ namespace Affine3D
         }
 
         
-                drawFigure();
-            }
-        }*/
 
         /// <summary>
         /// Смена проекции
