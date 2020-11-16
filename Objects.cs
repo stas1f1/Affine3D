@@ -54,6 +54,8 @@ namespace Affine3D
         public Point3D(double x, double y, double z) { X = x; Y = y; Z = z; }
         public Point3D(int x, int y, int z) { X = x; Y = y; Z = z; }
 
+        public List<Point3D> Neighbours = new List<Point3D>();
+
         static public bool operator ==(Point3D p1, Point3D p2)
         {
             return p1.X == p2.X && p1.Y == p2.Y && p1.Z == p2.Z;
@@ -77,6 +79,18 @@ namespace Affine3D
         public override string ToString()
         {
             return "{"+ X + ", " + Y + ", " + Z + "}";
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Point3D)) 
+                return false;
+            return this == (obj as Point3D);
+        }
+
+        public PointD ToD()
+        {
+            return new PointD(X, Y);
         }
     }
 
@@ -139,7 +153,6 @@ namespace Affine3D
         // список ребер
         public List<Line3D> Edges { get; } = new List<Line3D>();
 
-
         public List<List<Point3D>> Facets { get; private set; } = new List<List<Point3D>>();
 
         // матрица смежности
@@ -170,9 +183,14 @@ namespace Affine3D
 
         public void AddVertex(Point3D point)
         {
-            Vertices.Add(point);
+            /*Vertices.Add(point);
             if (!AdjacencyMatrix.Keys.Contains(point))
-                AdjacencyMatrix.Add(point, new List<Point3D>());
+                AdjacencyMatrix.Add(point, new List<Point3D>());*/
+
+            if (Vertices.Exists(p => p == point)) 
+                return;
+            Vertices.Add(point);
+            AdjacencyMatrix.Add(point, new List<Point3D>());
         }
 
         public void AddVertex(int x, int y, int z) { AddVertex(new Point3D(x, y, z)); }
@@ -193,13 +211,24 @@ namespace Affine3D
 
         public void AddEdge(Point3D p1, Point3D p2)
         {
+            if (Edges.Exists(line => line.From == p1 && line.To == p2)) 
+                return;
+            if (Edges.Exists(line => line.To == p1 && line.From == p2)) 
+                return;
+
             Edges.Add(new Line3D(p1, p2));
             Point3D point1 = Vertices.Find(p => p == p1);
             Point3D point2 = Vertices.Find(p => p == p2);
-            if (!AdjacencyMatrix.ContainsKey(point1)) AdjacencyMatrix.Add(point1, new List<Point3D> { p2 });
-            else AdjacencyMatrix[point1].Add(p2);
-            if (!AdjacencyMatrix.ContainsKey(point2)) AdjacencyMatrix.Add(point2, new List<Point3D> { p1 });
-            else AdjacencyMatrix[point2].Add(p1);
+
+            if (!AdjacencyMatrix.ContainsKey(point1)) 
+                AdjacencyMatrix.Add(point1, new List<Point3D> { p2 });
+            else 
+                AdjacencyMatrix[point1].Add(p2);
+
+            if (!AdjacencyMatrix.ContainsKey(point2)) 
+                AdjacencyMatrix.Add(point2, new List<Point3D> { p1 });
+            else 
+                AdjacencyMatrix[point2].Add(p1);
         }
 
         // добавить семейство ребер из точки from в каждую точку списка to
