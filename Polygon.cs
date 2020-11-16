@@ -194,14 +194,16 @@ namespace Affine3D
                 Normal[2] *= -1;
             }
 
-            Point3D P = camera.First;
+            Point3D P = camera.Second - camera.First;
             Point3D E = new Point3D( P.X - Center.X, P.Y - Center.Y, P.Z - Center.Z );
-            double angle = Math.Acos((Normal[0] * E.X + Normal[1] * E.Y + Normal[2] * E.Z) / 
-                ((Math.Sqrt(Normal[0] * Normal[0] + Normal[1] * Normal[1] + Normal[2] * Normal[2]) * 
-                Math.Sqrt(E.X * E.X + E.Y * E.Y + E.Z * E.Z))));
+            double angle = Math.Acos(
+                (Normal[0] * P.X + Normal[1] * P.Y + Normal[2] * P.Z) /
+                ((Math.Sqrt(Normal[0] * Normal[0] + Normal[1] * Normal[1] + Normal[2] * Normal[2]) *
+                Math.Sqrt(P.X * P.X + P.Y * P.Y + P.Z * P.Z)))
+                );
             angle = angle * 180 / Math.PI;
 
-            IsVisible = angle >= 90;
+            IsVisible = angle <= 90;
         }
     }
 }

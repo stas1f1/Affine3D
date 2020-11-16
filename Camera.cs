@@ -39,11 +39,15 @@ namespace Affine3D
             rot_line = new Edge(p1, p2);
         }
 
-        public void show(Graphics g, Projection pr = 0, int x = 0, int y = 0, int z = 0, Pen pen = null)
+        public void show(Graphics g, Polyhedron figure)
         {
-            pen = Pens.Red;
+            figure.Show(g, view);
         }
 
+        public void showClipping(Graphics g, Polyhedron figure)
+        {
+            figure.ShowClipping(g, view);
+        }
 
         public void translate(float x, float y, float z)
         {
@@ -58,5 +62,7 @@ namespace Affine3D
             small_cube.Rotate(angle, a, line);
             rot_line.rotate(angle, a, line);
         }
+
+
     }
 }

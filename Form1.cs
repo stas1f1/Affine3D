@@ -39,9 +39,11 @@ namespace Affine3D
         {
             g.Clear(Color.White);
             if (renderMode == 0)
-                figure.ShowClipping(g, projection);
+                camera.showClipping(g, figure);
+            //figure.ShowClipping(g, projection);
             else
-                figure.Show(g, projection);
+                //figure.Show(g, projection);
+                camera.show(g, figure);
         }
 
         //TRANSLATION ROTATION SCALE
@@ -83,7 +85,6 @@ namespace Affine3D
 
             Draw();
 
-            camera.show(g, projection);
         }
 
         //CREATION OF POLYHEDRONS
@@ -159,6 +160,21 @@ namespace Affine3D
         //CAMERA
         private void transformCameraButton_Click(object sender, EventArgs e)
         {
+            cameraTransform();
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.T:
+                    cameraTransform();
+                    break;
+            }
+        }
+
+        void cameraTransform()
+        { 
             if (figure == null)
             {
                 MessageBox.Show("Сначала создайте фигуру", "Нет фигуры", MessageBoxButtons.OK);
@@ -168,7 +184,7 @@ namespace Affine3D
                 int dx = (int)numericUpDown18.Value,
                         dy = (int)numericUpDown17.Value,
                         dz = (int)numericUpDown16.Value;
-                figure.Translate(-dx, -dy, -dz);
+                //figure.Translate(-dx, -dy, -dz);
 
                 camera.translate(dx, dy, dz);
 
@@ -179,28 +195,27 @@ namespace Affine3D
                 camera.translate(-old_x_camera, -old_y_camera, -old_z_camera);
 
                 double angleOX = (int)numericUpDown15.Value;
-                figure.Rotate(-angleOX, Axis.AXIS_X);
+                //figure.Rotate(-angleOX, Axis.AXIS_X);
                 camera.rotate(angleOX, Axis.AXIS_X);
 
                 double angleOY = (int)numericUpDown14.Value;
-                figure.Rotate(-angleOY, Axis.AXIS_Y);
+                //figure.Rotate(-angleOY, Axis.AXIS_Y);
                 camera.rotate(angleOY, Axis.AXIS_Y);
 
                 double angleOZ = (int)numericUpDown13.Value;
-                figure.Rotate(-angleOZ, Axis.AXIS_Z);
+                //figure.Rotate(-angleOZ, Axis.AXIS_Z);
                 camera.rotate(angleOZ, Axis.AXIS_Z);
 
-                figure.Translate(old_x_camera, old_y_camera, old_z_camera);
+                //figure.Translate(old_x_camera, old_y_camera, old_z_camera);
                 camera.translate(old_x_camera, old_y_camera, old_z_camera);
             }
 
             g.Clear(Color.White);
-
-            camera.show(g, projection);
+            
             if (renderMode == 0)
-                figure.ShowClipping(g, projection);
+                camera.showClipping(g, figure);
             else
-                figure.Show(g, projection);
+                camera.show(g, figure);
         }
 
         private void defaultCameraButton_Click(object sender, EventArgs e)

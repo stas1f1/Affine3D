@@ -56,20 +56,17 @@ namespace Affine3D
             Center.Z /= Polygons.Count;
         }
 
-        public void Show(Graphics g, Projection pr = 0, Pen pen = null)
+        public void Show(Graphics g, Edge camView, Projection pr = 0, Pen pen = null)
         {
             foreach (Polygon f in Polygons)
-            {
-                f.FindNormal(Center, new Edge(new Point3D(0, 0, 500), new Point3D(0, 0, 500)));
                 f.Show(g, pr, pen);
-            }
         }
 
-        public void ShowClipping(Graphics g, Projection pr = 0, Pen pen = null)
+        public void ShowClipping(Graphics g, Edge camView, Projection pr = 0, Pen pen = null)
         {
             foreach (Polygon f in Polygons)
             {
-                f.FindNormal(Center, new Edge(new Point3D(0, 0, 500), new Point3D(0, 0, 500)));
+                f.FindNormal(Center, camView);
                 if (f.IsVisible)
                     f.Show(g, pr, pen);
             }
@@ -88,6 +85,18 @@ namespace Affine3D
                 f.rotate(angle, a, line);
             UpdateCenter();
         }
+
+        public void Rotate(double angleX, double angleY, double angleZ)
+        {
+            foreach (Polygon f in Polygons)
+            {
+                f.rotate(angleX, Axis.AXIS_X, null);
+                f.rotate(angleY, Axis.AXIS_Y, null);
+                f.rotate(angleZ, Axis.AXIS_Z, null);
+            }
+            UpdateCenter();
+        }
+
 
         public void Scale(float kx, float ky, float kz)
         {
