@@ -57,11 +57,14 @@
             this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             this.transformButton = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.numericUpDown9 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.transformCameraButton = new System.Windows.Forms.Button();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
             this.numericUpDown13 = new System.Windows.Forms.NumericUpDown();
@@ -76,7 +79,7 @@
             this.numericUpDown16 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown17 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown18 = new System.Windows.Forms.NumericUpDown();
-            this.button3 = new System.Windows.Forms.Button();
+            this.defaultCameraButton = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.comboBox6 = new System.Windows.Forms.ComboBox();
@@ -85,10 +88,7 @@
             this.numericUpDown10 = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
             this.bufferButton = new System.Windows.Forms.Button();
-            this.clippingButton = new System.Windows.Forms.Button();
-            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown9 = new System.Windows.Forms.NumericUpDown();
+            this.clippingCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -101,6 +101,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
             this.groupBox10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown14)).BeginInit();
@@ -111,9 +114,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown18)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -222,7 +222,6 @@
             this.ortographRadioButton.TabIndex = 10;
             this.ortographRadioButton.Text = "Ортографическая";
             this.ortographRadioButton.UseVisualStyleBackColor = true;
-            this.ortographRadioButton.Click += new System.EventHandler(this.proectionRadioButton_Click);
             // 
             // perspectiveRadioButton
             // 
@@ -236,7 +235,6 @@
             this.perspectiveRadioButton.TabStop = true;
             this.perspectiveRadioButton.Text = "Перспективная";
             this.perspectiveRadioButton.UseVisualStyleBackColor = true;
-            this.perspectiveRadioButton.Click += new System.EventHandler(this.proectionRadioButton_Click);
             // 
             // izometrRadioButton
             // 
@@ -248,7 +246,6 @@
             this.izometrRadioButton.TabIndex = 9;
             this.izometrRadioButton.Text = "Изометрическая";
             this.izometrRadioButton.UseVisualStyleBackColor = true;
-            this.izometrRadioButton.Click += new System.EventHandler(this.proectionRadioButton_Click);
             // 
             // clearButton
             // 
@@ -486,6 +483,90 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Масштабирование";
             // 
+            // numericUpDown9
+            // 
+            this.numericUpDown9.DecimalPlaces = 1;
+            this.numericUpDown9.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDown9.Location = new System.Drawing.Point(114, 106);
+            this.numericUpDown9.Maximum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numericUpDown9.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown9.Name = "numericUpDown9";
+            this.numericUpDown9.Size = new System.Drawing.Size(71, 32);
+            this.numericUpDown9.TabIndex = 56;
+            this.numericUpDown9.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDown8
+            // 
+            this.numericUpDown8.DecimalPlaces = 1;
+            this.numericUpDown8.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDown8.Location = new System.Drawing.Point(114, 69);
+            this.numericUpDown8.Maximum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numericUpDown8.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown8.Name = "numericUpDown8";
+            this.numericUpDown8.Size = new System.Drawing.Size(71, 32);
+            this.numericUpDown8.TabIndex = 55;
+            this.numericUpDown8.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDown7
+            // 
+            this.numericUpDown7.DecimalPlaces = 1;
+            this.numericUpDown7.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDown7.Location = new System.Drawing.Point(114, 31);
+            this.numericUpDown7.Maximum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numericUpDown7.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown7.Name = "numericUpDown7";
+            this.numericUpDown7.Size = new System.Drawing.Size(71, 32);
+            this.numericUpDown7.TabIndex = 54;
+            this.numericUpDown7.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
@@ -523,19 +604,19 @@
             this.label9.TabIndex = 20;
             this.label9.Text = "по оси OX";
             // 
-            // button2
+            // transformCameraButton
             // 
-            this.button2.BackColor = System.Drawing.Color.Transparent;
-            this.button2.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Location = new System.Drawing.Point(1111, 672);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(157, 52);
-            this.button2.TabIndex = 35;
-            this.button2.Text = "Преобразовать";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.transformCameraButton.BackColor = System.Drawing.Color.Transparent;
+            this.transformCameraButton.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.transformCameraButton.ForeColor = System.Drawing.Color.Black;
+            this.transformCameraButton.Location = new System.Drawing.Point(1111, 672);
+            this.transformCameraButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.transformCameraButton.Name = "transformCameraButton";
+            this.transformCameraButton.Size = new System.Drawing.Size(157, 52);
+            this.transformCameraButton.TabIndex = 35;
+            this.transformCameraButton.Text = "Преобразовать";
+            this.transformCameraButton.UseVisualStyleBackColor = false;
+            this.transformCameraButton.Click += new System.EventHandler(this.transformCameraButton_Click);
             // 
             // groupBox10
             // 
@@ -714,18 +795,19 @@
             this.numericUpDown18.Size = new System.Drawing.Size(71, 32);
             this.numericUpDown18.TabIndex = 8;
             // 
-            // button3
+            // defaultCameraButton
             // 
-            this.button3.BackColor = System.Drawing.Color.Transparent;
-            this.button3.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.button3.ForeColor = System.Drawing.Color.Black;
-            this.button3.Location = new System.Drawing.Point(1272, 672);
-            this.button3.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(123, 52);
-            this.button3.TabIndex = 32;
-            this.button3.Text = "По умолч.";
-            this.button3.UseVisualStyleBackColor = false;
+            this.defaultCameraButton.BackColor = System.Drawing.Color.Transparent;
+            this.defaultCameraButton.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.defaultCameraButton.ForeColor = System.Drawing.Color.Black;
+            this.defaultCameraButton.Location = new System.Drawing.Point(1272, 672);
+            this.defaultCameraButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.defaultCameraButton.Name = "defaultCameraButton";
+            this.defaultCameraButton.Size = new System.Drawing.Size(123, 52);
+            this.defaultCameraButton.TabIndex = 32;
+            this.defaultCameraButton.Text = "По умолч.";
+            this.defaultCameraButton.UseVisualStyleBackColor = false;
+            this.defaultCameraButton.Click += new System.EventHandler(this.defaultCameraButton_Click);
             // 
             // textBox1
             // 
@@ -735,9 +817,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(263, 216);
             this.textBox1.TabIndex = 93;
-
             this.textBox1.Text = "130,0,250\r\n80,0,200\r\n60,0,160\r\n80,0,80\r\n140,0,40\r\n140,0,0\r\n100,0,-60\r\n50,0,-100";
-
             // 
             // groupBox4
             // 
@@ -745,9 +825,7 @@
             this.groupBox4.Controls.Add(this.label10);
             this.groupBox4.Controls.Add(this.textBox1);
             this.groupBox4.Controls.Add(this.label11);
-
             this.groupBox4.Controls.Add(this.numericUpDown10);
-
             this.groupBox4.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.groupBox4.Location = new System.Drawing.Point(1112, 1);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -793,7 +871,6 @@
             // 
             this.numericUpDown10.Location = new System.Drawing.Point(204, 253);
             this.numericUpDown10.Minimum = new decimal(new int[] {
-
             100,
             0,
             0,
@@ -820,7 +897,7 @@
             // bufferButton
             // 
             this.bufferButton.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.bufferButton.Location = new System.Drawing.Point(1112, 433);
+            this.bufferButton.Location = new System.Drawing.Point(1112, 387);
             this.bufferButton.Margin = new System.Windows.Forms.Padding(2);
             this.bufferButton.Name = "bufferButton";
             this.bufferButton.Size = new System.Drawing.Size(283, 45);
@@ -829,115 +906,31 @@
             this.bufferButton.UseVisualStyleBackColor = true;
             this.bufferButton.Click += new System.EventHandler(this.bufferButton_Click);
             // 
-            // clippingButton
+            // clippingCheckBox
             // 
-            this.clippingButton.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.clippingButton.Location = new System.Drawing.Point(1112, 384);
-            this.clippingButton.Margin = new System.Windows.Forms.Padding(2);
-            this.clippingButton.Name = "clippingButton";
-            this.clippingButton.Size = new System.Drawing.Size(283, 45);
-            this.clippingButton.TabIndex = 97;
-            this.clippingButton.Text = "Отcечь нелицевые грани";
-            this.clippingButton.UseVisualStyleBackColor = true;
-            this.clippingButton.Click += new System.EventHandler(this.clippingButton_Click);
-            // 
-            // numericUpDown7
-            // 
-            this.numericUpDown7.DecimalPlaces = 1;
-            this.numericUpDown7.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDown7.Location = new System.Drawing.Point(114, 31);
-            this.numericUpDown7.Maximum = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.numericUpDown7.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDown7.Name = "numericUpDown7";
-            this.numericUpDown7.Size = new System.Drawing.Size(71, 32);
-            this.numericUpDown7.TabIndex = 54;
-            this.numericUpDown7.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDown8
-            // 
-            this.numericUpDown8.DecimalPlaces = 1;
-            this.numericUpDown8.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDown8.Location = new System.Drawing.Point(114, 69);
-            this.numericUpDown8.Maximum = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.numericUpDown8.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDown8.Name = "numericUpDown8";
-            this.numericUpDown8.Size = new System.Drawing.Size(71, 32);
-            this.numericUpDown8.TabIndex = 55;
-            this.numericUpDown8.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDown9
-            // 
-            this.numericUpDown9.DecimalPlaces = 1;
-            this.numericUpDown9.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDown9.Location = new System.Drawing.Point(114, 106);
-            this.numericUpDown9.Maximum = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.numericUpDown9.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDown9.Name = "numericUpDown9";
-            this.numericUpDown9.Size = new System.Drawing.Size(71, 32);
-            this.numericUpDown9.TabIndex = 56;
-            this.numericUpDown9.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.clippingCheckBox.AutoSize = true;
+            this.clippingCheckBox.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.clippingCheckBox.Location = new System.Drawing.Point(1124, 446);
+            this.clippingCheckBox.Name = "clippingCheckBox";
+            this.clippingCheckBox.Size = new System.Drawing.Size(249, 29);
+            this.clippingCheckBox.TabIndex = 57;
+            this.clippingCheckBox.Text = "Отcечь нелицевые грани";
+            this.clippingCheckBox.UseVisualStyleBackColor = true;
+            this.clippingCheckBox.CheckedChanged += new System.EventHandler(this.clippingCheckBox_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1404, 741);
-            this.Controls.Add(this.clippingButton);
+            this.Controls.Add(this.clippingCheckBox);
             this.Controls.Add(this.bufferButton);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.transformCameraButton);
             this.Controls.Add(this.groupBox10);
             this.Controls.Add(this.groupBox11);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.defaultCameraButton);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.transformButton);
             this.Controls.Add(this.groupBox7);
@@ -965,6 +958,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown13)).EndInit();
@@ -978,10 +974,6 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).EndInit();
-
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1022,7 +1014,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button transformCameraButton;
         private System.Windows.Forms.GroupBox groupBox10;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.NumericUpDown numericUpDown13;
@@ -1037,7 +1029,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDown16;
         private System.Windows.Forms.NumericUpDown numericUpDown17;
         private System.Windows.Forms.NumericUpDown numericUpDown18;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button defaultCameraButton;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.ComboBox comboBox6;
@@ -1047,10 +1039,10 @@
 
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button bufferButton;
-        private System.Windows.Forms.Button clippingButton;
         private System.Windows.Forms.NumericUpDown numericUpDown9;
         private System.Windows.Forms.NumericUpDown numericUpDown8;
         private System.Windows.Forms.NumericUpDown numericUpDown7;
+        private System.Windows.Forms.CheckBox clippingCheckBox;
     }
 }
 

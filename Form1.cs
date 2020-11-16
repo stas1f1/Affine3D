@@ -11,119 +11,43 @@ using System.IO;
 
 namespace Affine3D
 {
+    public enum Axis { AXIS_X, AXIS_Y, AXIS_Z, LINE };
+    public enum Projection { PERSPECTIVE = 0, ISOMETRIC, ORTHOGR_X, ORTHOGR_Y, ORTHOGR_Z };
+    public enum RenderMode { Clipp = 0, Noclip = 1};
+
     public partial class Form1 : Form
     {
-        Graphics graphics;
-        Polyhedron currentPolyhedron;
-        int currentProectionMode = 4;
-        Proector proector = new Proector();
-        Point3D axisLine;
-        /// <summary>
-        /// Точки для вращения
-        /// </summary>
-        List<Point3D> points;
-        /// <summary>
-        /// Угол 1 поворота
-        /// </summary>
-        int turnSubs = 0;
+        Graphics g;
+        Projection projection = 0;
+        Axis rotateLineMode = 0;
+        Polyhedron figure = null;
+        int revertId = -1;
+
+        RenderMode renderMode = RenderMode.Noclip;
+
+        Camera camera = new Camera(50, 50);
 
         public Form1()
         {
             InitializeComponent();
-            pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-            graphics = Graphics.FromImage(pictureBox1.Image);
-            graphics.Clear(Color.White);
-            points = new List<Point3D>();
-            proector.Setup();
+            g = pictureBox1.CreateGraphics();
+            g.TranslateTransform(pictureBox1.ClientSize.Width / 2, pictureBox1.ClientSize.Height / 2);
+            g.ScaleTransform(1, -1);
         }
 
-        private void drawFigure()
+        void Draw()
         {
-
-
-            int offsetX = pictureBox1.Width / 2;
-            int offsetY = pictureBox1.Height / 2;
-            PointD offset = new PointD(offsetX, offsetY);
-
-            
-
-            graphics.Clear(Color.White);
-            // drawing axis
-            Line axis;
-            //OX
-            axis = proector.Axis(new Point3D(500, 0, 0), currentProectionMode);
-            graphics.DrawLine(new Pen(Color.Red), (axis.From + offset).ToPoint(), (axis.To + offset).ToPoint());
-            //OY
-            axis = proector.Axis(new Point3D(0, 500, 0), currentProectionMode);
-            graphics.DrawLine(new Pen(Color.Green), (axis.From + offset).ToPoint(), (axis.To + offset).ToPoint());
-
-            //OZ
-            axis = proector.Axis(new Point3D(0, 0, 500), currentProectionMode);
-            graphics.DrawLine(new Pen(Color.Blue), (axis.From + offset).ToPoint(), (axis.To + offset).ToPoint());
-
-            List<Line> lines = proector.Display(currentPolyhedron, currentProectionMode);
-            foreach (var line in lines)
-                graphics.DrawLine(new Pen(Color.Black), (line.From + offset).ToPoint() , (line.To + offset).ToPoint());
-
-
-
-            pictureBox1.Refresh();
-
-            pictureBox1.Invalidate();
-        }
-        
-        private void createTetrahedron_Click(object sender, EventArgs e)
-        {
-            double x = 200, y = 150, z = 0;
-            int r = 150;
-            double bz = z - r * Math.Sqrt(6) / 3.0;
-
-            Polyhedron tetrahedron = Polyhedrons.getTetrahedron();
-
-            currentPolyhedron = AffineTransform.getTransformed(tetrahedron, 0, 0, (int)-bz / 2);
-            drawFigure();
-        }
-
-        private void createHexahedron_Click(object sender, EventArgs e)
-        {
-            int edgeLength = 100;
-
-            Polyhedron hexahedrone = Polyhedrons.getHexahedron();
-
-            currentPolyhedron = AffineTransform.getTransformed(hexahedrone, 0, 0, -edgeLength/2);
-            drawFigure();
-        }
-
-        private void createOctahedron_Click(object sender, EventArgs e)
-        {
-            Polyhedron octahedrone = Polyhedrons.getOctahedron();
-
-            currentPolyhedron = AffineTransform.getTransformed(octahedrone, 0, 0, (int)(150 * Math.Sqrt(2)/2));
-            drawFigure();
-        }
-
-        private void createIcohedron_Click(object sender, EventArgs e)
-        {
-            Polyhedron icohedron = Polyhedrons.getIcohedron();
-
-            currentPolyhedron = AffineTransform.getTransformed(icohedron, 200, 200, 0);
-            
-            drawFigure();
-        }
-
-        private void createDodehedron_Click(object sender, EventArgs e)
-        {
-            Polyhedron dodehedron = Polyhedrons.getDodehedron();
-
-            currentPolyhedron = AffineTransform.getTransformed(dodehedron, 200, 200, 0);
-            
-            drawFigure();
+            g.Clear(Color.White);
+            if (renderMode == 0)
+                figure.ShowClipping(g, projection);
+            else
+                figure.Show(g, projection);
         }
 
         //TRANSLATION ROTATION SCALE
         private void transformButton_Click(object sender, EventArgs e)
         {
-            if (currentPolyhedron == null)
+            if (figure == null)
             {
                 MessageBox.Show("Неодбходимо выбрать фигуру!", "Ошибка!", MessageBoxButtons.OK);
             }
@@ -131,104 +55,159 @@ namespace Affine3D
             {
                 //TRANSLATE
                 int offsetX = (int)numericUpDown1.Value, offsetY = (int)numericUpDown2.Value, offsetZ = (int)numericUpDown3.Value;
-
-                currentPolyhedron = AffineTransform.getTransformed(currentPolyhedron, offsetX, offsetY, offsetZ);
+                figure.Translate(offsetX, offsetY, offsetZ);
 
                 //ROTATE
-                int rotateAngleX = (int)numericUpDown4.Value;
-                int rotateAngleY = (int)numericUpDown5.Value;
-                int rotateAngleZ = (int)numericUpDown6.Value;
-
-                currentPolyhedron = AffineTransform.getRotated(currentPolyhedron, rotateAngleX, rotateAngleY, rotateAngleZ);
-
+                int rotateAngleX = (int)numericUpDown4.Value, rotateAngleY = (int)numericUpDown5.Value, rotateAngleZ = (int)numericUpDown6.Value;
+                figure.Rotate(rotateAngleX, 0);
+                figure.Rotate(rotateAngleY, Axis.AXIS_Y);
+                figure.Rotate(rotateAngleZ, Axis.AXIS_Z);
 
                 //SCALE
                 if (checkBox1.Checked)
                 {
+                    float old_x = figure.Center.X, old_y = figure.Center.Y, old_z = figure.Center.Z;
+                    figure.Translate(-old_x, -old_y, -old_z);
+
                     float kx = (float)numericUpDown7.Value, ky = (float)numericUpDown8.Value, kz = (float)numericUpDown9.Value;
+                    figure.Scale(kx, ky, kz);
 
-                    currentPolyhedron = AffineTransform.getScaledFromCenter(currentPolyhedron, kx, ky, kz);
-
+                    figure.Translate(old_x, old_y, old_z);
                 }
                 else
                 {
                     float kx = (float)numericUpDown7.Value, ky = (float)numericUpDown8.Value, kz = (float)numericUpDown9.Value;
-
-                    currentPolyhedron = AffineTransform.getScaled(currentPolyhedron, kx, ky, kz);
-
+                    figure.Scale(kx, ky, kz);
                 }
             }
-            
-            //if (clipping == 0)
-            //    figure.Show(g, projection);
 
-            //camera.show(g, projection);
+            Draw();
 
-            drawFigure();
+            camera.show(g, projection);
         }
 
-
-        private void clearButton_Click(object sender, EventArgs e)
+        //CREATION OF POLYHEDRONS
+        private void createTetrahedron_Click(object sender, EventArgs e)
         {
-            currentPolyhedron = null;
-            points = new List<Point3D>();
-            pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-            graphics = Graphics.FromImage(pictureBox1.Image);
-            graphics.Clear(Color.White);
-            points.Clear();
-            //pointsTextBox.Text = "{0, 0, 0}";
-            //axisTextBox.Text = "Добавьте точку!";
-
+            figure = new Polyhedron();
+            figure.Tetrahedron();
+            Draw();
         }
 
-        
-
-        /// <summary>
-        /// Смена проекции
-        /// </summary>
-        private void proectionRadioButton_Click(object sender, EventArgs e)
+        private void createIcohedron_Click(object sender, EventArgs e)
         {
-            if (izometrRadioButton.Checked)
-            {
-                currentProectionMode = 0;
-            }
-            else if (perspectiveRadioButton.Checked)
-            {
-                currentProectionMode = 4;
-            }
-            else if (ortographRadioButton.Checked)
-            {
-                var dialog = new InputBoxWithRadioBut();
-                if (dialog.ShowDialog() == DialogResult.OK)
-                    currentProectionMode = dialog.ResultText;
-            }
-            drawFigure();
+            figure = new Polyhedron();
+            figure.Icosahedron();
+            Draw();
         }
 
-        public Line makeRay(PointD from, PointD to)
+        private void createHexahedron_Click(object sender, EventArgs e)
         {
-            PointD vec = to - from;
-            if (to == from) return new Line(from, to);
-            while (to.X > 0 && to.X < pictureBox1.Width && to.Y > 0 && to.Y < pictureBox1.Height)
-                to += vec;
-
-            return new Line(from, to);
+            figure = new Polyhedron();
+            figure.Hexahedron();
+            Draw();
         }
 
-        private void clippingButton_Click(object sender, EventArgs e)
+        private void createDodehedron_Click(object sender, EventArgs e)
         {
-
+            figure = new Polyhedron();
+            figure.Dodecahedron();
+            Draw();
         }
+
+        private void createOctahedron_Click(object sender, EventArgs e)
+        {
+            figure = new Polyhedron();
+            figure.Octahedron();
+            Draw();
+        }
+
+
+        //CLIPPING
+        private void clippingCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (clippingCheckBox.Checked)
+                renderMode = 0;
+            else
+                renderMode = RenderMode.Noclip;
+            Draw();
+        }
+
+        //Z-BUFFER
 
         private void bufferButton_Click(object sender, EventArgs e)
         {
+            int[] buff = new int[pictureBox1.Width * pictureBox1.Height];
 
+            figure.calculateZBuffer(pictureBox1.Width, pictureBox1.Height, out buff);
+
+            Bitmap bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            pictureBox1.Image = bmp;
+
+            g.Clear(Color.White);
+
+            for (int i = 0; i < pictureBox1.Width; ++i)
+                for (int j = 0; j < pictureBox1.Height; ++j)
+                {
+                    Color c = Color.FromArgb(buff[i * pictureBox1.Height + j], buff[i * pictureBox1.Height + j], buff[i * pictureBox1.Height + j]);
+                    bmp.SetPixel(i, j, c);
+                }
+
+            pictureBox1.Refresh();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        //CAMERA
+        private void transformCameraButton_Click(object sender, EventArgs e)
+        {
+            if (figure == null)
+            {
+                MessageBox.Show("Сначала создайте фигуру", "Нет фигуры", MessageBoxButtons.OK);
+            }
+            else
+            {
+                int dx = (int)numericUpDown18.Value,
+                        dy = (int)numericUpDown17.Value,
+                        dz = (int)numericUpDown16.Value;
+                figure.Translate(-dx, -dy, -dz);
+
+                camera.translate(dx, dy, dz);
+
+                float old_x_camera = figure.Center.X,
+                        old_y_camera = figure.Center.Y,
+                        old_z_camera = figure.Center.Z;
+                //figure.Translate(-old_x_camera, -old_y_camera, -old_z_camera);
+                camera.translate(-old_x_camera, -old_y_camera, -old_z_camera);
+
+                double angleOX = (int)numericUpDown15.Value;
+                figure.Rotate(-angleOX, Axis.AXIS_X);
+                camera.rotate(angleOX, Axis.AXIS_X);
+
+                double angleOY = (int)numericUpDown14.Value;
+                figure.Rotate(-angleOY, Axis.AXIS_Y);
+                camera.rotate(angleOY, Axis.AXIS_Y);
+
+                double angleOZ = (int)numericUpDown13.Value;
+                figure.Rotate(-angleOZ, Axis.AXIS_Z);
+                camera.rotate(angleOZ, Axis.AXIS_Z);
+
+                figure.Translate(old_x_camera, old_y_camera, old_z_camera);
+                camera.translate(old_x_camera, old_y_camera, old_z_camera);
+            }
+
+            g.Clear(Color.White);
+
+            camera.show(g, projection);
+            if (renderMode == 0)
+                figure.ShowClipping(g, projection);
+            else
+                figure.Show(g, projection);
+        }
+
+        private void defaultCameraButton_Click(object sender, EventArgs e)
         {
 
         }
+
         private void drawRotationButton_Click(object sender, EventArgs e)
         {
             List<Point3D> points = new List<Point3D>();
@@ -240,34 +219,36 @@ namespace Affine3D
                 points.Add(new Point3D(float.Parse(arr[0]), float.Parse(arr[1]), float.Parse(arr[2])));
             }
 
-            Line3D axis = new Line3D();
-            axis.From = new Point3D(0, 0, 0);
+            Axis axis = 0;
             switch (comboBox6.SelectedItem.ToString())
             {
                 case "OX":
-                    axis.To = new Point3D(1, 0, 0);
+                    axis = 0;
                     break;
                 case "OY":
-                    axis.To = new Point3D(0, 1, 0);
+                    axis = Axis.AXIS_Y;
                     break;
                 case "OZ":
-                    axis.To = new Point3D(0, 0, 1);
+                    axis = Axis.AXIS_Z;
                     break;
                 default:
+                    axis = 0;
                     break;
             }
 
-            currentPolyhedron = RotationFigure.getRotationFigure(points, axis, (int)numericUpDown10.Value);
-            //rotateFigure = new RotationFigure(points, axis, (int)numericUpDown23.Value);
+            RotationFigure rotateFigure = new RotationFigure(points, axis, (int)numericUpDown10.Value);
 
+            figure = rotateFigure;
 
-            /*g.Clear(Color.White);
-            if (clipping == 0)
-                rotateFigure.Show(g, 0);
-            else
-                show_z_buff();*/
-            drawFigure();
+            Draw();
         }
 
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+            g.Clear(Color.White);
+            Polyhedron figure = null;
+        }
+
+        
     }
 }
