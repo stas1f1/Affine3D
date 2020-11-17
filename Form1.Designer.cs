@@ -87,8 +87,9 @@
             this.label11 = new System.Windows.Forms.Label();
             this.numericUpDown10 = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
-            this.bufferButton = new System.Windows.Forms.Button();
             this.clippingCheckBox = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.bufferCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -894,23 +895,11 @@
             this.label12.TabIndex = 95;
             this.label12.Text = "Камера";
             // 
-            // bufferButton
-            // 
-            this.bufferButton.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.bufferButton.Location = new System.Drawing.Point(1112, 387);
-            this.bufferButton.Margin = new System.Windows.Forms.Padding(2);
-            this.bufferButton.Name = "bufferButton";
-            this.bufferButton.Size = new System.Drawing.Size(283, 45);
-            this.bufferButton.TabIndex = 96;
-            this.bufferButton.Text = "Z-буфферизация";
-            this.bufferButton.UseVisualStyleBackColor = true;
-            this.bufferButton.Click += new System.EventHandler(this.bufferButton_Click);
-            // 
             // clippingCheckBox
             // 
             this.clippingCheckBox.AutoSize = true;
             this.clippingCheckBox.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.clippingCheckBox.Location = new System.Drawing.Point(1124, 446);
+            this.clippingCheckBox.Location = new System.Drawing.Point(1124, 430);
             this.clippingCheckBox.Name = "clippingCheckBox";
             this.clippingCheckBox.Size = new System.Drawing.Size(249, 29);
             this.clippingCheckBox.TabIndex = 57;
@@ -918,13 +907,37 @@
             this.clippingCheckBox.UseVisualStyleBackColor = true;
             this.clippingCheckBox.CheckedChanged += new System.EventHandler(this.clippingCheckBox_CheckedChanged);
             // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.checkBox2.Location = new System.Drawing.Point(162, 119);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(116, 29);
+            this.checkBox2.TabIndex = 97;
+            this.checkBox2.Text = ">1 (z-buf)";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            // 
+            // bufferCheckBox
+            // 
+            this.bufferCheckBox.AutoSize = true;
+            this.bufferCheckBox.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.bufferCheckBox.Location = new System.Drawing.Point(1124, 398);
+            this.bufferCheckBox.Name = "bufferCheckBox";
+            this.bufferCheckBox.Size = new System.Drawing.Size(104, 29);
+            this.bufferCheckBox.TabIndex = 98;
+            this.bufferCheckBox.Text = "Z-буфер";
+            this.bufferCheckBox.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1404, 741);
+            this.Controls.Add(this.bufferCheckBox);
+            this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.clippingCheckBox);
-            this.Controls.Add(this.bufferButton);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.transformCameraButton);
@@ -1039,11 +1052,12 @@
         private System.Windows.Forms.NumericUpDown numericUpDown10;
 
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button bufferButton;
         private System.Windows.Forms.NumericUpDown numericUpDown9;
         private System.Windows.Forms.NumericUpDown numericUpDown8;
         private System.Windows.Forms.NumericUpDown numericUpDown7;
         private System.Windows.Forms.CheckBox clippingCheckBox;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox bufferCheckBox;
     }
 }
 

@@ -19,13 +19,16 @@ namespace Affine3D
     {
         Graphics g;
         Projection projection = 0;
+        bool showZBuf = false;
+        bool multiitem = false;
         Axis rotateLineMode = 0;
         Polyhedron figure = null;
+        List<Polyhedron> figures;
         int revertId = -1;
 
         RenderMode renderMode = RenderMode.Noclip;
 
-        Camera camera = new Camera(50, 50);
+        Camera camera = new Camera();
 
         public Form1()
         {
@@ -33,17 +36,23 @@ namespace Affine3D
             g = pictureBox1.CreateGraphics();
             g.TranslateTransform(pictureBox1.ClientSize.Width / 2, pictureBox1.ClientSize.Height / 2);
             g.ScaleTransform(1, -1);
+            figures = new List<Polyhedron>();
         }
 
         void Draw()
         {
             g.Clear(Color.White);
-            if (renderMode == 0)
-                camera.showClipping(g, figure);
-            //figure.ShowClipping(g, projection);
+            if (showZBuf)
+                show_z_buf();
             else
-                //figure.Show(g, projection);
-                camera.show(g, figure);
+            {
+                if (renderMode == 0)
+                    camera.showClipping(g, figure);
+                //figure.ShowClipping(g, projection);
+                else
+                    //figure.Show(g, projection);
+                    camera.show(g, figure);
+            }
         }
 
         //TRANSLATION ROTATION SCALE
@@ -68,17 +77,17 @@ namespace Affine3D
                 //SCALE
                 if (checkBox1.Checked)
                 {
-                    float old_x = figure.Center.X, old_y = figure.Center.Y, old_z = figure.Center.Z;
+                    double old_x = figure.Center.X, old_y = figure.Center.Y, old_z = figure.Center.Z;
                     figure.Translate(-old_x, -old_y, -old_z);
 
-                    float kx = (float)numericUpDown7.Value, ky = (float)numericUpDown8.Value, kz = (float)numericUpDown9.Value;
+                    double kx = (double)numericUpDown7.Value, ky = (double)numericUpDown8.Value, kz = (double)numericUpDown9.Value;
                     figure.Scale(kx, ky, kz);
 
                     figure.Translate(old_x, old_y, old_z);
                 }
                 else
                 {
-                    float kx = (float)numericUpDown7.Value, ky = (float)numericUpDown8.Value, kz = (float)numericUpDown9.Value;
+                    double kx = (double)numericUpDown7.Value, ky = (double)numericUpDown8.Value, kz = (double)numericUpDown9.Value;
                     figure.Scale(kx, ky, kz);
                 }
             }
@@ -90,6 +99,8 @@ namespace Affine3D
         //CREATION OF POLYHEDRONS
         private void createTetrahedron_Click(object sender, EventArgs e)
         {
+            if (multiitem)
+                figures.Add(figure);
             figure = new Polyhedron();
             figure.Tetrahedron();
             Draw();
@@ -97,6 +108,8 @@ namespace Affine3D
 
         private void createIcohedron_Click(object sender, EventArgs e)
         {
+            if (multiitem)
+                figures.Add(figure);
             figure = new Polyhedron();
             figure.Icosahedron();
             Draw();
@@ -104,6 +117,8 @@ namespace Affine3D
 
         private void createHexahedron_Click(object sender, EventArgs e)
         {
+            if (multiitem)
+                figures.Add(figure);
             figure = new Polyhedron();
             figure.Hexahedron();
             Draw();
@@ -111,6 +126,8 @@ namespace Affine3D
 
         private void createDodehedron_Click(object sender, EventArgs e)
         {
+            if (multiitem)
+                figures.Add(figure);
             figure = new Polyhedron();
             figure.Dodecahedron();
             Draw();
@@ -118,6 +135,8 @@ namespace Affine3D
 
         private void createOctahedron_Click(object sender, EventArgs e)
         {
+            if (multiitem)
+                figures.Add(figure);
             figure = new Polyhedron();
             figure.Octahedron();
             Draw();
@@ -135,12 +154,20 @@ namespace Affine3D
         }
 
         //Z-BUFFER
+        
 
-        private void bufferButton_Click(object sender, EventArgs e)
+        private void show_z_buf()
         {
             int[] buff = new int[pictureBox1.Width * pictureBox1.Height];
-
             figure.calculateZBuffer(pictureBox1.Width, pictureBox1.Height, out buff);
+
+            if (multiitem)
+            {
+                foreach (var f in figures)
+                {
+                    f.addOnZBuffer(pictureBox1.Width, pictureBox1.Height, ref buff);
+                }
+            }
 
             Bitmap bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             pictureBox1.Image = bmp;
@@ -187,40 +214,21 @@ namespace Affine3D
                 //figure.Translate(-dx, -dy, -dz);
 
                 camera.translate(dx, dy, dz);
-
-                float old_x_camera = figure.Center.X,
-                        old_y_camera = figure.Center.Y,
-                        old_z_camera = figure.Center.Z;
-                //figure.Translate(-old_x_camera, -old_y_camera, -old_z_camera);
-                camera.translate(-old_x_camera, -old_y_camera, -old_z_camera);
-
-                double angleOX = (int)numericUpDown15.Value;
+                
                 //figure.Rotate(-angleOX, Axis.AXIS_X);
-                camera.rotate(angleOX, Axis.AXIS_X);
-
-                double angleOY = (int)numericUpDown14.Value;
-                //figure.Rotate(-angleOY, Axis.AXIS_Y);
-                camera.rotate(angleOY, Axis.AXIS_Y);
-
-                double angleOZ = (int)numericUpDown13.Value;
-                //figure.Rotate(-angleOZ, Axis.AXIS_Z);
-                camera.rotate(angleOZ, Axis.AXIS_Z);
-
-                //figure.Translate(old_x_camera, old_y_camera, old_z_camera);
-                camera.translate(old_x_camera, old_y_camera, old_z_camera);
+                camera.rotate((int)numericUpDown15.Value,
+                    (int)numericUpDown14.Value,
+                    (int)numericUpDown13.Value);
             }
 
-            g.Clear(Color.White);
-            
-            if (renderMode == 0)
-                camera.showClipping(g, figure);
-            else
-                camera.show(g, figure);
+            Draw();
         }
 
         private void defaultCameraButton_Click(object sender, EventArgs e)
         {
-
+            camera.reset();
+            numericUpDown13.Value = numericUpDown14.Value = numericUpDown15.Value =
+            numericUpDown16.Value = numericUpDown17.Value = numericUpDown18.Value = 0;
         }
 
         private void drawRotationButton_Click(object sender, EventArgs e)
@@ -231,7 +239,7 @@ namespace Affine3D
             foreach (var p in lines)
             {
                 var arr = ((string)p).Split(',');
-                points.Add(new Point3D(float.Parse(arr[0]), float.Parse(arr[1]), float.Parse(arr[2])));
+                points.Add(new Point3D(double.Parse(arr[0]), double.Parse(arr[1]), double.Parse(arr[2])));
             }
 
             Axis axis = 0;
@@ -261,9 +269,19 @@ namespace Affine3D
         private void clearButton_Click(object sender, EventArgs e)
         {
             g.Clear(Color.White);
+            figures.Clear();
             Polyhedron figure = null;
         }
 
-        
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            multiitem = !multiitem;
+        }
+
+        private void bufferCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            showZBuf = !showZBuf;
+            Draw();
+        }
     }
 }

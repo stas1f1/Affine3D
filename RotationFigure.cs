@@ -16,7 +16,7 @@ namespace Affine3D
         {
             Polygons = new List<Polygon>();
             List<Point3D> rotatedPoints = new List<Point3D>();
-            float angle = 360f / count;
+            double angle = 360f / count;
             
             foreach (var p in startPoints)
             {

@@ -72,7 +72,7 @@ namespace Affine3D
             }
         }
 
-        public void Translate(float x, float y, float z)
+        public void Translate(double x, double y, double z)
         {
             foreach (Polygon f in Polygons)
                 f.translate(x, y, z);
@@ -98,7 +98,7 @@ namespace Affine3D
         }
 
 
-        public void Scale(float kx, float ky, float kz)
+        public void Scale(double kx, double ky, double kz)
         {
             foreach (Polygon f in Polygons)
                 f.scale(kx, ky, kz);
@@ -129,7 +129,7 @@ namespace Affine3D
             UpdateCenter();
         }
 
-        public void Hexahedron(float size = 50)
+        public void Hexahedron(double size = 50)
         {
             Polygon f = new Polygon(
                 new List<Point3D>
@@ -333,10 +333,10 @@ namespace Affine3D
         {
             Polygons = new List<Polygon>();
 
-            float size = 100;
+            double size = 100;
 
-            float r1 = size * (float)Math.Sqrt(3) / 4;
-            float r = size * (3 + (float)Math.Sqrt(5)) / (4 * (float)Math.Sqrt(3));
+            double r1 = size * (double)Math.Sqrt(3) / 4;
+            double r = size * (3 + (double)Math.Sqrt(5)) / (4 * (double)Math.Sqrt(3));
 
             Point3D up_center = new Point3D(0, -r1, 0);
             Point3D down_center = new Point3D(0, r1, 0);
@@ -345,7 +345,7 @@ namespace Affine3D
             List<Point3D> up_points = new List<Point3D>();
             for (int i = 0; i < 5; ++i)
             {
-                up_points.Add(new Point3D(up_center.X + r * (float)Math.Cos(a), up_center.Y, up_center.Z - r * (float)Math.Sin(a)));
+                up_points.Add(new Point3D(up_center.X + r * (double)Math.Cos(a), up_center.Y, up_center.Z - r * (double)Math.Sin(a)));
                 a += 2 * Math.PI / 5;
             }
 
@@ -353,14 +353,14 @@ namespace Affine3D
             List<Point3D> down_points = new List<Point3D>();
             for (int i = 0; i < 5; ++i)
             {
-                down_points.Add(new Point3D(down_center.X + r * (float)Math.Cos(a), down_center.Y, down_center.Z - r * (float)Math.Sin(a)));
+                down_points.Add(new Point3D(down_center.X + r * (double)Math.Cos(a), down_center.Y, down_center.Z - r * (double)Math.Sin(a)));
                 a += 2 * Math.PI / 5;
             }
 
             var R = Math.Sqrt(2 * (5 + Math.Sqrt(5))) * size / 4;
 
-            Point3D p_up = new Point3D(up_center.X, (float)(-R), up_center.Z);
-            Point3D p_down = new Point3D(down_center.X, (float)R, down_center.Z);
+            Point3D p_up = new Point3D(up_center.X, (double)(-R), up_center.Z);
+            Point3D p_down = new Point3D(down_center.X, (double)R, down_center.Z);
 
             for (int i = 0; i < 5; ++i)
             {
@@ -511,7 +511,16 @@ namespace Affine3D
             }
             return res;
         }
-        
+
+        public void addOnZBuffer(int width, int height, ref int[] buf)
+        {
+            var buf1 = new int[width * height];
+            calculateZBuffer(width, height, out buf1);
+            for (int i = 0; i < height * width; i++)
+                    buf[i] = Math.Min(buf[i], buf1[i]);
+        }
+
+
         public void calculateZBuffer(int width, int height, out int[] buf)
         {
             buf = new int[width * height];
@@ -566,16 +575,16 @@ namespace Affine3D
 
         private void help(Point3D P0, Point3D P1, Point3D P2, int[] buff, int width, int height)
         {
-            PointF p0 = P0.make_perspective();
-            PointF p1 = P1.make_perspective();
-            PointF p2 = P2.make_perspective();
+            PointD p0 = P0.make_perspective();
+            PointD p1 = P1.make_perspective();
+            PointD p2 = P2.make_perspective();
 
             if (p1.Y < p0.Y)
             {
                 Point3D tmpp = new Point3D(P0);
                 P0.X = P1.X; P0.Y = P1.Y; P0.Z = P1.Z;
                 P1.X = tmpp.X; P1.Y = tmpp.Y; P1.Z = tmpp.Z;
-                PointF tmppp = new PointF(p0.X, p0.Y);
+                Point tmppp = new Point((int)p0.X, (int)p0.Y);
                 p0.X = p1.X; p0.Y = p1.Y;
                 p1.X = tmppp.X; p1.Y = tmppp.Y;
             }
@@ -584,7 +593,7 @@ namespace Affine3D
                 Point3D tmpp = new Point3D(P0);
                 P0.X = P2.X; P0.Y = P2.Y; P0.Z = P2.Z;
                 P2.X = tmpp.X; P2.Y = tmpp.Y; P2.Z = tmpp.Z;
-                PointF tmppp = new PointF(p0.X, p0.Y);
+                Point tmppp = new Point((int)p0.X, (int)p0.Y);
                 p0.X = p2.X; p0.Y = p2.Y;
                 p2.X = tmppp.X; p2.Y = tmppp.Y;
             }
@@ -593,7 +602,7 @@ namespace Affine3D
                 Point3D tmpp = new Point3D(P1);
                 P1.X = P2.X; P1.Y = P2.Y; P1.Z = P2.Z;
                 P2.X = tmpp.X; P2.Y = tmpp.Y; P2.Z = tmpp.Z;
-                PointF tmppp = new PointF(p1.X, p1.Y);
+                Point tmppp = new Point((int)p1.X, (int)p1.Y);
                 p1.X = p2.X; p1.Y = p2.Y;
                 p2.X = tmppp.X; p2.Y = tmppp.Y;
             }
@@ -603,9 +612,9 @@ namespace Affine3D
 
         private void drawRectangle(Point3D P0, Point3D P1, Point3D P2, int[] buff, int width, int height)
         {
-            PointF p0 = P0.make_perspective();
-            PointF p1 = P1.make_perspective();
-            PointF p2 = P2.make_perspective();
+            PointD p0 = P0.make_perspective();
+            PointD p1 = P1.make_perspective();
+            PointD p2 = P2.make_perspective();
 
             // y0 <= y1 <= y2
             int y0 = (int)p0.Y; int x0 = (int)p0.X; int z0 = (int)P0.Z;
@@ -680,8 +689,8 @@ namespace Affine3D
                     return new int[] { d0 };
                 }
                 int[] values = new int[i1 - i0 + 1];
-                float a = (float)(d1 - d0) / (i1 - i0);
-                float d = d0;
+                double a = (double)(d1 - d0) / (i1 - i0);
+                double d = d0;
                 int ind = 0;
                 for (int i = i0; i <= i1; ++i)
                 {

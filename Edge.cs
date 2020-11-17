@@ -15,9 +15,9 @@ namespace Affine3D
             Second = new Point3D(p2);
         }
 
-        private List<PointF> make_perspective(int k = 1000)
+        private List<PointD> make_perspective(int k = 1000)
         {
-            List<PointF> res = new List<PointF>
+            List<PointD> res = new List<PointD>
             {
                 First.make_perspective(k),
                 Second.make_perspective(k)
@@ -26,9 +26,9 @@ namespace Affine3D
             return res;
         }
 
-        private List<PointF> make_orthographic(Axis a)
+        private List<PointD> make_orthographic(Axis a)
         {
-            List<PointF> res = new List<PointF>
+            List<PointD> res = new List<PointD>
             {
                 First.make_orthographic(a),
                 Second.make_orthographic(a)
@@ -36,9 +36,9 @@ namespace Affine3D
             return res;
         }
 
-        private List<PointF> make_isometric()
+        private List<PointD> make_isometric()
         {
-            List<PointF> res = new List<PointF>
+            List<PointD> res = new List<PointD>
             {
                 First.make_isometric(),
                 Second.make_isometric()
@@ -51,7 +51,7 @@ namespace Affine3D
             if (pen == null)
                 pen = Pens.Black;
 
-            List<PointF> pts;
+            List<PointD> pts;
             switch (pr)
             {
                 case Projection.ISOMETRIC:
@@ -71,7 +71,7 @@ namespace Affine3D
                     break;
             }
 
-            g.DrawLine(pen, pts[0], pts[pts.Count - 1]);
+            g.DrawLine(pen, pts[0].topointf(), pts[pts.Count - 1].topointf());
         }
 
         public void translate(float x, float y, float z)
@@ -80,10 +80,22 @@ namespace Affine3D
             Second.translate(x, y, z);
         }
 
+
+
         public void rotate(double angle, Axis a, Edge line = null)
         {
             First.rotate(angle, a, line);
             Second.rotate(angle, a, line);
+        }
+
+        public void rotate(double aX, double aY, double aZ)
+        {
+            First.rotate(aX, Axis.AXIS_X);
+            First.rotate(aY, Axis.AXIS_Y);
+            First.rotate(aZ, Axis.AXIS_Z);
+            Second.rotate(aX, Axis.AXIS_X);
+            Second.rotate(aY, Axis.AXIS_Y);
+            Second.rotate(aZ, Axis.AXIS_Z);
         }
 
         public void scale(float kx, float ky, float kz)

@@ -10,7 +10,7 @@ namespace Affine3D
     {
         public List<Point3D> Points { get; }
         public Point3D Center { get; set; } = new Point3D(0, 0, 0);
-        public List<float> Normal { get; set; }
+        public List<double> Normal { get; set; }
         public bool IsVisible { get; set; }
         public Polygon(Polygon face)
         {
@@ -28,9 +28,9 @@ namespace Affine3D
             {
                 if (string.IsNullOrEmpty(arr[i]))
                     continue;
-                float x = (float)Math.Truncate(float.Parse(arr[i], CultureInfo.InvariantCulture));
-                float y = (float)Math.Truncate(float.Parse(arr[i + 1], CultureInfo.InvariantCulture));
-                float z = (float)Math.Truncate(float.Parse(arr[i + 2], CultureInfo.InvariantCulture));
+                double x = (double)Math.Truncate(double.Parse(arr[i], CultureInfo.InvariantCulture));
+                double y = (double)Math.Truncate(double.Parse(arr[i + 1], CultureInfo.InvariantCulture));
+                double z = (double)Math.Truncate(double.Parse(arr[i + 2], CultureInfo.InvariantCulture));
                 Point3D p = new Point3D(x, y, z);
                 Points.Add(p);
             }
@@ -84,9 +84,9 @@ namespace Affine3D
                     p.reflectZ();
         }
 
-        public List<PointF> make_perspective(float k = 1000, float z_camera = 1000)
+        public List<PointD> make_perspective(double k = 1000, double z_camera = 1000)
         {
-            List<PointF> res = new List<PointF>();
+            List<PointD> res = new List<PointD>();
 
             foreach (Point3D p in Points)
             {
@@ -95,9 +95,9 @@ namespace Affine3D
             return res;
         }
 
-        public List<PointF> make_isometric()
+        public List<PointD> make_isometric()
         {
-            List<PointF> res = new List<PointF>();
+            List<PointD> res = new List<PointD>();
 
             foreach (Point3D p in Points)
                 res.Add(p.make_isometric());
@@ -105,9 +105,9 @@ namespace Affine3D
             return res;
         }
 
-        public List<PointF> make_orthographic(Axis a)
+        public List<PointD> make_orthographic(Axis a)
         {
-            List<PointF> res = new List<PointF>();
+            List<PointD> res = new List<PointD>();
 
             foreach (Point3D p in Points)
                 res.Add(p.make_orthographic(a));
@@ -120,7 +120,7 @@ namespace Affine3D
             if (pen == null)
                 pen = Pens.Black;
 
-            List<PointF> pts;
+            List<PointD> pts;
 
             FindNormal(Center, new Edge(new Point3D(0, 0, 500), new Point3D(0, 0, 500)));
 
@@ -147,15 +147,15 @@ namespace Affine3D
 
                 if (pts.Count > 1)
                 {
-                    g.DrawLines(pen, pts.ToArray());
-                    g.DrawLine(pen, pts[0], pts[pts.Count - 1]);
+                    g.DrawLines(pen, pts.Select(s => s.topointf()).ToArray());
+                    g.DrawLine(pen, pts[0].topointf(), pts[pts.Count - 1].topointf());
                 }
                 else if (pts.Count == 1)
-                    g.DrawRectangle(pen, pts[0].X, pts[0].Y, 1, 1);
+                    g.DrawRectangle(pen, pts[0].topointf().X, pts[0].topointf().Y, 1, 1);
             }
         }
         
-        public void translate(float x, float y, float z)
+        public void translate(double x, double y, double z)
         {
             foreach (Point3D p in Points)
                 p.translate(x, y, z);
@@ -169,7 +169,7 @@ namespace Affine3D
             UpdateCenter();
         }
 
-        public void scale(float kx, float ky, float kz)
+        public void scale(double kx, double ky, double kz)
         {
             foreach (Point3D p in Points)
                 p.Scale(kx, ky, kz);
@@ -184,9 +184,9 @@ namespace Affine3D
             var B = first.Z * (second.X - third.X) + second.Z * (third.X - first.X) + third.Z * (first.X - second.X);
             var C = first.X * (second.Y - third.Y) + second.X * (third.Y - first.Y) + third.X * (first.Y - second.Y);
 
-            Normal = new List<float> { A, B, C };
+            Normal = new List<double> { A, B, C };
 
-            List<float> SC = new List<float> { second.X - pCenter.X, second.Y - pCenter.Y, second.Z - pCenter.Z };
+            List<double> SC = new List<double> { second.X - pCenter.X, second.Y - pCenter.Y, second.Z - pCenter.Z };
             if (Point3D.mul_matrix(Normal, 1, 3, SC, 3, 1)[0] > 1E-6)
             {
                 Normal[0] *= -1;

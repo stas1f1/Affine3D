@@ -4,13 +4,30 @@ using System.Drawing;
 
 namespace Affine3D
 {
-    public class Point3D
+    public class PointD
     {
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Z { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
 
-        public Point3D(float x, float y, float z)
+        public PointD(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
+
+        public PointF topointf()
+        {
+            return new PointF((float)X, (float)Y);
+        }
+    }
+
+        public class Point3D
+    {
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
+
+        public Point3D(double x, double y, double z)
         {
             X = x;
             Y = y;
@@ -51,45 +68,45 @@ namespace Affine3D
 
         /*----------------------------- Projections -----------------------------*/
 
-        public PointF make_perspective(float k = 1000)
+        public PointD make_perspective(double k = 1000)
         {
             if (Math.Abs(Z - k) < 1e-10)
                 k += 1;
 
-            List<float> P = new List<float> { 1, 0, 0, 0,
+            List<double> P = new List<double> { 1, 0, 0, 0,
                                               0, 1, 0, 0,
                                               0, 0, 0, -1/k,
                                               0, 0, 0, 1 };
 
-            List<float> xyz = new List<float> { X, Y, Z, 1 };
-            List<float> c = mul_matrix(xyz, 1, 4, P, 4, 4);
+            List<double> xyz = new List<double> { X, Y, Z, 1 };
+            List<double> c = mul_matrix(xyz, 1, 4, P, 4, 4);
 
-            return new PointF(c[0] / c[3], c[1] / c[3]);
+            return new PointD(c[0] / c[3], c[1] / c[3]);
         }
 
-        public PointF make_isometric()
+        public PointD make_isometric()
         {
             double r_phi = Math.Asin(Math.Tan(Math.PI * 30 / 180));
             double r_psi = Math.PI * 45 / 180;
-            float cos_phi = (float)Math.Cos(r_phi);
-            float sin_phi = (float)Math.Sin(r_phi);
-            float cos_psi = (float)Math.Cos(r_psi);
-            float sin_psi = (float)Math.Sin(r_psi);
+            double cos_phi = (double)Math.Cos(r_phi);
+            double sin_phi = (double)Math.Sin(r_phi);
+            double cos_psi = (double)Math.Cos(r_psi);
+            double sin_psi = (double)Math.Sin(r_psi);
 
-            List<float> M = new List<float> { cos_psi,  sin_phi * sin_psi,   0,  0,
+            List<double> M = new List<double> { cos_psi,  sin_phi * sin_psi,   0,  0,
                                                  0,          cos_phi,        0,  0,
                                               sin_psi,  -sin_phi * cos_psi,  0,  0,
                                                  0,              0,          0,  1 };
 
-            List<float> xyz = new List<float> { X, Y, Z, 1 };
-            List<float> c = mul_matrix(xyz, 1, 4, M, 4, 4);
+            List<double> xyz = new List<double> { X, Y, Z, 1 };
+            List<double> c = mul_matrix(xyz, 1, 4, M, 4, 4);
 
-            return new PointF(c[0], c[1]);
+            return new PointD(c[0], c[1]);
         }
 
-        public PointF make_orthographic(Axis a)
+        public PointD make_orthographic(Axis a)
         {
-            List<float> P = new List<float>();
+            List<double> P = new List<double>();
             for (int i = 0; i < 16; ++i)
             {
                 if (i % 5 == 0)
@@ -105,15 +122,14 @@ namespace Affine3D
             else
                 P[10] = 0;
 
-            List<float> xyz = new List<float> { X, Y, Z, 1 };
-            List<float> c = mul_matrix(xyz, 1, 4, P, 4, 4);
-
+            List<double> xyz = new List<double> { X, Y, Z, 1 };
+            List<double> c = mul_matrix(xyz, 1, 4, P, 4, 4);
             if (a == Axis.AXIS_X)
-                return new PointF(c[1], c[2]);
+                return new PointD(c[1], c[2]);
             else if (a == Axis.AXIS_Y)
-                return new PointF(c[0], c[2]);
+                return new PointD(c[0], c[2]);
             else
-                return new PointF(c[0], c[1]); 
+                return new PointD(c[0], c[1]); 
         }
 
         public void Show(Graphics g, Projection pr = 0, Pen pen = null)
@@ -121,7 +137,7 @@ namespace Affine3D
             if (pen == null)
                 pen = Pens.Black;
 
-            PointF p;
+            PointD p;
             switch (pr)
             {
                 case Projection.ISOMETRIC:
@@ -140,20 +156,20 @@ namespace Affine3D
                     p = make_perspective();
                     break;
             }
-            g.DrawRectangle(pen, p.X, p.Y, 2, 2);
+            g.DrawRectangle(pen, (float)p.X, (float)p.Y, 2, 2);
         }
 
         /*----------------------------- Affine transformations -----------------------------*/
 
-        static public List<float> mul_matrix(List<float> matr1, int m1, int n1, List<float> matr2, int m2, int n2)
+        static public List<double> mul_matrix(List<double> matr1, int m1, int n1, List<double> matr2, int m2, int n2)
         {
             if (n1 != m2)
-                return new List<float>();
+                return new List<double>();
             int l = m1;
             int m = n1;
             int n = n2;
 
-            List<float> c = new List<float>();
+            List<double> c = new List<double>();
             for (int i = 0; i < l * n; ++i)
                 c.Add(0f);
 
@@ -166,14 +182,14 @@ namespace Affine3D
             return c;
         }
 
-        public void translate(float x, float y, float z)
+        public void translate(double x, double y, double z)
         {
-            List<float> T = new List<float> { 1, 0, 0, 0,
+            List<double> T = new List<double> { 1, 0, 0, 0,
                                               0, 1, 0, 0,
                                               0, 0, 1, 0,
                                               x, y, z, 1 };
-            List<float> xyz = new List<float> { X, Y, Z, 1 };
-            List<float> c = mul_matrix(xyz, 1, 4, T, 4, 4);
+            List<double> xyz = new List<double> { X, Y, Z, 1 };
+            List<double> c = mul_matrix(xyz, 1, 4, T, 4, 4);
 
             X = c[0];
             Y = c[1];
@@ -184,46 +200,46 @@ namespace Affine3D
         {
             double rangle = Math.PI * angle / 180;
 
-            List<float> R = null;
+            List<double> R = null;
 
-            float sin = (float)Math.Sin(rangle);
-            float cos = (float)Math.Cos(rangle);
+            double sin = (double)Math.Sin(rangle);
+            double cos = (double)Math.Cos(rangle);
             switch (a)
             {
                 case Axis.AXIS_X:
-                    R = new List<float> { 1,   0,     0,   0,
+                    R = new List<double> { 1,   0,     0,   0,
                                           0,  cos,   sin,  0,
                                           0,  -sin,  cos,  0,
                                           0,   0,     0,   1 };
                     break;
                 case Axis.AXIS_Y:
-                    R = new List<float> { cos,  0,  -sin,  0,
+                    R = new List<double> { cos,  0,  -sin,  0,
                                            0,   1,   0,    0,
                                           sin,  0,  cos,   0,
                                            0,   0,   0,    1 };
                     break;
                 case Axis.AXIS_Z:
-                    R = new List<float> { cos,   sin,  0,  0,
+                    R = new List<double> { cos,   sin,  0,  0,
                                           -sin,  cos,  0,  0,
                                            0,     0,   1,  0,
                                            0,     0,   0,  1 };
                     break;
                 case Axis.LINE:
-                    float l = Math.Sign(line.Second.X - line.First.X);
-                    float m = Math.Sign(line.Second.Y - line.First.Y);
-                    float n = Math.Sign(line.Second.Z - line.First.Z);
-                    float length = (float)Math.Sqrt(l * l + m * m + n * n);
+                    double l = Math.Sign(line.Second.X - line.First.X);
+                    double m = Math.Sign(line.Second.Y - line.First.Y);
+                    double n = Math.Sign(line.Second.Z - line.First.Z);
+                    double length = (double)Math.Sqrt(l * l + m * m + n * n);
                     l /= length; m /= length; n /= length;
 
-                    R = new List<float> {  l * l + cos * (1 - l * l),   l * (1 - cos) * m + n * sin,   l * (1 - cos) * n - m * sin,  0,
+                    R = new List<double> {  l * l + cos * (1 - l * l),   l * (1 - cos) * m + n * sin,   l * (1 - cos) * n - m * sin,  0,
                                           l * (1 - cos) * m - n * sin,   m * m + cos * (1 - m * m),    m * (1 - cos) * n + l * sin,  0,
                                           l * (1 - cos) * n + m * sin,  m * (1 - cos) * n - l * sin,    n * n + cos * (1 - n * n),   0,
                                                        0,                            0,                             0,               1 };
 
                     break;
             }
-            List<float> xyz = new List<float> { X, Y, Z, 1 };
-            List<float> c = mul_matrix(xyz, 1, 4, R, 4, 4);
+            List<double> xyz = new List<double> { X, Y, Z, 1 };
+            List<double> c = mul_matrix(xyz, 1, 4, R, 4, 4);
 
             X = c[0];
             Y = c[1];
@@ -234,58 +250,58 @@ namespace Affine3D
         {
             double rangle = Math.PI * angle / 180;
 
-            List<float> R = null;
+            List<double> R = null;
 
-            float sin = (float)Math.Sin(rangle);
-            float cos = (float)Math.Cos(rangle);
+            double sin = (double)Math.Sin(rangle);
+            double cos = (double)Math.Cos(rangle);
             switch (a)
             {
                 case Axis.AXIS_X:
-                    R = new List<float> { 1,   0,     0,   0,
+                    R = new List<double> { 1,   0,     0,   0,
                                           0,  cos,   sin,  0,
                                           0,  -sin,  cos,  0,
                                           0,   0,     0,   1 };
                     break;
                 case Axis.AXIS_Y:
-                    R = new List<float> { cos,  0,  -sin,  0,
+                    R = new List<double> { cos,  0,  -sin,  0,
                                            0,   1,   0,    0,
                                           sin,  0,  cos,   0,
                                            0,   0,   0,    1 };
                     break;
                 case Axis.AXIS_Z:
-                    R = new List<float> { cos,   sin,  0,  0,
+                    R = new List<double> { cos,   sin,  0,  0,
                                           -sin,  cos,  0,  0,
                                            0,     0,   1,  0,
                                            0,     0,   0,  1 };
                     break;
                 case Axis.LINE:
-                    float l = Math.Sign(line.Second.X - line.First.X);
-                    float m = Math.Sign(line.Second.Y - line.First.Y);
-                    float n = Math.Sign(line.Second.Z - line.First.Z);
-                    float length = (float)Math.Sqrt(l * l + m * m + n * n);
+                    double l = Math.Sign(line.Second.X - line.First.X);
+                    double m = Math.Sign(line.Second.Y - line.First.Y);
+                    double n = Math.Sign(line.Second.Z - line.First.Z);
+                    double length = (double)Math.Sqrt(l * l + m * m + n * n);
                     l /= length; m /= length; n /= length;
 
-                    R = new List<float> {  l * l + cos * (1 - l * l),   l * (1 - cos) * m + n * sin,   l * (1 - cos) * n - m * sin,  0,
+                    R = new List<double> {  l * l + cos * (1 - l * l),   l * (1 - cos) * m + n * sin,   l * (1 - cos) * n - m * sin,  0,
                                           l * (1 - cos) * m - n * sin,   m * m + cos * (1 - m * m),    m * (1 - cos) * n + l * sin,  0,
                                           l * (1 - cos) * n + m * sin,  m * (1 - cos) * n - l * sin,    n * n + cos * (1 - n * n),   0,
                                                        0,                            0,                             0,               1 };
 
                     break;
             }
-            List<float> xyz = new List<float> { Point.X, Point.Y, Point.Z, 1 };
-            List<float> c = mul_matrix(xyz, 1, 4, R, 4, 4);
+            List<double> xyz = new List<double> { Point.X, Point.Y, Point.Z, 1 };
+            List<double> c = mul_matrix(xyz, 1, 4, R, 4, 4);
 
             return new Point3D(c[0], c[1], c[2]);
         }
 
-        public void Scale(float kx, float ky, float kz)
+        public void Scale(double kx, double ky, double kz)
         {
-            List<float> D = new List<float> { kx, 0,  0,  0,
+            List<double> D = new List<double> { kx, 0,  0,  0,
                                               0,  ky, 0,  0,
                                               0,  0,  kz, 0,
                                               0,  0,  0,  1 };
-            List<float> xyz = new List<float> { X, Y, Z, 1 };
-            List<float> c = mul_matrix(xyz, 1, 4, D, 4, 4);
+            List<double> xyz = new List<double> { X, Y, Z, 1 };
+            List<double> c = mul_matrix(xyz, 1, 4, D, 4, 4);
 
             X = c[0];
             Y = c[1];

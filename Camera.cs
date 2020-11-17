@@ -5,64 +5,57 @@ namespace Affine3D
     class Camera
     {
         public Edge view = new Edge(new Point3D(0, 0, 300), new Point3D(0, 0, 250));
-        Polyhedron small_cube = new Polyhedron();
-        public Edge rot_line { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public double dX, dY, dZ, aX, aY, aZ;
 
-        public Camera(int w, int h)
+
+        public Camera()
         {
-            int camera_half_size = 5;
-            small_cube.Hexahedron(camera_half_size);
-            small_cube.Translate(view.First.X, view.First.Y, view.First.Z);
-            set_rot_line();
-            Width = w;
-            Height = h;
+            dX = dY = dZ = aX = aY = aZ = 0;
         }
 
-        public void set_rot_line(Axis a = Axis.AXIS_X)
+        public Camera(Point3D p1, Point3D p2)
         {
-            Point3D p1, p2;
-            p1 = new Point3D(view.First);
-            switch (a)
-            {
-                case Axis.AXIS_Y:
-                    p2 = new Point3D(p1.X, p1.Y + 10, p1.Z);
-                    break;
-                case Axis.AXIS_Z:
-                    p2 = new Point3D(p1.X, p1.Y, p1.Z + 10);
-                    break;
-                default:
-                    p2 = new Point3D(p1.X + 10, p1.Y, p1.Z);
-                    break;
-            }
-            rot_line = new Edge(p1, p2);
+            view.First = p1;
+            view.Second = p2;
+            dX = dY = dZ = aX = aY = aZ = 0;
         }
 
         public void show(Graphics g, Polyhedron figure)
         {
-            figure.Show(g, view);
+            Polyhedron tfFigure = figure;
+            tfFigure.Rotate(aX, aY, aZ);
+            tfFigure.Translate(dX, dY, dZ);
+            tfFigure.Show(g, view);
         }
 
         public void showClipping(Graphics g, Polyhedron figure)
         {
-            figure.ShowClipping(g, view);
+            Polyhedron tfFigure = figure;
+            tfFigure.Rotate(-aX, -aY, -aZ);
+            tfFigure.Translate(dX, dY, dZ);
+            tfFigure.ShowClipping(g, view);
         }
 
-        public void translate(float x, float y, float z)
+        public void translate(double x, double y, double z)
         {
-            view.translate(x, y, z);
-            small_cube.Translate(x, y, z);
-            rot_line.translate(x, y, z);
+            //view.translate(x, y, z);
+            dX = x;
+            dY = y;
+            dZ = z;
         }
 
-        public void rotate(double angle, Axis a, Edge line = null)
+        public void rotate(double x, double y, double z)
         {
-            view.rotate(angle, a, line);
-            small_cube.Rotate(angle, a, line);
-            rot_line.rotate(angle, a, line);
+            //view.rotate(x,y,z);
+            aX = x;
+            aY = y;
+            aZ = z;
         }
+        
 
-
+        public void reset()
+        {
+            dX = dY = dZ = aX = aY = aZ = 0;
+        }
     }
 }
