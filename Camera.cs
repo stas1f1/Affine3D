@@ -23,6 +23,7 @@ namespace Affine3D
         public void show(Graphics g, Polyhedron figure)
         {
             Polyhedron tfFigure = figure;
+            figure.FindNormals(view);
             tfFigure.Rotate(aX, aY, aZ);
             tfFigure.Translate(dX, dY, dZ);
             tfFigure.Show(g, view);
@@ -31,6 +32,7 @@ namespace Affine3D
         public void showClipping(Graphics g, Polyhedron figure)
         {
             Polyhedron tfFigure = figure;
+            figure.FindNormals(view);
             tfFigure.Rotate(-aX, -aY, -aZ);
             tfFigure.Translate(dX, dY, dZ);
             tfFigure.ShowClipping(g, view);

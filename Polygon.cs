@@ -10,7 +10,7 @@ namespace Affine3D
     {
         public List<Point3D> Points { get; }
         public Point3D Center { get; set; } = new Point3D(0, 0, 0);
-        public List<double> Normal { get; set; }
+        public Point3D Normal { get; set; }
         public bool IsVisible { get; set; }
         public Polygon(Polygon face)
         {
@@ -122,7 +122,7 @@ namespace Affine3D
 
             List<PointD> pts;
 
-            FindNormal(Center, new Edge(new Point3D(0, 0, 500), new Point3D(0, 0, 500)));
+            // FindNormal(Center, new Edge(new Point3D(0, 0, 500), new Point3D(0, 0, 500)));
 
             //if (IsVisible)
             {
@@ -159,6 +159,7 @@ namespace Affine3D
         {
             foreach (Point3D p in Points)
                 p.translate(x, y, z);
+            Normal.translate(x, y, z);
             UpdateCenter();
         }
 
@@ -166,6 +167,7 @@ namespace Affine3D
         {
             foreach (Point3D p in Points)
                 p.rotate(angle, a, line);
+            Normal.rotate(angle, a, line);
             UpdateCenter();
         }
 
@@ -173,6 +175,7 @@ namespace Affine3D
         {
             foreach (Point3D p in Points)
                 p.Scale(kx, ky, kz);
+            Normal.Scale(kx, ky, kz);
             UpdateCenter();
         }
 
@@ -184,21 +187,23 @@ namespace Affine3D
             var B = first.Z * (second.X - third.X) + second.Z * (third.X - first.X) + third.Z * (first.X - second.X);
             var C = first.X * (second.Y - third.Y) + second.X * (third.Y - first.Y) + third.X * (first.Y - second.Y);
 
-            Normal = new List<double> { A, B, C };
+            Normal = new Point3D(A, B, C);
 
             List<double> SC = new List<double> { second.X - pCenter.X, second.Y - pCenter.Y, second.Z - pCenter.Z };
-            if (Point3D.mul_matrix(Normal, 1, 3, SC, 3, 1)[0] > 1E-6)
+            
+            List<double> xyz = new List<double> { Normal.X, Normal.Y, Normal.Z, 1 };
+            if (Point3D.mul_matrix(xyz, 1, 3, SC, 3, 1)[0] > 1E-6)
             {
-                Normal[0] *= -1;
-                Normal[1] *= -1;
-                Normal[2] *= -1;
+                Normal.Y *= -1;
+                Normal.Z *= -1;
+                Normal.X *= -1;
             }
 
             Point3D P = camera.Second - camera.First;
             Point3D E = new Point3D(-camera.First.X + Center.X, -camera.First.Y + Center.Y, -camera.First.Z + Center.Z );
             double angle = Math.Acos(
-                (Normal[0] * E.X + Normal[1] * E.Y + Normal[2] * E.Z) /
-                ((Math.Sqrt(Normal[0] * Normal[0] + Normal[1] * Normal[1] + Normal[2] * Normal[2]) *
+                (Normal.X * E.X + Normal.Y * E.Y + Normal.Z * E.Z) /
+                ((Math.Sqrt(Normal.X * Normal.X + Normal.Y * Normal.Y + Normal.Z * Normal.Z) *
                 Math.Sqrt(E.X * E.X + E.Y * E.Y + E.Z * E.Z)))
                 );
             angle = angle * 180 / Math.PI;
