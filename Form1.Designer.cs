@@ -35,10 +35,6 @@
             this.createOctahedron = new System.Windows.Forms.Button();
             this.createHexahedron = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.ortographRadioButton = new System.Windows.Forms.RadioButton();
-            this.perspectiveRadioButton = new System.Windows.Forms.RadioButton();
-            this.izometrRadioButton = new System.Windows.Forms.RadioButton();
             this.clearButton = new System.Windows.Forms.Button();
             this.drawRotationButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -90,9 +86,9 @@
             this.clippingCheckBox = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.bufferCheckBox = new System.Windows.Forms.CheckBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -115,6 +111,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown18)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).BeginInit();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -198,62 +195,12 @@
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.ortographRadioButton);
-            this.groupBox3.Controls.Add(this.perspectiveRadioButton);
-            this.groupBox3.Controls.Add(this.izometrRadioButton);
-            this.groupBox3.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.groupBox3.Location = new System.Drawing.Point(11, 587);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.groupBox3.Size = new System.Drawing.Size(283, 140);
-            this.groupBox3.TabIndex = 9;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Проекция";
-            // 
-            // ortographRadioButton
-            // 
-            this.ortographRadioButton.AutoSize = true;
-            this.ortographRadioButton.Location = new System.Drawing.Point(12, 101);
-            this.ortographRadioButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.ortographRadioButton.Name = "ortographRadioButton";
-            this.ortographRadioButton.Size = new System.Drawing.Size(185, 29);
-            this.ortographRadioButton.TabIndex = 10;
-            this.ortographRadioButton.Text = "Ортографическая";
-            this.ortographRadioButton.UseVisualStyleBackColor = true;
-            // 
-            // perspectiveRadioButton
-            // 
-            this.perspectiveRadioButton.AutoSize = true;
-            this.perspectiveRadioButton.Checked = true;
-            this.perspectiveRadioButton.Location = new System.Drawing.Point(12, 31);
-            this.perspectiveRadioButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.perspectiveRadioButton.Name = "perspectiveRadioButton";
-            this.perspectiveRadioButton.Size = new System.Drawing.Size(164, 29);
-            this.perspectiveRadioButton.TabIndex = 8;
-            this.perspectiveRadioButton.TabStop = true;
-            this.perspectiveRadioButton.Text = "Перспективная";
-            this.perspectiveRadioButton.UseVisualStyleBackColor = true;
-            // 
-            // izometrRadioButton
-            // 
-            this.izometrRadioButton.AutoSize = true;
-            this.izometrRadioButton.Location = new System.Drawing.Point(12, 66);
-            this.izometrRadioButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.izometrRadioButton.Name = "izometrRadioButton";
-            this.izometrRadioButton.Size = new System.Drawing.Size(175, 29);
-            this.izometrRadioButton.TabIndex = 9;
-            this.izometrRadioButton.Text = "Изометрическая";
-            this.izometrRadioButton.UseVisualStyleBackColor = true;
-            // 
             // clearButton
             // 
             this.clearButton.BackColor = System.Drawing.Color.Transparent;
             this.clearButton.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.clearButton.ForeColor = System.Drawing.Color.Black;
-            this.clearButton.Location = new System.Drawing.Point(171, 522);
+            this.clearButton.Location = new System.Drawing.Point(171, 672);
             this.clearButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(123, 52);
@@ -265,7 +212,7 @@
             // drawRotationButton
             // 
             this.drawRotationButton.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.drawRotationButton.Location = new System.Drawing.Point(1112, 335);
+            this.drawRotationButton.Location = new System.Drawing.Point(1112, 349);
             this.drawRotationButton.Margin = new System.Windows.Forms.Padding(2);
             this.drawRotationButton.Name = "drawRotationButton";
             this.drawRotationButton.Size = new System.Drawing.Size(283, 45);
@@ -456,7 +403,7 @@
             this.transformButton.BackColor = System.Drawing.Color.Transparent;
             this.transformButton.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.transformButton.ForeColor = System.Drawing.Color.Black;
-            this.transformButton.Location = new System.Drawing.Point(10, 522);
+            this.transformButton.Location = new System.Drawing.Point(10, 672);
             this.transformButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.transformButton.Name = "transformButton";
             this.transformButton.Size = new System.Drawing.Size(157, 52);
@@ -628,7 +575,7 @@
             this.groupBox10.Controls.Add(this.label15);
             this.groupBox10.Controls.Add(this.numericUpDown15);
             this.groupBox10.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.groupBox10.Location = new System.Drawing.Point(1241, 517);
+            this.groupBox10.Location = new System.Drawing.Point(1240, 498);
             this.groupBox10.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -724,7 +671,7 @@
             this.groupBox11.Controls.Add(this.numericUpDown17);
             this.groupBox11.Controls.Add(this.numericUpDown18);
             this.groupBox11.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.groupBox11.Location = new System.Drawing.Point(1112, 517);
+            this.groupBox11.Location = new System.Drawing.Point(1111, 498);
             this.groupBox11.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -889,7 +836,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.label12.Location = new System.Drawing.Point(1107, 489);
+            this.label12.Location = new System.Drawing.Point(1106, 470);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(77, 25);
             this.label12.TabIndex = 95;
@@ -899,7 +846,7 @@
             // 
             this.clippingCheckBox.AutoSize = true;
             this.clippingCheckBox.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.clippingCheckBox.Location = new System.Drawing.Point(1124, 430);
+            this.clippingCheckBox.Location = new System.Drawing.Point(17, 66);
             this.clippingCheckBox.Name = "clippingCheckBox";
             this.clippingCheckBox.Size = new System.Drawing.Size(249, 29);
             this.clippingCheckBox.TabIndex = 57;
@@ -923,21 +870,35 @@
             // 
             this.bufferCheckBox.AutoSize = true;
             this.bufferCheckBox.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.bufferCheckBox.Location = new System.Drawing.Point(1124, 398);
+            this.bufferCheckBox.Location = new System.Drawing.Point(17, 34);
             this.bufferCheckBox.Name = "bufferCheckBox";
             this.bufferCheckBox.Size = new System.Drawing.Size(104, 29);
             this.bufferCheckBox.TabIndex = 98;
             this.bufferCheckBox.Text = "Z-буфер";
             this.bufferCheckBox.UseVisualStyleBackColor = true;
+            this.bufferCheckBox.CheckedChanged += new System.EventHandler(this.bufferCheckBox_CheckedChanged);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.clippingCheckBox);
+            this.groupBox3.Controls.Add(this.bufferCheckBox);
+            this.groupBox3.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.groupBox3.Location = new System.Drawing.Point(11, 517);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.groupBox3.Size = new System.Drawing.Size(283, 100);
+            this.groupBox3.TabIndex = 57;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Отображение";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1404, 741);
-            this.Controls.Add(this.bufferCheckBox);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.checkBox2);
-            this.Controls.Add(this.clippingCheckBox);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.transformCameraButton);
@@ -950,7 +911,6 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.drawRotationButton);
             this.Controls.Add(this.clearButton);
-            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
@@ -958,8 +918,6 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
@@ -988,6 +946,8 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown10)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1002,10 +962,6 @@
         private System.Windows.Forms.Button createOctahedron;
         private System.Windows.Forms.Button createHexahedron;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.RadioButton ortographRadioButton;
-        private System.Windows.Forms.RadioButton perspectiveRadioButton;
-        private System.Windows.Forms.RadioButton izometrRadioButton;
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.Button drawRotationButton;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -1058,6 +1014,7 @@
         private System.Windows.Forms.CheckBox clippingCheckBox;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.CheckBox bufferCheckBox;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }
 
