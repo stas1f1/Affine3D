@@ -10,7 +10,11 @@ namespace Affine3D
     {
         public List<Point3D> Points { get; }
         public Point3D Center { get; set; } = new Point3D(0, 0, 0);
+
         public List<float> Normal { get; set; }
+
+        //public Point3D Normal { get; set; }
+
         public bool IsVisible { get; set; }
         public Polygon(Polygon face)
         {
@@ -144,6 +148,7 @@ namespace Affine3D
                     break;
             }
 
+
             //if (pts.Count > 1)
             //{
             //    g.DrawLines(pen, pts.Select(s => s.topointf()).ToArray());
@@ -151,7 +156,6 @@ namespace Affine3D
             //}
             //else if (pts.Count == 1)
             //    g.DrawRectangle(pen, pts[0].topointf().X, pts[0].topointf().Y, 1, 1);
-
             //UpdateCenter();
             if (pts.Count > 1)
             {
@@ -167,6 +171,7 @@ namespace Affine3D
         {
             foreach (Point3D p in Points)
                 p.translate(x, y, z);
+            //Normal.translate(x, y, z);
             UpdateCenter();
         }
 
@@ -174,6 +179,7 @@ namespace Affine3D
         {
             foreach (Point3D p in Points)
                 p.rotate(angle, a, line);
+            //Normal.rotate(angle, a, line);
             UpdateCenter();
         }
 
@@ -181,6 +187,7 @@ namespace Affine3D
         {
             foreach (Point3D p in Points)
                 p.Scale(kx, ky, kz);
+            //Normal.Scale(kx, ky, kz);
             UpdateCenter();
         }
 
@@ -195,6 +202,7 @@ namespace Affine3D
             Normal = new List<float> { A, B, C };
 
             List<float> SC = new List<float> { second.X - pCenter.X, second.Y - pCenter.Y, second.Z - pCenter.Z };
+            
             if (Point3D.mul_matrix(Normal, 1, 3, SC, 3, 1)[0] > 1E-6)
             {
                 Normal[0] *= -1;
@@ -204,11 +212,9 @@ namespace Affine3D
 
             Point3D P = camera.Second - camera.First;
             Point3D E = new Point3D(-camera.First.X + Center.X, -camera.First.Y + Center.Y, -camera.First.Z + Center.Z );
-            double angle = Math.Acos(
-                (Normal[0] * E.X + Normal[1] * E.Y + Normal[2] * E.Z) /
+            double angle = Math.Acos((Normal[0] * E.X + Normal[1] * E.Y + Normal[2] * E.Z) /
                 ((Math.Sqrt(Normal[0] * Normal[0] + Normal[1] * Normal[1] + Normal[2] * Normal[2]) *
-                Math.Sqrt(E.X * E.X + E.Y * E.Y + E.Z * E.Z)))
-                );
+                Math.Sqrt(E.X * E.X + E.Y * E.Y + E.Z * E.Z))));
             angle = angle * 180 / Math.PI;
 
             IsVisible = angle <= 90;

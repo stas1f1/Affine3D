@@ -76,13 +76,19 @@ namespace Affine3D
             UpdateCenter();
         }
 
-        public void ShowClipping(Graphics g, Edge camView, Projection pr = 0, List<float> m = null, Pen pen = null)
+        //public void FindNormals(Edge camera)
+        //{
+        //    foreach (Polygon f in Polygons)
+        //        f.FindNormal(f.Center, camera);
+        //}
+
+        public void ShowClipping(Graphics g, Edge camView, Projection pr = 0, List<float> M = null, Pen pen = null)
         {
             foreach (Polygon f in Polygons)
             {
                 f.FindNormal(Center, camView);
                 if (f.IsVisible)
-                    f.Show(g, pr, m, pen);
+                    f.Show(g, pr, M, pen);
             }
         }
 
