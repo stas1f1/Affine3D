@@ -10,7 +10,7 @@ namespace Affine3D
     {
         public List<Point3D> Points { get; }
         public Point3D Center { get; set; } = new Point3D(0, 0, 0);
-        public List<double> Normal { get; set; }
+        public List<float> Normal { get; set; }
         public bool IsVisible { get; set; }
         public Polygon(Polygon face)
         {
@@ -28,9 +28,9 @@ namespace Affine3D
             {
                 if (string.IsNullOrEmpty(arr[i]))
                     continue;
-                double x = (double)Math.Truncate(double.Parse(arr[i], CultureInfo.InvariantCulture));
-                double y = (double)Math.Truncate(double.Parse(arr[i + 1], CultureInfo.InvariantCulture));
-                double z = (double)Math.Truncate(double.Parse(arr[i + 2], CultureInfo.InvariantCulture));
+                float x = (float)Math.Truncate(float.Parse(arr[i], CultureInfo.InvariantCulture));
+                float y = (float)Math.Truncate(float.Parse(arr[i + 1], CultureInfo.InvariantCulture));
+                float z = (float)Math.Truncate(float.Parse(arr[i + 2], CultureInfo.InvariantCulture));
                 Point3D p = new Point3D(x, y, z);
                 Points.Add(p);
             }
@@ -84,20 +84,20 @@ namespace Affine3D
                     p.reflectZ();
         }
 
-        public List<PointD> make_perspective(double k = 1000, double z_camera = 1000)
+        public List<PointF> make_perspective(float k = 1000, float z_camera = 1000, List<float> M = null, bool isFake = false)
         {
-            List<PointD> res = new List<PointD>();
+            List<PointF> res = new List<PointF>();
 
             foreach (Point3D p in Points)
             {
-                res.Add(p.make_perspective(k));
+                res.Add(p.make_perspective(k, M, isFake));
             }
             return res;
         }
 
-        public List<PointD> make_isometric()
+        public List<PointF> make_isometric()
         {
-            List<PointD> res = new List<PointD>();
+            List<PointF> res = new List<PointF>();
 
             foreach (Point3D p in Points)
                 res.Add(p.make_isometric());
@@ -105,9 +105,9 @@ namespace Affine3D
             return res;
         }
 
-        public List<PointD> make_orthographic(Axis a)
+        public List<PointF> make_orthographic(Axis a)
         {
-            List<PointD> res = new List<PointD>();
+            List<PointF> res = new List<PointF>();
 
             foreach (Point3D p in Points)
                 res.Add(p.make_orthographic(a));
@@ -115,61 +115,69 @@ namespace Affine3D
             return res;
         }
 
-        public void Show(Graphics g, Projection pr = 0, Pen pen = null)
+        public void Show(Graphics g, Projection pr = 0, List<float> m = null, Pen pen = null, bool isFake = false)
         {
             if (pen == null)
                 pen = Pens.Black;
 
-            List<PointD> pts;
-
-            FindNormal(Center, new Edge(new Point3D(0, 0, 500), new Point3D(0, 0, 500)));
-
-            //if (IsVisible)
+            //List<PointD> pts;
+            List<PointF> pts;
+            switch (pr)
             {
-                switch (pr)
-                {
-                    case Projection.ISOMETRIC:
-                        pts = make_isometric();
-                        break;
-                    case Projection.ORTHOGR_X:
-                        pts = make_orthographic(Axis.AXIS_X);
-                        break;
-                    case Projection.ORTHOGR_Y:
-                        pts = make_orthographic(Axis.AXIS_Y);
-                        break;
-                    case Projection.ORTHOGR_Z:
-                        pts = make_orthographic(Axis.AXIS_Z);
-                        break;
-                    default:
+                case Projection.ISOMETRIC:
+                    pts = make_isometric();
+                    break;
+                case Projection.ORTHOGR_X:
+                    pts = make_orthographic(Axis.AXIS_X);
+                    break;
+                case Projection.ORTHOGR_Y:
+                    pts = make_orthographic(Axis.AXIS_Y);
+                    break;
+                case Projection.ORTHOGR_Z:
+                    pts = make_orthographic(Axis.AXIS_Z);
+                    break;
+                default:
+                    if (m != null)
+                        pts = make_perspective(1000, 950, m, isFake);
+                    else
                         pts = make_perspective(1000);
-                        break;
-                }
-
-                if (pts.Count > 1)
-                {
-                    g.DrawLines(pen, pts.Select(s => s.topointf()).ToArray());
-                    g.DrawLine(pen, pts[0].topointf(), pts[pts.Count - 1].topointf());
-                }
-                else if (pts.Count == 1)
-                    g.DrawRectangle(pen, pts[0].topointf().X, pts[0].topointf().Y, 1, 1);
+                    break;
             }
+
+            //if (pts.Count > 1)
+            //{
+            //    g.DrawLines(pen, pts.Select(s => s.topointf()).ToArray());
+            //    g.DrawLine(pen, pts[0].topointf(), pts[pts.Count - 1].topointf());
+            //}
+            //else if (pts.Count == 1)
+            //    g.DrawRectangle(pen, pts[0].topointf().X, pts[0].topointf().Y, 1, 1);
+
+            //UpdateCenter();
+            if (pts.Count > 1)
+            {
+                g.DrawLines(pen, pts.ToArray());
+                g.DrawLine(pen, pts[0], pts[pts.Count - 1]);
+            }
+            else if (pts.Count == 1)
+                g.DrawRectangle(pen, pts[0].X, pts[0].Y, 1, 1);
+            UpdateCenter();
         }
         
-        public void translate(double x, double y, double z)
+        public void translate(float x, float y, float z)
         {
             foreach (Point3D p in Points)
                 p.translate(x, y, z);
             UpdateCenter();
         }
 
-        public void rotate(double angle, Axis a, Edge line = null)
+        public void rotate(float angle, Axis a, Edge line = null)
         {
             foreach (Point3D p in Points)
                 p.rotate(angle, a, line);
             UpdateCenter();
         }
 
-        public void scale(double kx, double ky, double kz)
+        public void scale(float kx, float ky, float kz)
         {
             foreach (Point3D p in Points)
                 p.Scale(kx, ky, kz);
@@ -184,9 +192,9 @@ namespace Affine3D
             var B = first.Z * (second.X - third.X) + second.Z * (third.X - first.X) + third.Z * (first.X - second.X);
             var C = first.X * (second.Y - third.Y) + second.X * (third.Y - first.Y) + third.X * (first.Y - second.Y);
 
-            Normal = new List<double> { A, B, C };
+            Normal = new List<float> { A, B, C };
 
-            List<double> SC = new List<double> { second.X - pCenter.X, second.Y - pCenter.Y, second.Z - pCenter.Z };
+            List<float> SC = new List<float> { second.X - pCenter.X, second.Y - pCenter.Y, second.Z - pCenter.Z };
             if (Point3D.mul_matrix(Normal, 1, 3, SC, 3, 1)[0] > 1E-6)
             {
                 Normal[0] *= -1;

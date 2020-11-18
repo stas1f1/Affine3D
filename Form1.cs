@@ -21,11 +21,12 @@ namespace Affine3D
         Projection projection = 0;
         bool showZBuf = false;
         bool multiitem = false;
-        Axis rotateLineMode = 0;
         Polyhedron figure = null;
         List<Polyhedron> figures;
-        int revertId = -1;
-
+        
+        //int revertId = -1;
+        //Axis rotateLineMode = 0;
+        
         RenderMode renderMode = RenderMode.Noclip;
 
         Camera camera = new Camera();
@@ -47,11 +48,11 @@ namespace Affine3D
             else
             {
                 if (renderMode == 0)
-                    camera.showClipping(g, figure);
-                //figure.ShowClipping(g, projection);
+                    //camera.showClipping(g, figure);
+                    figure.ShowClipping(g, camera.view);
                 else
-                    //figure.Show(g, projection);
-                    camera.show(g, figure);
+                    figure.Show(g, projection);
+                    //camera.show(g, figure);
             }
         }
 
@@ -69,7 +70,9 @@ namespace Affine3D
                 figure.Translate(offsetX, offsetY, offsetZ);
 
                 //ROTATE
-                int rotateAngleX = (int)numericUpDown4.Value, rotateAngleY = (int)numericUpDown5.Value, rotateAngleZ = (int)numericUpDown6.Value;
+                int rotateAngleX = (int)numericUpDown4.Value, 
+                    rotateAngleY = (int)numericUpDown5.Value, 
+                    rotateAngleZ = (int)numericUpDown6.Value;
                 figure.Rotate(rotateAngleX, 0);
                 figure.Rotate(rotateAngleY, Axis.AXIS_Y);
                 figure.Rotate(rotateAngleZ, Axis.AXIS_Z);
@@ -77,17 +80,17 @@ namespace Affine3D
                 //SCALE
                 if (checkBox1.Checked)
                 {
-                    double old_x = figure.Center.X, old_y = figure.Center.Y, old_z = figure.Center.Z;
+                    float old_x = figure.Center.X, old_y = figure.Center.Y, old_z = figure.Center.Z;
                     figure.Translate(-old_x, -old_y, -old_z);
 
-                    double kx = (double)numericUpDown7.Value, ky = (double)numericUpDown8.Value, kz = (double)numericUpDown9.Value;
+                    float kx = (float)numericUpDown7.Value, ky = (float)numericUpDown8.Value, kz = (float)numericUpDown9.Value;
                     figure.Scale(kx, ky, kz);
 
                     figure.Translate(old_x, old_y, old_z);
                 }
                 else
                 {
-                    double kx = (double)numericUpDown7.Value, ky = (double)numericUpDown8.Value, kz = (double)numericUpDown9.Value;
+                    float kx = (float)numericUpDown7.Value, ky = (float)numericUpDown8.Value, kz = (float)numericUpDown9.Value;
                     figure.Scale(kx, ky, kz);
                 }
             }
@@ -142,7 +145,6 @@ namespace Affine3D
             Draw();
         }
 
-
         //CLIPPING
         private void clippingCheckBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -154,8 +156,6 @@ namespace Affine3D
         }
 
         //Z-BUFFER
-        
-
         private void show_z_buf()
         {
             int[] buff = new int[pictureBox1.Width * pictureBox1.Height];
@@ -185,10 +185,7 @@ namespace Affine3D
         }
 
         //CAMERA
-        private void transformCameraButton_Click(object sender, EventArgs e)
-        {
-            cameraTransform();
-        }
+        private void transformCameraButton_Click(object sender, EventArgs e) => cameraTransform();
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -201,7 +198,8 @@ namespace Affine3D
         }
 
         void cameraTransform()
-        { 
+        {
+            List<float> m = null;
             if (figure == null)
             {
                 MessageBox.Show("Сначала создайте фигуру", "Нет фигуры", MessageBoxButtons.OK);
@@ -213,15 +211,54 @@ namespace Affine3D
                         dz = (int)numericUpDown16.Value;
                 //figure.Translate(-dx, -dy, -dz);
 
-                camera.translate(dx, dy, dz);
-                
-                //figure.Rotate(-angleOX, Axis.AXIS_X);
-                camera.rotate((int)numericUpDown15.Value,
-                    (int)numericUpDown14.Value,
-                    (int)numericUpDown13.Value);
+                double angleOX = Math.PI * (-((int)numericUpDown15.Value)) / 180,
+                    angleOY = Math.PI * (-((int)numericUpDown14.Value)) / 180,
+                    angleOZ = Math.PI * (-((int)numericUpDown13.Value)) / 180;
+
+                List<float> translation = new List<float> { 1, 0, 0, 0,
+                                              0, 1, 0, 0,
+                                              0, 0, 1, 0,
+                                              -dx, -dy, -dz, 1 };
+
+                float sin = (float)Math.Sin(angleOX);
+                float cos = (float)Math.Cos(angleOX);
+
+                List<float> rotX = new List<float> { 1,   0,     0,   0,
+                                          0,  cos,   sin,  0,
+                                          0,  -sin,  cos,  0,
+                                          0,   0,     0,   1 };
+
+                sin = (float)Math.Sin(angleOY);
+                cos = (float)Math.Cos(angleOY);
+
+                List<float> rotY = new List<float> { cos,  0,  -sin,  0,
+                                           0,   1,   0,    0,
+                                          sin,  0,  cos,   0,
+                                           0,   0,   0,    1 };
+
+
+
+                List<float> help1 = mul_matrix2(rotY, 4, 4, rotX, 4, 4);
+                m = mul_matrix2(translation, 4, 4, help1, 4, 4);
+
+                //camera.translate(dx, dy, dz);
+                ////figure.Rotate(-angleOX, Axis.AXIS_X);
+                //camera.rotate((int)numericUpDown15.Value,
+                //    (int)numericUpDown14.Value,
+                //    (int)numericUpDown13.Value);
             }
 
-            Draw();
+            g.Clear(Color.White);
+
+            Polyhedron figureForCam = figure;
+
+            figureForCam.isFake = true;
+            figureForCam.Show(g, projection, m);
+            
+            //if (renderMode != 0)
+            //    show_z_buff();
+
+            //Draw();
         }
 
         private void defaultCameraButton_Click(object sender, EventArgs e)
@@ -231,40 +268,40 @@ namespace Affine3D
             numericUpDown16.Value = numericUpDown17.Value = numericUpDown18.Value = 0;
         }
 
-        private void drawRotationButton_Click(object sender, EventArgs e)
-        {
-            List<Point3D> points = new List<Point3D>();
-            var lines = textBox1.Text.Split('\n');
+        //private void drawRotationButton_Click(object sender, EventArgs e)
+        //{
+        //    List<Point3D> points = new List<Point3D>();
+        //    var lines = textBox1.Text.Split('\n');
 
-            foreach (var p in lines)
-            {
-                var arr = ((string)p).Split(',');
-                points.Add(new Point3D(double.Parse(arr[0]), double.Parse(arr[1]), double.Parse(arr[2])));
-            }
+        //    foreach (var p in lines)
+        //    {
+        //        var arr = ((string)p).Split(',');
+        //        points.Add(new Point3D(float.Parse(arr[0]), float.Parse(arr[1]), float.Parse(arr[2])));
+        //    }
 
-            Axis axis = 0;
-            switch (comboBox6.SelectedItem.ToString())
-            {
-                case "OX":
-                    axis = 0;
-                    break;
-                case "OY":
-                    axis = Axis.AXIS_Y;
-                    break;
-                case "OZ":
-                    axis = Axis.AXIS_Z;
-                    break;
-                default:
-                    axis = 0;
-                    break;
-            }
+        //    Axis axis = 0;
+        //    switch (comboBox6.SelectedItem.ToString())
+        //    {
+        //        case "OX":
+        //            axis = 0;
+        //            break;
+        //        case "OY":
+        //            axis = Axis.AXIS_Y;
+        //            break;
+        //        case "OZ":
+        //            axis = Axis.AXIS_Z;
+        //            break;
+        //        default:
+        //            axis = 0;
+        //            break;
+        //    }
 
-            RotationFigure rotateFigure = new RotationFigure(points, axis, (int)numericUpDown10.Value);
+        //    RotationFigure rotateFigure = new RotationFigure(points, axis, (int)numericUpDown10.Value);
 
-            figure = rotateFigure;
+        //    figure = rotateFigure;
 
-            Draw();
-        }
+        //    Draw();
+        //}
 
         private void clearButton_Click(object sender, EventArgs e)
         {
@@ -282,6 +319,27 @@ namespace Affine3D
         {
             showZBuf = !showZBuf;
             Draw();
+        }
+
+        static public List<float> mul_matrix2(List<float> matr1, int m1, int n1, List<float> matr2, int m2, int n2)
+        {
+            if (n1 != m2)
+                return new List<float>();
+            int l = m1;
+            int m = n1;
+            int n = n2;
+
+            List<float> c = new List<float>();
+            for (int i = 0; i < l * n; ++i)
+                c.Add(0f);
+
+            for (int i = 0; i < l; ++i)
+                for (int j = 0; j < n; ++j)
+                {
+                    for (int r = 0; r < m; ++r)
+                        c[i * l + j] += matr1[i * m1 + r] * matr2[r * n2 + j];
+                }
+            return c;
         }
     }
 }

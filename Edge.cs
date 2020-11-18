@@ -15,9 +15,9 @@ namespace Affine3D
             Second = new Point3D(p2);
         }
 
-        private List<PointD> make_perspective(int k = 1000)
+        private List<PointF> make_perspective(int k = 1000)
         {
-            List<PointD> res = new List<PointD>
+            List<PointF> res = new List<PointF>
             {
                 First.make_perspective(k),
                 Second.make_perspective(k)
@@ -26,9 +26,9 @@ namespace Affine3D
             return res;
         }
 
-        private List<PointD> make_orthographic(Axis a)
+        private List<PointF> make_orthographic(Axis a)
         {
-            List<PointD> res = new List<PointD>
+            List<PointF> res = new List<PointF>
             {
                 First.make_orthographic(a),
                 Second.make_orthographic(a)
@@ -36,9 +36,9 @@ namespace Affine3D
             return res;
         }
 
-        private List<PointD> make_isometric()
+        private List<PointF> make_isometric()
         {
-            List<PointD> res = new List<PointD>
+            List<PointF> res = new List<PointF>
             {
                 First.make_isometric(),
                 Second.make_isometric()
@@ -51,7 +51,7 @@ namespace Affine3D
             if (pen == null)
                 pen = Pens.Black;
 
-            List<PointD> pts;
+            List<PointF> pts;
             switch (pr)
             {
                 case Projection.ISOMETRIC:
@@ -71,7 +71,8 @@ namespace Affine3D
                     break;
             }
 
-            g.DrawLine(pen, pts[0].topointf(), pts[pts.Count - 1].topointf());
+            //g.DrawLine(pen, pts[0].topointf(), pts[pts.Count - 1].topointf());
+            g.DrawLine(pen, pts[0], pts[pts.Count - 1]);
         }
 
         public void translate(float x, float y, float z)
@@ -82,13 +83,13 @@ namespace Affine3D
 
 
 
-        public void rotate(double angle, Axis a, Edge line = null)
+        public void rotate(float angle, Axis a, Edge line = null)
         {
             First.rotate(angle, a, line);
             Second.rotate(angle, a, line);
         }
 
-        public void rotate(double aX, double aY, double aZ)
+        public void rotate(float aX, float aY, float aZ)
         {
             First.rotate(aX, Axis.AXIS_X);
             First.rotate(aY, Axis.AXIS_Y);

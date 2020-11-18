@@ -9,6 +9,9 @@ namespace Affine3D
     {
         public List<Polygon> Polygons { get; set; } = null;
         public Point3D Center { get; set; } = new Point3D(0, 0, 0);
+
+        public bool isFake = false;
+
         public Polyhedron(List<Polygon> fs = null)
         {
             if (fs != null)
@@ -56,37 +59,48 @@ namespace Affine3D
             Center.Z /= Polygons.Count;
         }
 
-        public void Show(Graphics g, Edge camView, Projection pr = 0, Pen pen = null)
+        //public void Show(Graphics g, Edge camView, Projection pr = 0, List<float> m = null, Pen pen = null)
+        //{
+        //    foreach (Polygon f in Polygons)
+        //        f.Show(g, pr, pen);
+        //}
+
+        public void Show(Graphics g, Projection pr = 0, List<float> M = null, Pen pen = null)
         {
             foreach (Polygon f in Polygons)
-                f.Show(g, pr, pen);
+            {
+                //f.FindNormal(Center, new Edge(new Point3D(0, 0, 500), new Point3D(0, 0, 500)));
+                //if (f.IsVisible)
+                f.Show(g, pr, M, pen, isFake);
+            }
+            UpdateCenter();
         }
 
-        public void ShowClipping(Graphics g, Edge camView, Projection pr = 0, Pen pen = null)
+        public void ShowClipping(Graphics g, Edge camView, Projection pr = 0, List<float> m = null, Pen pen = null)
         {
             foreach (Polygon f in Polygons)
             {
                 f.FindNormal(Center, camView);
                 if (f.IsVisible)
-                    f.Show(g, pr, pen);
+                    f.Show(g, pr, m, pen);
             }
         }
 
-        public void Translate(double x, double y, double z)
+        public void Translate(float x, float y, float z)
         {
             foreach (Polygon f in Polygons)
                 f.translate(x, y, z);
             UpdateCenter();
         }
 
-        public void Rotate(double angle, Axis a, Edge line = null)
+        public void Rotate(float angle, Axis a, Edge line = null)
         {
             foreach (Polygon f in Polygons)
                 f.rotate(angle, a, line);
             UpdateCenter();
         }
 
-        public void Rotate(double angleX, double angleY, double angleZ)
+        public void Rotate(float angleX, float angleY, float angleZ)
         {
             foreach (Polygon f in Polygons)
             {
@@ -98,7 +112,7 @@ namespace Affine3D
         }
 
 
-        public void Scale(double kx, double ky, double kz)
+        public void Scale(float kx, float ky, float kz)
         {
             foreach (Polygon f in Polygons)
                 f.scale(kx, ky, kz);
@@ -129,7 +143,7 @@ namespace Affine3D
             UpdateCenter();
         }
 
-        public void Hexahedron(double size = 50)
+        public void Hexahedron(float size = 50)
         {
             Polygon f = new Polygon(
                 new List<Point3D>
@@ -333,10 +347,10 @@ namespace Affine3D
         {
             Polygons = new List<Polygon>();
 
-            double size = 100;
+            float size = 100;
 
-            double r1 = size * (double)Math.Sqrt(3) / 4;
-            double r = size * (3 + (double)Math.Sqrt(5)) / (4 * (double)Math.Sqrt(3));
+            float r1 = size * (float)Math.Sqrt(3) / 4;
+            float r = size * (3 + (float)Math.Sqrt(5)) / (4 * (float)Math.Sqrt(3));
 
             Point3D up_center = new Point3D(0, -r1, 0);
             Point3D down_center = new Point3D(0, r1, 0);
@@ -345,7 +359,7 @@ namespace Affine3D
             List<Point3D> up_points = new List<Point3D>();
             for (int i = 0; i < 5; ++i)
             {
-                up_points.Add(new Point3D(up_center.X + r * (double)Math.Cos(a), up_center.Y, up_center.Z - r * (double)Math.Sin(a)));
+                up_points.Add(new Point3D(up_center.X + r * (float)Math.Cos(a), up_center.Y, up_center.Z - r * (float)Math.Sin(a)));
                 a += 2 * Math.PI / 5;
             }
 
@@ -353,14 +367,14 @@ namespace Affine3D
             List<Point3D> down_points = new List<Point3D>();
             for (int i = 0; i < 5; ++i)
             {
-                down_points.Add(new Point3D(down_center.X + r * (double)Math.Cos(a), down_center.Y, down_center.Z - r * (double)Math.Sin(a)));
+                down_points.Add(new Point3D(down_center.X + r * (float)Math.Cos(a), down_center.Y, down_center.Z - r * (float)Math.Sin(a)));
                 a += 2 * Math.PI / 5;
             }
 
             var R = Math.Sqrt(2 * (5 + Math.Sqrt(5))) * size / 4;
 
-            Point3D p_up = new Point3D(up_center.X, (double)(-R), up_center.Z);
-            Point3D p_down = new Point3D(down_center.X, (double)R, down_center.Z);
+            Point3D p_up = new Point3D(up_center.X, (float)(-R), up_center.Z);
+            Point3D p_down = new Point3D(down_center.X, (float)R, down_center.Z);
 
             for (int i = 0; i < 5; ++i)
             {
@@ -575,9 +589,9 @@ namespace Affine3D
 
         private void help(Point3D P0, Point3D P1, Point3D P2, int[] buff, int width, int height)
         {
-            PointD p0 = P0.make_perspective();
-            PointD p1 = P1.make_perspective();
-            PointD p2 = P2.make_perspective();
+            PointF p0 = P0.make_perspective();
+            PointF p1 = P1.make_perspective();
+            PointF p2 = P2.make_perspective();
 
             if (p1.Y < p0.Y)
             {
@@ -612,9 +626,9 @@ namespace Affine3D
 
         private void drawRectangle(Point3D P0, Point3D P1, Point3D P2, int[] buff, int width, int height)
         {
-            PointD p0 = P0.make_perspective();
-            PointD p1 = P1.make_perspective();
-            PointD p2 = P2.make_perspective();
+            PointF p0 = P0.make_perspective();
+            PointF p1 = P1.make_perspective();
+            PointF p2 = P2.make_perspective();
 
             // y0 <= y1 <= y2
             int y0 = (int)p0.Y; int x0 = (int)p0.X; int z0 = (int)P0.Z;
@@ -689,8 +703,8 @@ namespace Affine3D
                     return new int[] { d0 };
                 }
                 int[] values = new int[i1 - i0 + 1];
-                double a = (double)(d1 - d0) / (i1 - i0);
-                double d = d0;
+                float a = (float)(d1 - d0) / (i1 - i0);
+                float d = d0;
                 int ind = 0;
                 for (int i = i0; i <= i1; ++i)
                 {

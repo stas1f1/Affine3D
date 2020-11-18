@@ -5,7 +5,7 @@ namespace Affine3D
     class Camera
     {
         public Edge view = new Edge(new Point3D(0, 0, 300), new Point3D(0, 0, 250));
-        public double dX, dY, dZ, aX, aY, aZ;
+        public float dX, dY, dZ, aX, aY, aZ;
 
 
         public Camera()
@@ -25,7 +25,8 @@ namespace Affine3D
             Polyhedron tfFigure = figure;
             tfFigure.Rotate(aX, aY, aZ);
             tfFigure.Translate(dX, dY, dZ);
-            tfFigure.Show(g, view);
+            //tfFigure.Show(g, view);
+            tfFigure.Show(g);
         }
 
         public void showClipping(Graphics g, Polyhedron figure)
@@ -36,15 +37,16 @@ namespace Affine3D
             tfFigure.ShowClipping(g, view);
         }
 
-        public void translate(double x, double y, double z)
+        public void translate(float x, float y, float z)
         {
             //view.translate(x, y, z);
             dX = x;
             dY = y;
             dZ = z;
+            
         }
 
-        public void rotate(double x, double y, double z)
+        public void rotate(float x, float y, float z)
         {
             //view.rotate(x,y,z);
             aX = x;

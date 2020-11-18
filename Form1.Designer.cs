@@ -219,7 +219,7 @@
             this.drawRotationButton.TabIndex = 28;
             this.drawRotationButton.Text = "Отрисовать фигуру";
             this.drawRotationButton.UseVisualStyleBackColor = true;
-            this.drawRotationButton.Click += new System.EventHandler(this.drawRotationButton_Click);
+            //this.drawRotationButton.Click += new System.EventHandler(this.drawRotationButton_Click);
             // 
             // groupBox2
             // 
