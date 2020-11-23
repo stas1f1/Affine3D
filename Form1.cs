@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace Affine3D
 {
     public enum Axis { AXIS_X, AXIS_Y, AXIS_Z, LINE };
     public enum Projection { PERSPECTIVE = 0, ISOMETRIC, ORTHOGR_X, ORTHOGR_Y, ORTHOGR_Z };
-    public enum RenderMode { Clipp = 0, Noclip = 1};
+    public enum RenderMode { Clipp = 0, Noclip = 1, ZBuff, Gouraud, Texturing};
 
     public partial class Form1 : Form
     {
@@ -24,9 +25,16 @@ namespace Affine3D
         Polyhedron figure = null;
         List<Polyhedron> figures;
         
-        //int revertId = -1;
-        //Axis rotateLineMode = 0;
-        
+        Color fill_color = Color.Red; // для гуро
+        byte[] rgbValuesTexture; // для picturebox и текстурирования
+        Bitmap texture;
+        public Bitmap bmp;
+        BitmapData bmpDataTexture; // для picturebox и текстурирования
+        byte[] rgbValues;
+        public BitmapData bmpData;
+        public IntPtr ptr; // указатель на rgbValues
+        public int bytes; // длина rgbValues
+
         RenderMode renderMode = RenderMode.Noclip;
 
         Camera camera = new Camera();
@@ -37,6 +45,21 @@ namespace Affine3D
             g = pictureBox1.CreateGraphics();
             g.TranslateTransform(pictureBox1.ClientSize.Width / 2, pictureBox1.ClientSize.Height / 2);
             g.ScaleTransform(1, -1);
+
+            pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            g = pictureBox1.CreateGraphics();
+            g.TranslateTransform(pictureBox1.ClientSize.Width / 2, pictureBox1.ClientSize.Height / 2);
+            g.ScaleTransform(1, -1);
+
+            texture = Image.FromFile("../../texture_3.jpg") as Bitmap;
+            Rectangle rectTexture = new Rectangle(0, 0, texture.Width, texture.Height);
+            bmpDataTexture = texture.LockBits(rectTexture, ImageLockMode.ReadWrite, texture.PixelFormat);
+            int bytesTexture = Math.Abs(bmpDataTexture.Stride) * texture.Height;
+            rgbValuesTexture = new byte[bytesTexture];
+            System.Runtime.InteropServices.Marshal.Copy(bmpDataTexture.Scan0, rgbValuesTexture, 0, bytesTexture);
+
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+
             figures = new List<Polyhedron>();
         }
 
@@ -50,10 +73,59 @@ namespace Affine3D
                 if (renderMode == 0)
                     //camera.showClipping(g, figure);
                     figure.ShowClipping(g, camera.view);
-                else
+                else if (renderMode == RenderMode.Noclip)
                     figure.Show(g, projection);
                     //camera.show(g, figure);
+                else if (renderMode == RenderMode.Gouraud)
+                    show_gouraud();
+                else if (renderMode == RenderMode.Texturing)
+                    show_texture();
             }
+        }
+
+        private void show_gouraud()
+        {
+            
+        }
+
+        private void show_texture()
+        {
+            if (bmp != null)
+                bmp.Dispose();
+            rgbValues = getRGBValues(out bmp, out bmpData, out ptr, out bytes);
+            figure.ApplyTexture(bmp, bmpData, rgbValues, texture, bmpDataTexture, rgbValuesTexture);
+            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
+            bmp.UnlockBits(bmpData);
+            pictureBox1.Image = bmp;
+        }
+
+        private byte[] getRGBValues(out Bitmap bmp, out BitmapData bmpData,
+            out IntPtr ptr, out int bytes)
+        {
+            bmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, PixelFormat.Format24bppRgb);
+
+            // Lock the bitmap's bits.  
+            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            bmpData =
+                bmp.LockBits(rect, ImageLockMode.ReadWrite,
+                bmp.PixelFormat);
+
+            // Get the address of the first line.
+            ptr = bmpData.Scan0;
+
+            // Declare an array to hold the bytes of the bitmap.
+            bytes = Math.Abs(bmpData.Stride) * bmp.Height;
+            byte[] rgb_values = new byte[bytes];
+
+            // Create rgb array with background color
+            for (int i = 0; i < bytes - 3; i += 3)
+            {
+                rgb_values[i] = pictureBox1.BackColor.R;
+                rgb_values[i + 1] = pictureBox1.BackColor.G;
+                rgb_values[i + 2] = pictureBox1.BackColor.B;
+            }
+
+            return rgb_values;
         }
 
         //TRANSLATION ROTATION SCALE
@@ -340,6 +412,14 @@ namespace Affine3D
                         c[i * l + j] += matr1[i * m1 + r] * matr2[r * n2 + j];
                 }
             return c;
+        }
+
+        private void texturingCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (renderMode != RenderMode.Texturing)
+                renderMode = RenderMode.Texturing;
+            else renderMode = RenderMode.Noclip;
+            Draw();
         }
     }
 }

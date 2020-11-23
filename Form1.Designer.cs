@@ -87,6 +87,8 @@
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.bufferCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.texturingCheckBox = new System.Windows.Forms.CheckBox();
+            this.gouraudChecBox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -191,7 +193,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(312, 10);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(781, 717);
+            this.pictureBox1.Size = new System.Drawing.Size(781, 756);
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
             // 
@@ -200,7 +202,7 @@
             this.clearButton.BackColor = System.Drawing.Color.Transparent;
             this.clearButton.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.clearButton.ForeColor = System.Drawing.Color.Black;
-            this.clearButton.Location = new System.Drawing.Point(171, 672);
+            this.clearButton.Location = new System.Drawing.Point(171, 714);
             this.clearButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(123, 52);
@@ -219,7 +221,6 @@
             this.drawRotationButton.TabIndex = 28;
             this.drawRotationButton.Text = "Отрисовать фигуру";
             this.drawRotationButton.UseVisualStyleBackColor = true;
-            //this.drawRotationButton.Click += new System.EventHandler(this.drawRotationButton_Click);
             // 
             // groupBox2
             // 
@@ -403,7 +404,7 @@
             this.transformButton.BackColor = System.Drawing.Color.Transparent;
             this.transformButton.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.transformButton.ForeColor = System.Drawing.Color.Black;
-            this.transformButton.Location = new System.Drawing.Point(10, 672);
+            this.transformButton.Location = new System.Drawing.Point(10, 714);
             this.transformButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.transformButton.Name = "transformButton";
             this.transformButton.Size = new System.Drawing.Size(157, 52);
@@ -846,7 +847,7 @@
             // 
             this.clippingCheckBox.AutoSize = true;
             this.clippingCheckBox.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.clippingCheckBox.Location = new System.Drawing.Point(17, 66);
+            this.clippingCheckBox.Location = new System.Drawing.Point(17, 69);
             this.clippingCheckBox.Name = "clippingCheckBox";
             this.clippingCheckBox.Size = new System.Drawing.Size(249, 29);
             this.clippingCheckBox.TabIndex = 57;
@@ -880,6 +881,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.gouraudChecBox);
+            this.groupBox3.Controls.Add(this.texturingCheckBox);
             this.groupBox3.Controls.Add(this.clippingCheckBox);
             this.groupBox3.Controls.Add(this.bufferCheckBox);
             this.groupBox3.Font = new System.Drawing.Font("Segoe UI", 14F);
@@ -887,16 +890,37 @@
             this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.groupBox3.Size = new System.Drawing.Size(283, 100);
+            this.groupBox3.Size = new System.Drawing.Size(283, 191);
             this.groupBox3.TabIndex = 57;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Отображение";
+            // 
+            // texturingCheckBox
+            // 
+            this.texturingCheckBox.AutoSize = true;
+            this.texturingCheckBox.Location = new System.Drawing.Point(17, 103);
+            this.texturingCheckBox.Name = "texturingCheckBox";
+            this.texturingCheckBox.Size = new System.Drawing.Size(182, 29);
+            this.texturingCheckBox.TabIndex = 99;
+            this.texturingCheckBox.Text = "Текстурирование";
+            this.texturingCheckBox.UseVisualStyleBackColor = true;
+            this.texturingCheckBox.CheckedChanged += new System.EventHandler(this.texturingCheckBox_CheckedChanged);
+            // 
+            // gouraudChecBox
+            // 
+            this.gouraudChecBox.AutoSize = true;
+            this.gouraudChecBox.Location = new System.Drawing.Point(17, 139);
+            this.gouraudChecBox.Name = "gouraudChecBox";
+            this.gouraudChecBox.Size = new System.Drawing.Size(71, 29);
+            this.gouraudChecBox.TabIndex = 100;
+            this.gouraudChecBox.Text = "Гуро";
+            this.gouraudChecBox.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1404, 741);
+            this.ClientSize = new System.Drawing.Size(1404, 778);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.label12);
@@ -1015,6 +1039,8 @@
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.CheckBox bufferCheckBox;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.CheckBox gouraudChecBox;
+        private System.Windows.Forms.CheckBox texturingCheckBox;
     }
 }
 

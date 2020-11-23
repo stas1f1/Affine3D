@@ -15,7 +15,7 @@ namespace Affine3D
             Y = y;
         }
 
-        public PointF topointf()
+        public PointF toPointF()
         {
             return new PointF((float)X, (float)Y);
         }
@@ -26,6 +26,16 @@ namespace Affine3D
         public float X { get; set; }
         public float Y { get; set; }
         public float Z { get; set; }
+
+        public PointF TextureCoordinates { get; set; } = new PointF();
+
+        public Point3D(float x, float y, float z, PointF textureCoordinates)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+            TextureCoordinates = textureCoordinates;
+        }
 
         public Point3D(float x, float y, float z)
         {
@@ -39,6 +49,7 @@ namespace Affine3D
             X = p.X;
             Y = p.Y;
             Z = p.Z;
+            TextureCoordinates = p.TextureCoordinates;
         }
 
         public void reflectX()
@@ -67,6 +78,25 @@ namespace Affine3D
         }
 
         /*----------------------------- Projections -----------------------------*/
+
+        public PointF toPointF(Projection pr)
+        {
+            switch (pr)
+            {
+                case Projection.ISOMETRIC:
+                    return new PointF((float)X, (float)Y);
+                case Projection.ORTHOGR_X:
+                    return new PointF((float)Y, (float)Z);
+                case Projection.ORTHOGR_Y:
+                    return new PointF((float)X, (float)Z);
+                case Projection.ORTHOGR_Z:
+                    return new PointF((float)X, (float)Y);
+                default:
+                    return new PointF((float)X, (float)Y);
+                    //return new PointF((float)(X / coords[3]), (float)(Y / coords[3]));
+                    //break;
+            }
+        }
 
         public PointF make_perspective(float k = 1000, List<float> M = null, bool isFake = false)
         {
