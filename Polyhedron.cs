@@ -763,11 +763,13 @@ namespace Affine3D
 
         private static void DrawTexture(Point3D P0, Point3D P1, Point3D P2, Bitmap bmp, BitmapData bmpData, byte[] rgbValues, Bitmap texture, BitmapData bmpDataTexture, byte[] rgbValuesTexture)
         {
-            // Отсортируйте точки так, чтобы y0 <= y1 <= y2D            
+            // Сортируем точки так, чтобы y0 <= y1 <= y2            
             var points = SortTriangleVertices(P0, P1, P2);
-            Point3D SortedP0 = points[0], SortedP1 = points[1], SortedP2 = points[2];
+            Point3D SortedP0 = points[0], 
+                SortedP1 = points[1], 
+                SortedP2 = points[2];
 
-            // Вычислите координаты x и U, V текстурных координат ребер треугольника
+            // Вычисляем координаты x и U, V текстурных координат ребер треугольника
             var x01 = NewInterpolate((int)SortedP0.Y, SortedP0.X, (int)SortedP1.Y, SortedP1.X);
             var u01 = NewInterpolate((int)SortedP0.Y, SortedP0.TextureCoordinates.X, (int)SortedP1.Y, SortedP1.TextureCoordinates.X);
             var v01 = NewInterpolate((int)SortedP0.Y, SortedP0.TextureCoordinates.Y, (int)SortedP1.Y, SortedP1.TextureCoordinates.Y);
@@ -778,7 +780,7 @@ namespace Affine3D
             var u02 = NewInterpolate((int)SortedP0.Y, SortedP0.TextureCoordinates.X, (int)SortedP2.Y, SortedP2.TextureCoordinates.X);
             var v02 = NewInterpolate((int)SortedP0.Y, SortedP0.TextureCoordinates.Y, (int)SortedP2.Y, SortedP2.TextureCoordinates.Y);
 
-            // Concatenate the short sides
+            // Совмещаем короткие стороны
             x01 = x01.Take(x01.Length - 1).ToArray(); // remove last element, it's the first in x12
             var x012 = x01.Concat(x12).ToArray();
             u01 = u01.Take(u01.Length - 1).ToArray(); // remove last element, it's the first in u12
@@ -786,7 +788,7 @@ namespace Affine3D
             v01 = v01.Take(v01.Length - 1).ToArray(); // remove last element, it's the first in v12
             var v012 = v01.Concat(v12).ToArray();
 
-            // Determine which is left and which is right
+            // Определяем каакие правые и левые
             int m = x012.Length / 2;
             double[] x_left, x_right, u_left, u_right, v_left, v_right;
             if (x02[m] < x012[m])
@@ -808,7 +810,7 @@ namespace Affine3D
                 v_right = v02;
             }
 
-            // Рисует горизонтальные сегменты
+            // Рисуем горизонтальные сегменты
             for (int y = (int)SortedP0.Y; y < (int)SortedP2.Y; ++y)
             {
                 int screen_y = -y + bmp.Height / 2;
@@ -844,6 +846,7 @@ namespace Affine3D
         {
             if (i0 == i1)
                 return new double[] { d0 };
+            
             double[] values = new double[i1 - i0 + 1];
             double a = (d1 - d0) / (i1 - i0);
             double d = d0;
@@ -866,13 +869,13 @@ namespace Affine3D
                 if (!f.IsVisible)
                     continue;
 
-                // 3 vertices
+                // 3 вершины
                 Point3D P0 = new Point3D(f.Points[0]);
                 Point3D P1 = new Point3D(f.Points[1]);
                 Point3D P2 = new Point3D(f.Points[2]);
                 DrawTexture(P0, P1, P2, bmp, bmpData, rgbValues, texture, bmpDataTexture, rgbValuesTexture);
 
-                // 4 vertices
+                // 4 вершины
                 if (f.Points.Count == 4)
                 {
                     P0 = new Point3D(f.Points[2]);
