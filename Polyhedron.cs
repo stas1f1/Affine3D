@@ -847,6 +847,7 @@ namespace Affine3D
             if (i0 == i1)
                 return new double[] { d0 };
             
+
             double[] values = new double[i1 - i0 + 1];
             double a = (d1 - d0) / (i1 - i0);
             double d = d0;
@@ -884,6 +885,19 @@ namespace Affine3D
                     DrawTexture(P0, P1, P2, bmp, bmpData, rgbValues, texture, bmpDataTexture, rgbValuesTexture);
                 }
             }
+        }
+    }
+
+    public class Point3dComparer : IEqualityComparer<Point3D>
+    {
+        public bool Equals(Point3D x, Point3D y)
+        {
+            return x.X.Equals(y.X) && x.Y.Equals(y.Y) && x.Z.Equals(y.Z);
+        }
+
+        public int GetHashCode(Point3D obj)
+        {
+            return obj.X.GetHashCode() + obj.Y.GetHashCode() + obj.Z.GetHashCode();
         }
     }
 }

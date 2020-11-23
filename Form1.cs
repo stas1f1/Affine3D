@@ -51,7 +51,7 @@ namespace Affine3D
             g.TranslateTransform(pictureBox1.ClientSize.Width / 2, pictureBox1.ClientSize.Height / 2);
             g.ScaleTransform(1, -1);
 
-            texture = Image.FromFile("../../texture_3.jpg") as Bitmap;
+            texture = Image.FromFile("../../texture_2.jpg") as Bitmap;
             Rectangle rectTexture = new Rectangle(0, 0, texture.Width, texture.Height);
             bmpDataTexture = texture.LockBits(rectTexture, ImageLockMode.ReadWrite, texture.PixelFormat);
             int bytesTexture = Math.Abs(bmpDataTexture.Stride) * texture.Height;
