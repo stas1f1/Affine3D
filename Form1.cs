@@ -24,7 +24,8 @@ namespace Affine3D
         bool multiitem = false;
         Polyhedron figure = null;
         List<Polyhedron> figures;
-        
+        Graphic Graph = null;
+
         Color fill_color = Color.Red; // для гуро
         byte[] rgbValuesTexture; // для picturebox и текстурирования
         Bitmap texture;
@@ -35,7 +36,7 @@ namespace Affine3D
         public IntPtr ptr; // указатель на rgbValues
         public int bytes; // длина rgbValues
 
-        RenderMode renderMode = RenderMode.Noclip;
+        RenderMode renderMode = 0;
 
         Camera camera = new Camera();
 
@@ -72,7 +73,7 @@ namespace Affine3D
             {
                 if (renderMode == 0)
                     //camera.showClipping(g, figure);
-                    figure.ShowClipping(g, camera.view);
+                    figure.Show(g, projection);
                 else if (renderMode == RenderMode.Noclip)
                     figure.Show(g, projection);
                     //camera.show(g, figure);
@@ -85,7 +86,30 @@ namespace Affine3D
 
         private void show_gouraud()
         {
-            
+            float[] intensive = new float[pictureBox1.Width * pictureBox1.Height];
+
+            figure.calc_gouraud(camera.view, pictureBox1.Width, pictureBox1.Height, out intensive, new Point3D(int.Parse(light_x.Text), int.Parse(light_y.Text), int.Parse(light_z.Text)));
+            Bitmap bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            pictureBox1.Image = bmp;
+            g.Clear(Color.White);
+
+            for (int i = 0; i < pictureBox1.Width; ++i)
+                for (int j = 0; j < pictureBox1.Height; ++j)
+                {
+                    Color c;
+                    if (intensive[i * pictureBox1.Height + j] < 1E-6f)
+                        c = Color.White;
+                    else
+                    {
+                        float intsv = intensive[i * pictureBox1.Height + j];
+                        if (intsv > 1)
+                            intsv = 1;
+                        c = Color.FromArgb((int)(fill_color.R * intsv) % 256, (int)(fill_color.G * intsv) % 256, (int)(fill_color.B * intsv) % 256);
+                    }
+                    bmp.SetPixel(i, j, c);
+                }
+
+            pictureBox1.Refresh();
         }
 
         private void show_texture()
@@ -217,15 +241,7 @@ namespace Affine3D
             Draw();
         }
 
-        //CLIPPING
-        private void clippingCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (clippingCheckBox.Checked)
-                renderMode = 0;
-            else
-                renderMode = RenderMode.Noclip;
-            Draw();
-        }
+        
 
         //Z-BUFFER
         private void show_z_buf()
@@ -255,83 +271,18 @@ namespace Affine3D
 
             pictureBox1.Refresh();
         }
-
-        //CAMERA
-        private void transformCameraButton_Click(object sender, EventArgs e) => cameraTransform();
+        
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
                 case Keys.T:
-                    cameraTransform();
                     break;
             }
         }
 
-        void cameraTransform()
-        {
-            List<float> m = null;
-            if (figure == null)
-            {
-                MessageBox.Show("Сначала создайте фигуру", "Нет фигуры", MessageBoxButtons.OK);
-            }
-            else
-            {
-                int dx = (int)numericUpDown18.Value,
-                        dy = (int)numericUpDown17.Value,
-                        dz = (int)numericUpDown16.Value;
-                //figure.Translate(-dx, -dy, -dz);
-
-                double angleOX = Math.PI * (-((int)numericUpDown15.Value)) / 180,
-                    angleOY = Math.PI * (-((int)numericUpDown14.Value)) / 180,
-                    angleOZ = Math.PI * (-((int)numericUpDown13.Value)) / 180;
-
-                List<float> translation = new List<float> { 1, 0, 0, 0,
-                                              0, 1, 0, 0,
-                                              0, 0, 1, 0,
-                                              -dx, -dy, -dz, 1 };
-
-                float sin = (float)Math.Sin(angleOX);
-                float cos = (float)Math.Cos(angleOX);
-
-                List<float> rotX = new List<float> { 1,   0,     0,   0,
-                                          0,  cos,   sin,  0,
-                                          0,  -sin,  cos,  0,
-                                          0,   0,     0,   1 };
-
-                sin = (float)Math.Sin(angleOY);
-                cos = (float)Math.Cos(angleOY);
-
-                List<float> rotY = new List<float> { cos,  0,  -sin,  0,
-                                           0,   1,   0,    0,
-                                          sin,  0,  cos,   0,
-                                           0,   0,   0,    1 };
-
-
-
-                List<float> help1 = mul_matrix2(rotY, 4, 4, rotX, 4, 4);
-                m = mul_matrix2(translation, 4, 4, help1, 4, 4);
-
-                //camera.translate(dx, dy, dz);
-                ////figure.Rotate(-angleOX, Axis.AXIS_X);
-                //camera.rotate((int)numericUpDown15.Value,
-                //    (int)numericUpDown14.Value,
-                //    (int)numericUpDown13.Value);
-            }
-
-            g.Clear(Color.White);
-
-            Polyhedron figureForCam = figure;
-
-            figureForCam.isFake = true;
-            figureForCam.Show(g, projection, m);
-            
-            //if (renderMode != 0)
-            //    show_z_buff();
-
-            //Draw();
-        }
+        
 
         private void defaultCameraButton_Click(object sender, EventArgs e)
         {
@@ -418,8 +369,48 @@ namespace Affine3D
         {
             if (renderMode != RenderMode.Texturing)
                 renderMode = RenderMode.Texturing;
-            else renderMode = RenderMode.Noclip;
+            else renderMode = 0;
             Draw();
+        }
+
+        private void gouraudCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (renderMode != RenderMode.Gouraud)
+                renderMode = RenderMode.Gouraud;
+            else renderMode = 0;
+            Draw();
+        }
+
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            Graph = new Graphic(comboBox2.SelectedIndex);
+
+            figure = Graph;
+
+            g.Clear(Color.White);
+            Graph.isGraph = true;
+            //Graph.Show(g, 0);
+            Graph.picture = pictureBox1;
+            Graph.DrawGraphic();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+                if (Graph != null)
+                {
+                    Graph.psi += 4;
+                    Graph.DrawGraphic();
+                }
+        }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (Graph != null)
+            {
+                Graph.psi += 4;
+                Graph.DrawGraphic();
+            }
         }
     }
 }

@@ -83,12 +83,18 @@
             this.label11 = new System.Windows.Forms.Label();
             this.numericUpDown10 = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
-            this.clippingCheckBox = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.bufferCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.texturingCheckBox = new System.Windows.Forms.CheckBox();
             this.gouraudChecBox = new System.Windows.Forms.CheckBox();
+            this.texturingCheckBox = new System.Windows.Forms.CheckBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label36 = new System.Windows.Forms.Label();
+            this.button8 = new System.Windows.Forms.Button();
+            this.label29 = new System.Windows.Forms.Label();
+            this.light_z = new System.Windows.Forms.TextBox();
+            this.light_y = new System.Windows.Forms.TextBox();
+            this.light_x = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -196,6 +202,8 @@
             this.pictureBox1.Size = new System.Drawing.Size(781, 756);
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
             // 
             // clearButton
             // 
@@ -558,14 +566,13 @@
             this.transformCameraButton.BackColor = System.Drawing.Color.Transparent;
             this.transformCameraButton.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.transformCameraButton.ForeColor = System.Drawing.Color.Black;
-            this.transformCameraButton.Location = new System.Drawing.Point(1111, 672);
+            this.transformCameraButton.Location = new System.Drawing.Point(1111, 715);
             this.transformCameraButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.transformCameraButton.Name = "transformCameraButton";
             this.transformCameraButton.Size = new System.Drawing.Size(157, 52);
             this.transformCameraButton.TabIndex = 35;
             this.transformCameraButton.Text = "Преобразовать";
             this.transformCameraButton.UseVisualStyleBackColor = false;
-            this.transformCameraButton.Click += new System.EventHandler(this.transformCameraButton_Click);
             // 
             // groupBox10
             // 
@@ -576,7 +583,7 @@
             this.groupBox10.Controls.Add(this.label15);
             this.groupBox10.Controls.Add(this.numericUpDown15);
             this.groupBox10.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.groupBox10.Location = new System.Drawing.Point(1240, 498);
+            this.groupBox10.Location = new System.Drawing.Point(1240, 541);
             this.groupBox10.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -672,7 +679,7 @@
             this.groupBox11.Controls.Add(this.numericUpDown17);
             this.groupBox11.Controls.Add(this.numericUpDown18);
             this.groupBox11.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.groupBox11.Location = new System.Drawing.Point(1111, 498);
+            this.groupBox11.Location = new System.Drawing.Point(1111, 541);
             this.groupBox11.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -749,7 +756,7 @@
             this.defaultCameraButton.BackColor = System.Drawing.Color.Transparent;
             this.defaultCameraButton.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.defaultCameraButton.ForeColor = System.Drawing.Color.Black;
-            this.defaultCameraButton.Location = new System.Drawing.Point(1272, 672);
+            this.defaultCameraButton.Location = new System.Drawing.Point(1272, 715);
             this.defaultCameraButton.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.defaultCameraButton.Name = "defaultCameraButton";
             this.defaultCameraButton.Size = new System.Drawing.Size(123, 52);
@@ -837,23 +844,11 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.label12.Location = new System.Drawing.Point(1106, 470);
+            this.label12.Location = new System.Drawing.Point(1106, 513);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(77, 25);
             this.label12.TabIndex = 95;
             this.label12.Text = "Камера";
-            // 
-            // clippingCheckBox
-            // 
-            this.clippingCheckBox.AutoSize = true;
-            this.clippingCheckBox.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.clippingCheckBox.Location = new System.Drawing.Point(17, 69);
-            this.clippingCheckBox.Name = "clippingCheckBox";
-            this.clippingCheckBox.Size = new System.Drawing.Size(249, 29);
-            this.clippingCheckBox.TabIndex = 57;
-            this.clippingCheckBox.Text = "Отcечь нелицевые грани";
-            this.clippingCheckBox.UseVisualStyleBackColor = true;
-            this.clippingCheckBox.CheckedChanged += new System.EventHandler(this.clippingCheckBox_CheckedChanged);
             // 
             // checkBox2
             // 
@@ -867,38 +862,35 @@
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
-            // bufferCheckBox
-            // 
-            this.bufferCheckBox.AutoSize = true;
-            this.bufferCheckBox.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.bufferCheckBox.Location = new System.Drawing.Point(17, 34);
-            this.bufferCheckBox.Name = "bufferCheckBox";
-            this.bufferCheckBox.Size = new System.Drawing.Size(104, 29);
-            this.bufferCheckBox.TabIndex = 98;
-            this.bufferCheckBox.Text = "Z-буфер";
-            this.bufferCheckBox.UseVisualStyleBackColor = true;
-            this.bufferCheckBox.CheckedChanged += new System.EventHandler(this.bufferCheckBox_CheckedChanged);
-            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.gouraudChecBox);
             this.groupBox3.Controls.Add(this.texturingCheckBox);
-            this.groupBox3.Controls.Add(this.clippingCheckBox);
-            this.groupBox3.Controls.Add(this.bufferCheckBox);
             this.groupBox3.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.groupBox3.Location = new System.Drawing.Point(11, 517);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.groupBox3.Size = new System.Drawing.Size(283, 191);
+            this.groupBox3.Size = new System.Drawing.Size(283, 98);
             this.groupBox3.TabIndex = 57;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Отображение";
             // 
+            // gouraudChecBox
+            // 
+            this.gouraudChecBox.AutoSize = true;
+            this.gouraudChecBox.Location = new System.Drawing.Point(17, 63);
+            this.gouraudChecBox.Name = "gouraudChecBox";
+            this.gouraudChecBox.Size = new System.Drawing.Size(71, 29);
+            this.gouraudChecBox.TabIndex = 100;
+            this.gouraudChecBox.Text = "Гуро";
+            this.gouraudChecBox.UseVisualStyleBackColor = true;
+            this.gouraudChecBox.CheckedChanged += new System.EventHandler(this.gouraudCheckBox_CheckedChanged);
+            // 
             // texturingCheckBox
             // 
             this.texturingCheckBox.AutoSize = true;
-            this.texturingCheckBox.Location = new System.Drawing.Point(17, 103);
+            this.texturingCheckBox.Location = new System.Drawing.Point(17, 27);
             this.texturingCheckBox.Name = "texturingCheckBox";
             this.texturingCheckBox.Size = new System.Drawing.Size(182, 29);
             this.texturingCheckBox.TabIndex = 99;
@@ -906,21 +898,107 @@
             this.texturingCheckBox.UseVisualStyleBackColor = true;
             this.texturingCheckBox.CheckedChanged += new System.EventHandler(this.texturingCheckBox_CheckedChanged);
             // 
-            // gouraudChecBox
+            // comboBox2
             // 
-            this.gouraudChecBox.AutoSize = true;
-            this.gouraudChecBox.Location = new System.Drawing.Point(17, 139);
-            this.gouraudChecBox.Name = "gouraudChecBox";
-            this.gouraudChecBox.Size = new System.Drawing.Size(71, 29);
-            this.gouraudChecBox.TabIndex = 100;
-            this.gouraudChecBox.Text = "Гуро";
-            this.gouraudChecBox.UseVisualStyleBackColor = true;
+            this.comboBox2.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "x + y",
+            "x^2 + y^2",
+            "Sin(x) * Cos(Y)",
+            "Sin(x)",
+            "Cos(Sqrt(x^2 + y^2))",
+            "Sin(Sqrt(x^2 + y^2))"});
+            this.comboBox2.Location = new System.Drawing.Point(1214, 425);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(173, 33);
+            this.comboBox2.TabIndex = 116;
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.label36.Location = new System.Drawing.Point(1123, 428);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(87, 25);
+            this.label36.TabIndex = 115;
+            this.label36.Text = "Функция";
+            // 
+            // button8
+            // 
+            this.button8.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.button8.Location = new System.Drawing.Point(1112, 464);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(282, 45);
+            this.button8.TabIndex = 114;
+            this.button8.Text = "Построить";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.label29.Location = new System.Drawing.Point(1107, 397);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(194, 25);
+            this.label29.TabIndex = 113;
+            this.label29.Text = "Построение графика";
+            // 
+            // light_z
+            // 
+            this.light_z.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.light_z.Location = new System.Drawing.Point(153, 643);
+            this.light_z.Margin = new System.Windows.Forms.Padding(2);
+            this.light_z.Name = "light_z";
+            this.light_z.Size = new System.Drawing.Size(68, 32);
+            this.light_z.TabIndex = 120;
+            this.light_z.Text = "300";
+            // 
+            // light_y
+            // 
+            this.light_y.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.light_y.Location = new System.Drawing.Point(88, 643);
+            this.light_y.Margin = new System.Windows.Forms.Padding(2);
+            this.light_y.Name = "light_y";
+            this.light_y.Size = new System.Drawing.Size(61, 32);
+            this.light_y.TabIndex = 119;
+            this.light_y.Text = "0";
+            // 
+            // light_x
+            // 
+            this.light_x.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.light_x.Location = new System.Drawing.Point(23, 643);
+            this.light_x.Margin = new System.Windows.Forms.Padding(2);
+            this.light_x.Name = "light_x";
+            this.light_x.Size = new System.Drawing.Size(61, 32);
+            this.light_x.TabIndex = 118;
+            this.light_x.Text = "0";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.label19.Location = new System.Drawing.Point(18, 616);
+            this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(203, 25);
+            this.label19.TabIndex = 117;
+            this.label19.Text = "Источник освещения:";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1404, 778);
+            this.Controls.Add(this.light_z);
+            this.Controls.Add(this.light_y);
+            this.Controls.Add(this.light_x);
+            this.Controls.Add(this.label19);
+            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.label36);
+            this.Controls.Add(this.button8);
+            this.Controls.Add(this.label29);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.label12);
@@ -938,7 +1016,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "v";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -1035,12 +1113,18 @@
         private System.Windows.Forms.NumericUpDown numericUpDown9;
         private System.Windows.Forms.NumericUpDown numericUpDown8;
         private System.Windows.Forms.NumericUpDown numericUpDown7;
-        private System.Windows.Forms.CheckBox clippingCheckBox;
         private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox bufferCheckBox;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox gouraudChecBox;
         private System.Windows.Forms.CheckBox texturingCheckBox;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.TextBox light_z;
+        private System.Windows.Forms.TextBox light_y;
+        private System.Windows.Forms.TextBox light_x;
+        private System.Windows.Forms.Label label19;
     }
 }
 

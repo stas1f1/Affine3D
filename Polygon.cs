@@ -119,54 +119,46 @@ namespace Affine3D
             return res;
         }
 
-        public void Show(Graphics g, Projection pr = 0, List<float> m = null, Pen pen = null, bool isFake = false)
+        public void Show(Graphics g, Projection pr = 0, Pen pen = null)
         {
             if (pen == null)
                 pen = Pens.Black;
 
-            //List<PointD> pts;
             List<PointF> pts;
-            switch (pr)
+
+            FindNormal(Center, new Edge(new Point3D(0, 0, 500), new Point3D(0, 0, 500)));
+
+            //if (IsVisible)
             {
-                case Projection.ISOMETRIC:
-                    pts = make_isometric();
-                    break;
-                case Projection.ORTHOGR_X:
-                    pts = make_orthographic(Axis.AXIS_X);
-                    break;
-                case Projection.ORTHOGR_Y:
-                    pts = make_orthographic(Axis.AXIS_Y);
-                    break;
-                case Projection.ORTHOGR_Z:
-                    pts = make_orthographic(Axis.AXIS_Z);
-                    break;
-                default:
-                    if (m != null)
-                        pts = make_perspective(1000, 950, m, isFake);
-                    else
+                switch (pr)
+                {
+                    case Projection.ISOMETRIC:
+                        pts = make_isometric();
+                        break;
+                    case Projection.ORTHOGR_X:
+                        pts = make_orthographic(Axis.AXIS_X);
+                        break;
+                    case Projection.ORTHOGR_Y:
+                        pts = make_orthographic(Axis.AXIS_Y);
+                        break;
+                    case Projection.ORTHOGR_Z:
+                        pts = make_orthographic(Axis.AXIS_Z);
+                        break;
+                    default:
                         pts = make_perspective(1000);
-                    break;
-            }
+                        break;
+                }
 
-
-            //if (pts.Count > 1)
-            //{
-            //    g.DrawLines(pen, pts.Select(s => s.topointf()).ToArray());
-            //    g.DrawLine(pen, pts[0].topointf(), pts[pts.Count - 1].topointf());
-            //}
-            //else if (pts.Count == 1)
-            //    g.DrawRectangle(pen, pts[0].topointf().X, pts[0].topointf().Y, 1, 1);
-            //UpdateCenter();
-            if (pts.Count > 1)
-            {
-                g.DrawLines(pen, pts.ToArray());
-                g.DrawLine(pen, pts[0], pts[pts.Count - 1]);
+                if (pts.Count > 1)
+                {
+                    g.DrawLines(pen, pts.ToArray());
+                    g.DrawLine(pen, pts[0], pts[pts.Count - 1]);
+                }
+                else if (pts.Count == 1)
+                    g.DrawRectangle(pen, pts[0].X, pts[0].Y, 1, 1);
             }
-            else if (pts.Count == 1)
-                g.DrawRectangle(pen, pts[0].X, pts[0].Y, 1, 1);
-            UpdateCenter();
         }
-        
+
         public void translate(float x, float y, float z)
         {
             foreach (Point3D p in Points)
